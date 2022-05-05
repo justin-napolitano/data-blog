@@ -4,6 +4,9 @@ import { Link, graphql } from "gatsby"
 import Bio from "../components/bio"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
+import PostHero from "../components/post-hero"
+
+import { getSrc } from "gatsby-plugin-image"
 
 const BlogPostTemplate = ({ data, location }) => {
   const post = data.markdownRemark
@@ -15,6 +18,10 @@ const BlogPostTemplate = ({ data, location }) => {
       <Seo
         title={post.frontmatter.title}
         description={post.frontmatter.description || post.excerpt}
+        imageSource={
+          post.frontmatter.socialImage ? getSrc(post.frontmatter.socialImage) : getSrc(post.frontmatter.image)
+        }
+        imageAlt={post.frontmatter.imageAlt}
       />
       <article
         className="blog-post"
@@ -23,7 +30,10 @@ const BlogPostTemplate = ({ data, location }) => {
       >
         <header>
           <h1 itemProp="headline">{post.frontmatter.title}</h1>
+          <PostHero post={post} />
           <p>{post.frontmatter.date}</p>
+          <p>{post.frontmatter.description}</p>
+          <p>{post.frontmatter.author}</p>
         </header>
         <section
           dangerouslySetInnerHTML={{ __html: post.html }}
@@ -85,6 +95,18 @@ export const pageQuery = graphql`
         title
         date(formatString: "MMMM DD, YYYY")
         description
+        imageAlt
+        author
+        image {
+          childImageSharp {
+            gatsbyImageData(
+              width: 200
+              placeholder: BLURRED
+              formats: [AUTO, WEBP, AVIF]
+              layout: FULL_WIDTH
+            )
+          }
+        }
       }
     }
     previous: markdownRemark(id: { eq: $previousPostId }) {
