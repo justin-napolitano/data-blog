@@ -8,6 +8,7 @@ import PostHero from "../components/post-hero"
 
 import { getSrc } from "gatsby-plugin-image"
 
+
 const BlogPostTemplate = ({ data, location }) => {
   const post = data.markdownRemark
   const siteTitle = data.site.siteMetadata?.title || `Title`
