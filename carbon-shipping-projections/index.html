@@ -109,7 +109,7 @@ st<span class="token punctuation">.</span>norm<span class="token punctuation">.<
 <div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">(272.32270640728865, 273.11012424532606)</code></pre></div>
 <p>It is safe to assume that 90 percent of the time we would see an annual cost of 272.32 to 273.11 billion dollars usd with the assumptions of the model taken into account.</p>
 <h3>Monte Carlo Historgram</h3>
-<p>The data is nearly normal.  It would be fair to expect a range of about</p>
+<p>The data is nearly normal.  It would be fair to expect a range of about 272.32 to 273.11 billion dollars.</p>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python">samples_df<span class="token punctuation">.</span>plot<span class="token punctuation">.</span>hist<span class="token punctuation">(</span>grid<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> bins<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">,</span> rwidth<span class="token operator">=</span><span class="token number">0.9</span><span class="token punctuation">,</span>
                    color<span class="token operator">=</span><span class="token string">'#607c8e'</span><span class="token punctuation">)</span>
 plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span><span class="token string">'Annual Price Distribution for Shipping Carbon'</span><span class="token punctuation">)</span>
