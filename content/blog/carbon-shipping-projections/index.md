@@ -60,7 +60,7 @@ The capacity range:
 #### Number of Tankers
 
 
-The number of tankers in the atlantic basin dedicated to LNG transort recorded in 2008 was 63.  I calculated a rough estimate of 25 percent of these being used to transport carbon annually.  A better source is needed to accurately record model.  If ships are used to transport both a random distribution designed according to a probability distribution would suitably model the data.  
+The number of tankers in the atlantic basin dedicated to LNG transort recorded in 2008 was 63.  I calculated a rough estimate of 25 percent of these being used to transport carbon annually.  A better source is needed to accurately model.  If ships are used to transport both lng and carbon a random distribution designed according to a probability distribution would suitably model the data.  
 
 A total of 15 tankers were modelled.  
 
@@ -69,7 +69,7 @@ A total of 15 tankers were modelled.
 
 ## Findings
 
-Shipping Carbon from Europe at an uncontrained rate is very clearly a billion doallar industry.  
+Shipping carbon from Europe at an uncontrained rate is very clearly a billion doallar industry.  
 
 Across 500 years of modelling we see about 273 billion dollars worth of economic activity per annum.  
 
