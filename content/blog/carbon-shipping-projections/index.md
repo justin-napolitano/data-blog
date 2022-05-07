@@ -14,19 +14,19 @@ imageAlt: Justin Napolitano
 
 I produced an earlier [report](https://blog.jnapolitano.io/wells-near-ports/) that identified potential ports that may be suitable terminals for carbon imports into the united states for storage or industrial applications.  
 
-Following this report I became interested in what the annual cost to ship super critical co2 could be.  In this report, I analyze the results of a Monte Carlo simulation that projected the annual cost of shipping carbon across the atlantic from Europe to the United States.
+Following this report I became interested in what the annual cost to ship super critical co2 could be.  In this report, I analyze the results of a Monte Carlo simulation that projects the annual cost of shipping carbon across the atlantic from Europe to the United States.
 
 ## Methodology
 
 
 ### Variables
-To account for dynamic variables I designed a Monte Carlo simulation that randomly selected variables across normal distributions bounded by minima and maxima dicated within the literature. 
+To account for dynamic variables I designed a Monte Carlo simulation that randomly selected variables across normal distributions bounded by minima and maxima.
 
 The current simulation includes:
 * Variable shipping distances
 * Variable shipping capacity
 * Variable ports of origin
-* Variable ports of terminus
+* Variable terminal ports
 * Variable round trip shipping duration
 
 Fixed variables include:
@@ -44,25 +44,25 @@ Università Bocconi, Milan, Italy
 
 #### Capacity of Ships
 
-To complete this analysis, I converted values found for lng shipping to super critical co2.  To do this I converted LNG capacties to Super Critical Co2 with the following conversion factors:
+To complete this analysis, I converted values found for lng shipping to super critical co2.  To do this,  I converted LNG capacties to super critical Co2 with the following conversion factors:
 * 1 tonne co2 super critical = 2.64812 meter cubed super critical co2
 * 1 tonnes LNG = 2.21 m3 LNG (liquid) 
 * 1 tonne co2 = 544.66 m^3
 
 
 The capacity range: 
-* The lower bound of the distribution was 33358 cubic meteres
-* The upper bound was 175132
-* The median provided 114723
-* The standard deviation was 5
+* The lower bound of the distribution is 33358 cubic meteres
+* The upper bound is 175132
+* The median provided is 114723
+* The standard deviation is 5
 
 
-#### Number of Ships
+#### Number of Tankers
 
 
-The number of ships in the atlantic basin dedicated to LNG transort recorded in 2008 was 63.  I calculated a rough estimate of 25 percent of these being used to transport carbon annually.  A better source is needed to accurately record model.  If ships are used to transport both a random distribution designed according to a probability distribution would suitably model the data.  
+The number of tankers in the atlantic basin dedicated to LNG transort recorded in 2008 was 63.  I calculated a rough estimate of 25 percent of these being used to transport carbon annually.  A better source is needed to accurately record model.  If ships are used to transport both a random distribution designed according to a probability distribution would suitably model the data.  
 
-A total of 15 ships were modelled.  
+A total of 15 tankers were modelled.  
 
 
 
@@ -164,7 +164,7 @@ It is safe to assume that 90 percent of the time we would see an annual cost of 
 
 ### Monte Carlo Historgram
 
-The data is nearly normal.  It would be fair to expect a range of about 
+The data is nearly normal.  It would be fair to expect a range of about 272.32 to 273.11 billion dollars.
 
 
 ```python
