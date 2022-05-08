@@ -33,9 +33,7 @@ The major difference in this report is the sampling of the mean price per voyage
 The conversion error has been corrected.
 
 ## Findings
-
-I posted the initial article without reviewing the mean shipping cost per voyage.  I simply trusted the values returned by my algorithm.  Upon reflection, I knew that something was mistaken.  In review, I found that I had converted the distance in meters to millimeters by mistake.  I had in fact, elevated prices by a signficant factor that was unreasonable.   
-
+ 
 
 ### Distance of Transport
 
@@ -43,17 +41,16 @@ The standard deviation in mean price per voyage was found to be less than 0.  Th
 
 This would present a secondary problem piping the co2 to the interior of the Country to access the spent wells located in the Rust Belt. 
 
-### Price of Transport.
+### Price of Transport
 
-The price of transport is fixed at 12.00 USD per 100 km per tonne as suggested by this [source](https://ieaghg.org/docs/General_Docs/Reports/PH4-30%20Ship%20Transport.pdf).   For reference the cost to transport standard freight from China to the United States ranges from $5,000 to $8,000 USD in total per tonne; or $5.00 to $8.00 USD per Kilo in total.  Overcoming the cost of transport is a major barrier to actually shipping CO2 across the Atlantic.
-
+The price of transport is fixed at 12.00 USD per 100 km per tonne as suggested by this [source](https://ieaghg.org/docs/General_Docs/Reports/PH4-30%20Ship%20Transport.pdf).   For reference the cost to transport standard freight from China to the United States ranges from $5,000 to $8,000 USD in total per tonne; or $5.00 to $8.00 USD per Kilo in total.  These data were recorded in 2022.  The 12.00 USD per tonne recorded seems low.  I would like to complete another study to verify the source.  
 ### Industrial Applications 
 
 Another study must be completed to estimate the value of CO2 to industrial applications in order to comment on the validity of shipping it to the US in order to sell on the open market.  
 
 ### Carbon Storage
 
-Shipping large quantities of CO2 to store in the US is most likely unreasonable.  Especially considering that the abandoned coal mines in Germany could serve the same purpose as any in the United States.   That said, at only about $1,468 USD average cost per voyage it is actually quite reasonable for international corporations to ship excess CO2 to the United States if tax incentives are offered to offset the cost of shipping.  I can envision the emissions captured by US companies in Europe being shipped back to the United States in order to reduce tax liability.  
+Shipping large quantities of CO2 to store in the US is most likely unreasonable.  Especially considering that unused coal mines in Germany could serve the same purpose as any in the United States.   That said, at only about $1,468 USD average cost per voyage it is actually quite reasonable for international corporations to ship excess CO2 to the United States if tax incentives are offered to offset the cost of shipping.  I can envision the emissions captured by US companies in Europe being shipped back to the United States in order to reduce tax liability.  
 
 
 ## Limitations of the Model
