@@ -14,12 +14,12 @@ imageAlt: Justin Napolitano
 
 I produced an earlier [report](https://blog.jnapolitano.io/wells-near-ports/) that identified potential ports that may be suitable terminals for carbon imports into the United States for storage or industrial applications.  
 
-Following this report I became interested in what the annual cost to ship super critical co2 could be.  In this report, I analyze the results of a Monte Carlo simulation that projects the annual cost of shipping carbon across the atlantic from Europe to the United States.
+Following that report, I became interested in what could be the annual value of shipping co2 to the economy.  In this report, I analyze the results of a Monte Carlo simulation I developed in Python (documented at the end of this page) that projects the annual cost of shipping carbon across the Atlantic from Europe to the United States.
 
 ## Methodology
 
 
-### Variables
+### Modeling Dynamic Variables
 To account for dynamic variables I designed a Monte Carlo simulation that randomly selected variables across normal distributions bounded by minima and maxima.
 
 The current simulation includes:
@@ -33,7 +33,7 @@ Fixed variables include:
 * Cost of Transport per ton (though this will be converted to a random distribution as soon as I find a better data source)
 
 
-### Infrastructure
+### Modeling the Shipping Infrastructure
 
 
 #### Source 
@@ -42,7 +42,7 @@ IEFE – Centre for Research on Energy and Environmental Economics and Policy,
 Università Bocconi, Milan, Italy
 
 
-#### Capacity of Ships
+#### Modeling the Capacity of Tankers
 
 To complete this analysis, I converted values found for lng shipping to super critical co2.  To do this,  I converted LNG capacties to super critical Co2 with the following conversion factors:
 * 1 tonne co2 super critical = 2.64812 meter cubed super critical co2
@@ -57,7 +57,7 @@ The capacity range:
 * The standard deviation is 5
 
 
-#### Number of Tankers
+#### MOdeling the Number of Tankers
 
 
 The number of tankers in the atlantic basin dedicated to LNG transort recorded in 2008 was 63.  I calculated a rough estimate of 25 percent of these being used to transport carbon annually.  A better source is needed to accurately model.  If ships are used to transport both lng and carbon a random distribution designed according to a probability distribution would suitably model the data.  
@@ -71,7 +71,7 @@ A total of 15 tankers were modelled.
 
 Shipping carbon from Europe at an uncontrained rate is very clearly a billion doallar industry.  
 
-Across 500   years of modelling we see about 273 billion dollars worth of economic activity per annum.  
+Across 500   years of modeling we see about 273 billion dollars worth of economic activity per annum.  
 
 
 
@@ -164,7 +164,6 @@ It is safe to assume that 90 percent of the time we would see an annual cost of 
 
 ### Monte Carlo Historgram
 
-The data is nearly normal.  It would be fair to expect a range of about 272.32 to 273.11 billion dollars.
 
 
 ```python
@@ -656,7 +655,7 @@ print(total_price)
 
 ## Monte Carlo Simulation with 500 iterations
 
-The annual rate of shipping can be variable according to shifting dynamics. I account for that by modelling the per annum algorithm 500 times.  Modelling would improve as n increases, but for the sake of time I limited the computation to 500 iterations
+The annual rate of shipping can be variable according to shifting dynamics. I account for that by modeling the per annum algorithm 500 times.  modeling would improve as n increases, but for the sake of time I limited the computation to 500 iterations
 
 The only difference between this algorithm and the previous one is an extra for loop.  The algorithmic efficiency is surprisingly good as the I was able to vectorize tabulations with lambda functions across the dataframes.  On my laptop, I was able to complete the algorithm in about 16 minutes of run time.
 
