@@ -22,12 +22,7 @@ module.exports = {
         name: `blog`,
       },
     },
-    {
-      resolve: `gatsby-transformer-remark`,
-      options: {
-        plugins: [`gatsby-remark-responsive-iframe`],
-      },
-    },
+    `gatsby-plugin-smoothscroll`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
