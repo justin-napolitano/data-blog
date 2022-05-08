@@ -1,7 +1,7 @@
 ---
 title:  Feasibility of Shipping Carbon Across the Atlantic
-date: "2022-05-08T14:40:32.169Z"
-description: "Feasibility study of shipping carbon across the Atlantic."
+date: "2022-05-07T18:40:32.169Z"
+description: "A feasibility study of shipping carbon from Europe to the United States for storage"
 author: Justin Napolitano
 image: post-image.jpeg
 imageAlt: Justin Napolitano
@@ -9,13 +9,18 @@ imageAlt: Justin Napolitano
 
 # Feasibility of Shipping Carbon Across the Atlantic
 
+## Revision
+
+An earlier version of this report had reported values that were erroneously elevated by a decimal error in the meters to km conversion of distances between ports.  I apologize for unintentionally publishing misleading information.
+
+Situations like this one, are why I always publish with code.  Transparency is the key to rigor.  
+
 
 ## Introduction
 
-Yesterday I published a [Monte Carlo Simulation of shipping CO2 across the Atlantic from Europe to the United States](https://blog.jnapolitano.io/carbon-shipping-projections/).  I stated that the industry could be a 270 billion dollar annual industry. Upon reflection, I realized that this number seemed too high. In fact, that would equate to nearly 1 billion dollars in economic activity per day. 
+Yesterday I published a [Monte Carlo Simulation of shipping CO2 across the atlantic from Europe to the United States](https://blog.jnapolitano.io/carbon-shipping-projections/).  I stated wrongly that the industry could be a 270 billion dollar annual industry. Upon reflection, I realized that this number seemed too high. In fact, that would equate to nearly 1 billion dollars in economic activity per day. 
 
-In this report, I review the mean price of shipping CO2 in an attempt to understand the feasibility of this economic sector.  
-
+In this report, I rectify those mistakes.  
 
 
 
@@ -25,34 +30,41 @@ Please review the my [previous post](https://blog.jnapolitano.io/carbon-shipping
 
 The major difference in this report is the sampling of the mean price per voyage.
 
+The conversion error has been corrected.
+
 ## Findings
 
-I posted the initial article without reviewing the mean shipping cost per voyage.  In review, I found that it would cost a billion dollars to ship CO2 per voyage on an average sized tanker ship.  This valuable cannot be reasonable. 
+I posted the initial article without reviewing the mean shipping cost per voyage.  I simply trusted the values returned by my algorithm.  Upon reflection, I knew that something was mistaken.  In review, I found that I had converted the distance in meters to centimeters by mistake.  I had in fact elevated prices by a signficant factor that was unreasonable.   
+
 
 ### Distance of Transport
 
 The standard deviation in mean price per voyage was found to be less than 0.  This suggests that the distance of travel within Europe is marginal.  The major obstacle is crossing the Atlantic to access the Gulf of Mexico.  It is possible that an import/export port located in the Chesapeake, New England, Willmington, or Savannah could reduce the cost of navigating through the Caribbean to access Gulf based ports.  
 
-This would present a secondary problem of piping the CO2 to the interior of the country to access the spent wells located in the Rust Belt.  
+This would present a secondary problem piping the co2 to the interior of the Country to access the spent wells located in the Rust Belt. 
+
+### Price of Transport.
+
+The price of transport is fixed at 12.00 USD per 100 km per tonne as suggested by this [source](https://ieaghg.org/docs/General_Docs/Reports/PH4-30%20Ship%20Transport.pdf).   For reference the cost to transport standard freight from China to the United States ranges from $5,000 to $8,000 USD in total per tonne; or $5.00 to $8.00 USD per Kilo in total.  Overcoming the cost of transport is a major barrier to actually shipping CO2 across the Atlantic.
 
 ### Industrial Applications 
 
-Another study must be completed to calculate value of super critical CO2 and other form factors to industrial applications in order to attempt to justify shipping CO2 across such large distances.  Frankly put, shipping such large quantities of CO2 to store it is most likely unreasonable.  
+Another study must be completed to estimate the value of CO2 to industrial applications in order to comment on the validity of shipping it to the US in order to sell on the open market.  
 
 ### Carbon Storage
 
-I do not think based on this model that the US would be a suitable storage location for European CO2.  As mentioned previously, the only way to justify the cost would be to sell the CO2 to market for industrial applications.  
+Shipping large quantities of CO2 to store in the US is most likely unreasonable.  Especially considering that the abandoned coal mines in Germany could serve the same purpose as any in the United States.   That said, at only about $1,468 USD average cost per voyage it is actually quite reasonable for international corporations to ship excess CO2 to the United States if tax incentives are offered to offset the cost of shipping.  I can envision the emissions captured by US companies in Europe being shipped back to the United States in order to reduce tax liability.  
 
 
 ## Limitations of the Model
 
 ### Accounting for the Return Trip to Port
  
-It is important to note that I did not account for the differential costs for the return trip to a European port.  If we were half the findings, it would still cost about 500 million USD to ship a full tanker to the United States.  This number seems unreasonably high.  Though, the cost of shipping per ton was fixed at .12 USD, the distance of travel elevates pricing.  To the point that I am worried about the validity of my model.  I need to review the shipping cost algorithm to ensure that I am generating valid results.  
+It is important to note that I did not account for the differential costs for the return trip to a European port.  I need to revise top reflect historic trends.  Nonetheless, the model as it is fairly accurate.  
 
 ### Cost to Transport
 
-The cost to transport per 100 km is fixed at .12 USD as suggested by this [source](https://ieaghg.org/docs/General_Docs/Reports/PH4-30%20Ship%20Transport.pdf).  It accounts for the cost of liquification, shipping costs, and port fees.  The source however, was published in 2004.  The costs may have been reduced by technological advance and increased demand for CO2.
+The cost to transport per 100 km is fixed at 12.00 USD as suggested by this [source](https://ieaghg.org/docs/General_Docs/Reports/PH4-30%20Ship%20Transport.pdf).  It accounts for the cost of liquification, shipping costs, and port fees.  The source however, was published in 2004.  The costs may have been reduced by technological advance and demand for super critical CO2 for industrial applications.
 
 ### Volumes of Transport
 
@@ -60,7 +72,7 @@ I simply converted the volumes of standard LNG ships to liquifed CO2.  There may
 
 ## Conclusion
 
-It is unlikely that CO2 will be shipped to the United States simply for storage. A transatlantic trade may develop, but I would assume in order to meet demands for the industrial applications of super critical CO2.
+It is still unlikely that CO2 will be shipped to the United States simply for storage unless companies are incentivized to do so. A transatlantic trade may develop, but I would assume in order to meet demands for the industrial applications of super critical CO2.
 
 ## Mean Voyage Data Analysis
 
@@ -90,7 +102,7 @@ mean_price_per_cycle_df.describe()
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>Voyage Cost in Billions USD</th>
+      <th>Voyage Cost USD</th>
     </tr>
   </thead>
   <tbody>
@@ -100,31 +112,31 @@ mean_price_per_cycle_df.describe()
     </tr>
     <tr>
       <th>mean</th>
-      <td>1.457033e+00</td>
+      <td>1.468437e+03</td>
     </tr>
     <tr>
       <th>std</th>
-      <td>4.445340e-16</td>
+      <td>2.276014e-13</td>
     </tr>
     <tr>
       <th>min</th>
-      <td>1.457033e+00</td>
+      <td>1.468437e+03</td>
     </tr>
     <tr>
       <th>25%</th>
-      <td>1.457033e+00</td>
+      <td>1.468437e+03</td>
     </tr>
     <tr>
       <th>50%</th>
-      <td>1.457033e+00</td>
+      <td>1.468437e+03</td>
     </tr>
     <tr>
       <th>75%</th>
-      <td>1.457033e+00</td>
+      <td>1.468437e+03</td>
     </tr>
     <tr>
       <th>max</th>
-      <td>1.457033e+00</td>
+      <td>1.468437e+03</td>
     </tr>
   </tbody>
 </table>
@@ -139,17 +151,17 @@ The data is nearly normal.  I could test for normality, but that would be beyond
 
 ```python
 
-st.norm.interval(alpha=0.90, loc=np.mean(mean_price_per_cycle_df['Voyage Cost in Billions USD']), scale=st.sem(mean_price_per_cycle_df['Voyage Cost in Billions USD']))
+st.norm.interval(alpha=0.90, loc=np.mean(mean_price_per_cycle_df['Voyage Cost USD']), scale=st.sem(mean_price_per_cycle_df['Voyage Cost USD']))
 ```
 
 
 
 
-    (1.4570329863646765, 1.4570329863646765)
+    (1468.4374594693923, 1468.4374594693923)
 
 
 
-It is safe to assume that 90 percent of the time we would see an annual cost 1.46 billion dollars USD with the assumptions of the model taken into account.  As the price per 100 km is fixed, the standard deviations is minimal.  The distances as well to port seem to be fairly consistent.  The cost of transport through Europe is minimal.
+It is safe to assume that 90 percent of the time we would see an annual cost 1,468 dollars USD with the assumptions of the model taken into account.  As the price per 100 km is fixed, the standard deviations is minimal.  The distances as well to port seem to be fairly consistent.  The cost of transport through Europe is minimal.
 
 ### Histogram of Mean Voyage Price Samples
 
@@ -160,14 +172,14 @@ The price does not deviate.  It is so concentrated in fact, that I worry that th
 mean_price_per_cycle_df.plot.hist(grid=True, bins=20, rwidth=0.9,
                    color='#607c8e')
 plt.title('Mean Price Distribution Per Voyage')
-plt.xlabel('Mean Voyage Price in Billions USD')
+plt.xlabel('Mean Voyage Price USD')
 plt.ylabel('Frequency')
 plt.grid(axis='y', alpha=0.75)
 ```
 
 
     
-![png](feasability_of_shipping_carbon_files/feasability_of_shipping_carbon_8_0.png)
+![png](shipping_carbon_feasibility_files/shipping_carbon_feasibility_8_0.png)
     
 
 
@@ -201,7 +213,7 @@ annual_price_samples_df.describe()
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>usd_billions</th>
+      <th>cost_in_usd</th>
     </tr>
   </thead>
   <tbody>
@@ -211,31 +223,31 @@ annual_price_samples_df.describe()
     </tr>
     <tr>
       <th>mean</th>
-      <td>273.281259</td>
+      <td>273310.293899</td>
     </tr>
     <tr>
       <th>std</th>
-      <td>5.468424</td>
+      <td>5815.147052</td>
     </tr>
     <tr>
       <th>min</th>
-      <td>257.417260</td>
+      <td>255119.652932</td>
     </tr>
     <tr>
       <th>25%</th>
-      <td>269.584137</td>
+      <td>269238.422073</td>
     </tr>
     <tr>
       <th>50%</th>
-      <td>273.498084</td>
+      <td>273365.024377</td>
     </tr>
     <tr>
       <th>75%</th>
-      <td>277.353518</td>
+      <td>276991.116325</td>
     </tr>
     <tr>
       <th>max</th>
-      <td>291.351511</td>
+      <td>290126.216432</td>
     </tr>
   </tbody>
 </table>
@@ -250,13 +262,13 @@ The data is nearly normal.  I could test for normality, but that would be beyond
 
 ```python
 
-st.norm.interval(alpha=0.90, loc=np.mean(annual_price_samples_df['usd_billions']), scale=st.sem(annual_price_samples_df['usd_billions']))
+st.norm.interval(alpha=0.90, loc=np.mean(annual_price_samples_df['cost_in_usd']), scale=st.sem(annual_price_samples_df['cost_in_usd']))
 ```
 
 
 
 
-    (272.87900122752995, 273.68351670240344)
+    (272882.531156206, 273738.05664255185)
 
 
 
@@ -269,14 +281,14 @@ It is safe to assume that 90 percent of the time we would see an annual cost of 
 annual_price_samples_df.plot.hist(grid=True, bins=20, rwidth=0.9,
                    color='#607c8e')
 plt.title('Annual Price Distribution for Shipping Carbon')
-plt.xlabel('Annual Price in Billions USD')
+plt.xlabel('Annual Price in USD')
 plt.ylabel('Frequency')
 plt.grid(axis='y', alpha=0.75)
 ```
 
 
     
-![png](feasability_of_shipping_carbon_files/feasability_of_shipping_carbon_15_0.png)
+![png](shipping_carbon_feasibility_files/shipping_carbon_feasibility_15_0.png)
     
 
 
@@ -373,168 +385,168 @@ shipping_df
   <tbody>
     <tr>
       <th>0</th>
-      <td>114721.472752</td>
+      <td>114736.054161</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.629517</td>
+      <td>210.656289</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>114729.654368</td>
+      <td>114725.455184</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.644539</td>
+      <td>210.636829</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>114728.465767</td>
+      <td>114718.844178</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.642356</td>
+      <td>210.624691</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>114727.124642</td>
+      <td>114715.467564</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.639894</td>
+      <td>210.618491</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>114728.082194</td>
+      <td>114730.192747</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.641652</td>
+      <td>210.645527</td>
     </tr>
     <tr>
       <th>5</th>
-      <td>114713.566506</td>
+      <td>114713.967741</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.615001</td>
+      <td>210.615738</td>
     </tr>
     <tr>
       <th>6</th>
-      <td>114720.269709</td>
+      <td>114731.671836</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.627308</td>
+      <td>210.648243</td>
     </tr>
     <tr>
       <th>7</th>
-      <td>114714.918350</td>
+      <td>114724.519528</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.617483</td>
+      <td>210.635111</td>
     </tr>
     <tr>
       <th>8</th>
-      <td>114731.984989</td>
+      <td>114724.739566</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.648818</td>
+      <td>210.635515</td>
     </tr>
     <tr>
       <th>9</th>
-      <td>114722.804903</td>
+      <td>114714.204250</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.631963</td>
+      <td>210.616172</td>
     </tr>
     <tr>
       <th>10</th>
-      <td>114713.641452</td>
+      <td>114726.819219</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.615139</td>
+      <td>210.639333</td>
     </tr>
     <tr>
       <th>11</th>
-      <td>114726.862877</td>
+      <td>114714.217968</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.639413</td>
+      <td>210.616197</td>
     </tr>
     <tr>
       <th>12</th>
-      <td>114729.870299</td>
+      <td>114723.291289</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.644935</td>
+      <td>210.632856</td>
     </tr>
     <tr>
       <th>13</th>
-      <td>114735.366180</td>
+      <td>114724.804021</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.655025</td>
+      <td>210.635633</td>
     </tr>
     <tr>
       <th>14</th>
-      <td>114733.863624</td>
+      <td>114727.384795</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.652267</td>
+      <td>210.640372</td>
     </tr>
   </tbody>
 </table>
@@ -680,7 +692,7 @@ I calculated the shortest distance between ports based on their geographic locat
 
 def geo_distance(dist1,dist2):
     # return distance in km
-    distance = dist1.distance(dist2)*1000
+    distance = dist1.distance(dist2)/1000
     return(distance)
 
     
@@ -771,18 +783,19 @@ print(total_price)
 #Drop the nan, ie empty samples
 cycle_mean_price = cycle_mean_price_samples[np.logical_not(np.isnan(cycle_mean_price_samples))]
 #Calculate mean price of filling a ship (around a billion according to the data i have if filled to capacity.  Ridiculous.)
+# The sanity check was valid... aftre reviewing the functions i found that the distance calculation multiplied by 1000 instead of dividing.
 cycle_mean_price = cycle_mean_price.mean()
 print(cycle_mean_price)
 
 ```
 
     365
-    40863.449618275925
-    285070693392.5522
-    1457032986.364676
+    38335.241156942
+    266874.0326511727
+    1468.4374594693925
 
 
-## Monte Carlo Simulation with 500 iterations
+## Monte Carlo Simulation with 500 Iterations
 
 The annual rate of shipping can be variable according to shifting dynamics. I account for that by modeling the per annum algorithm 500 times.  Modeling would improve as n increases, but for the sake of time I limited the computation to 500 iterations
 
@@ -834,6 +847,7 @@ for sample in range(nsamples):
     #Drop the nan, ie empty samples
     cycle_mean_price = cycle_mean_price_samples[np.logical_not(np.isnan(cycle_mean_price_samples))]
     #Calculate mean price of filling a ship (around a billion according to the data i have if filled to capacity.  Ridiculous.)
+    # The sanity check was valid... aftre reviewing the functions i found that the distance calculation multiplied by 1000 instead of dividing.
     cycle_mean_price = cycle_mean_price.mean()
     cycle_mean_price_annual_samples[sample] =cycle_mean_price
         
@@ -854,16 +868,16 @@ annual_price_samples_df = pd.DataFrame(price_samples, columns=['cost_in_usd'])
 
 
 ```python
-annual_price_samples_df['usd_billions'] = annual_price_samples_df.cost_in_usd / 1000000000
-annual_price_samples_df.drop(columns=['cost_in_usd'], inplace=True)
+annual_price_samples_df['cost_in_usd'] = annual_price_samples_df.cost_in_usd
+
 ```
 
 ### Creating the Mean Price Per Round Trip Df
 
 
 ```python
-mean_price_per_cycle_df = pd.DataFrame(cycle_mean_price_annual_samples, columns=['Voyage Cost in Billions USD'])
-mean_price_per_cycle_df['Voyage Cost in Billions USD'] = mean_price_per_cycle_df['Voyage Cost in Billions USD'] / 1000000000
+mean_price_per_cycle_df = pd.DataFrame(cycle_mean_price_annual_samples, columns=['Voyage Cost USD'])
+mean_price_per_cycle_df['Voyage Cost USD'] = mean_price_per_cycle_df['Voyage Cost USD'] 
 
 ```
 
@@ -890,5 +904,14 @@ from geopy.distance import distance
 import warnings
 
 warnings.filterwarnings('ignore')
+
+```
+
+    /Users/jnapolitano/venvs/finance/lib/python3.9/site-packages/geopandas/_compat.py:111: UserWarning: The Shapely GEOS version (3.10.2-CAPI-1.16.0) is incompatible with the GEOS version PyGEOS was compiled with (3.10.1-CAPI-1.16.0). Conversions between both will be slow.
+      warnings.warn(
+
+
+
+```python
 
 ```
