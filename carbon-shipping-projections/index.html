@@ -437,7 +437,7 @@ port_terminals_df<span class="token punctuation">[</span><span class="token stri
     <span class="token keyword">return</span> <span class="token punctuation">(</span>days_randomized<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span>np<span class="token punctuation">.</span>int64<span class="token punctuation">)</span><span class="token punctuation">)</span>
 </code></pre></div>
 <h3>Accounting for Random European Ports</h3>
-<p>I randomized the Port Selection Process with the following function.  The Data provided by eurostat did not filter according to type of port.  Nonetheless, the distance recorded should be very similiar to those of actual lng ports.  A better data set could be substituded directly into the function</p>
+<p>I randomized the Port Selection Process with the following function.  The data provided by EuroStat did not filter according to type of port.  Nonetheless, the distance recorded should be very similiar to those of actual lng ports.  A better data set could be substituded directly into the function</p>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python">
 <span class="token keyword">def</span> <span class="token function">random_europe_port</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token comment">#select a random number along the index of the ports df.  Return the value of hte geometry at the index.  </span>
@@ -476,14 +476,16 @@ port_terminals_df<span class="token punctuation">[</span><span class="token stri
 </code></pre></div>
 <h2>Costs Per Annum Algorithm</h2>
 <p>The algorithm I used calculates the daily status of ships transporting co2 across the atlantic from a European port to a port in the United States.  It will run for 365 iterations or until the total carbon capacity of the us ports is reached.  This value could also be dynamically allocated via a similiar algorithm, but the algorithm performance would suffer at the cost of marginal model improvements.</p>
-<p>When the daily counter reaches zero for a ship
-* The capacity is refilled to full
-* A random us port is assigned
-* a random european port is assigned
-* the distance between ports is calculated
-* the cost of transport over that distance is calculated per 100 km
-* The total shipping price of that cycle is tabulated
-* The total tonnage of that cycle is tabulated</p>
+<p>When the daily counter reaches zero for a tanker:</p>
+<ul>
+<li>The capacity is refilled to full</li>
+<li>A random us port is assigned</li>
+<li>a random european port is assigned</li>
+<li>the distance between ports is calculated</li>
+<li>the cost of transport over that distance is calculated per 100 km</li>
+<li>The total shipping price of that cycle is tabulated</li>
+<li>The total tonnage of that cycle is tabulated</li>
+</ul>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python">
 days <span class="token operator">=</span> <span class="token number">365</span>
 day_counter <span class="token operator">=</span> <span class="token number">0</span> 
@@ -522,7 +524,7 @@ total_price <span class="token operator">=</span> <span class="token number">0</
 39177.55734226863
 273610171402.87534</code></pre></div>
 <h2>Monte Carlo Simulation with 500 iterations</h2>
-<p>The annual rate of shipping can be variable according to shifting dynamics. I account for that by modelling the per annum algorithm 500 times.  Modelling would improve as n increases, but for the sake of time I limited the commputation to 500 iterations</p>
+<p>The annual rate of shipping can be variable according to shifting dynamics. I account for that by modelling the per annum algorithm 500 times.  Modelling would improve as n increases, but for the sake of time I limited the computation to 500 iterations</p>
 <p>The only difference between this algorithm and the previous one is an extra for loop.  The algorithmic efficiency is surprisingly good as the I was able to vectorize tabulations with lambda functions across the dataframes.  On my laptop, I was able to complete the algorithm in about 16 minutes of run time.</p>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python">
 nsamples <span class="token operator">=</span> <span class="token number">500</span>
