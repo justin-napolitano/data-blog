@@ -10,11 +10,19 @@ imageAlt: Justin Napolitano
 # A Monte Carlo Projection of the Annual Cost of Shipping Carbon from Europe to US Ports
 
 
+## Revision
+
+An earlier version of this report had reported values that were erroneously elevated by a decimal error in the meters to km conversion of distances between ports.  I apologize for unintentionally publishing misleading information.
+
+Situations like this one, are why I always publish with code.  Transparency is the key to rigor. 
+
+
 ## Introduction
 
 I produced an earlier [report](https://blog.jnapolitano.io/wells-near-ports/) that identified potential ports that may be suitable terminals for carbon imports into the United States for storage or industrial applications.  
 
 Following that report, I became interested in what could be the annual economic value of shipping CO2.  In this report, I analyze the results of a Monte Carlo simulation I developed in Python (documented at the end of this page) that projects the annual cost of shipping carbon across the Atlantic from Europe to the United States.
+
 
 ## Methodology
 
@@ -64,18 +72,28 @@ The number of tankers in the Atlantic basin dedicated to LNG transort recorded i
 
 A total of 15 tankers were modeled in this example.  
 
-
 ## Findings
 
-Shipping carbon from Europe at an uncontsrained rate is very clearly a billion doallar industry.  
+Carbon capture is likely a billion dollar industry at scale.  
 
-Across 500 iterations of modeling we see about 273 billion dollars worth of economic activity annualy.  
+Across 500 iterations of modeling we see about $273,000 dollars worth of economic activity annualy.  This is fairly reasonable, but thankfully not as high as the billion that I had reported earlier.  
 
 
+
+
+### The Take Away
+
+The Carbon capture and storage economiy is likely a billion dollar economy at scale.  In just reviewing shipping super critical CO2 from Europe to the United States, a $273,000 annual industry could develop as nations move towards a net carbon zero economy. 
+
+## Limitations of the Model 
+
+The model as it is presented in this report is unconstrained.  A more accurate portrayal of what would be possible with current systems in place could be designed with better data.  It is also important to note that I have not included incentives into the model.  It is entirely possible that government subsidies could prove the carbon shipping industry to be more expansive than presented here.
+
+## Data Analysis
 
 
 ```python
-samples_df.describe()
+annual_price_samples_df.describe()
 ```
 
 
@@ -99,41 +117,50 @@ samples_df.describe()
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>usd_billions</th>
+      <th>cost_in_usd</th>
+      <th>cost_in_usd_billions</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>count</th>
       <td>500.000000</td>
+      <td>500.000000</td>
     </tr>
     <tr>
       <th>mean</th>
-      <td>272.716415</td>
+      <td>273016.820135</td>
+      <td>273016.820135</td>
     </tr>
     <tr>
       <th>std</th>
-      <td>5.352208</td>
+      <td>5877.779527</td>
+      <td>5877.779527</td>
     </tr>
     <tr>
       <th>min</th>
-      <td>259.417903</td>
+      <td>257901.494075</td>
+      <td>257901.494075</td>
     </tr>
     <tr>
       <th>25%</th>
-      <td>269.038222</td>
+      <td>269168.897174</td>
+      <td>269168.897174</td>
     </tr>
     <tr>
       <th>50%</th>
-      <td>272.779910</td>
+      <td>272689.988387</td>
+      <td>272689.988387</td>
     </tr>
     <tr>
       <th>75%</th>
-      <td>276.060047</td>
+      <td>276863.145130</td>
+      <td>276863.145130</td>
     </tr>
     <tr>
       <th>max</th>
-      <td>289.222052</td>
+      <td>292092.994239</td>
+      <td>292092.994239</td>
     </tr>
   </tbody>
 </table>
@@ -148,24 +175,23 @@ The data is nearly normal.  I could test for normality, but that would be beyond
 
 ```python
 
-st.norm.interval(alpha=0.90, loc=np.mean(samples_df['usd_billions']), scale=st.sem(samples_df['usd_billions']))
+st.norm.interval(alpha=0.90, loc=np.mean(annual_price_samples_df['cost_in_usd']), scale=st.sem(annual_price_samples_df['cost_in_usd']))
 ```
 
 
 
 
-    (272.32270640728865, 273.11012424532606)
+    (272584.4501409735, 273449.19012835127)
 
 
 
-It is safe to assume that 90 percent of the time we would see an annual cost of 272.32 to 273.11 billion dollars USD with the assumptions of the model taken into account.  
+It is safe to assume that 90 percent of the time we would see an annual cost of $272,584 to $273,449 USD with the assumptions of the model taken into account.  
 
 ### Monte Carlo Histogram
 
 
-
 ```python
-samples_df.plot.hist(grid=True, bins=20, rwidth=0.9,
+annual_price_samples_df.plot.hist(grid=True, bins=20, rwidth=0.9,
                    color='#607c8e')
 plt.title('Annual Price Distribution for Shipping Carbon')
 plt.xlabel('Annual Price in Billions USD')
@@ -175,19 +201,8 @@ plt.grid(axis='y', alpha=0.75)
 
 
     
-![png](shipping_projections_files/shipping_projections_9_0.png)
+![png](shipping_projections_files/shipping_projections_10_0.png)
     
-
-
-## The Take Away
-
-The Carbon capture and storage economiy is likely a trillion dollar economy at scale.  In just reviewing shipping super critical co2 from Europe to the United States, a 272 billion dollar industry could develop as nations move towards a net carbon zero economy.  
-
-
-## Limitations of the Model 
-
-The model as it is presented in this report is unconstrained.  A more accurate portrayal of what would be possible with current systems in place could be designed with better data.  It is also important to note that I have not included incentives into the model.  It is entirely possible that government subsidies could prove the carbon shipping industry to be more expansive than presented here.
-
 
 
 ## Data Imports and Manipulation
@@ -196,7 +211,7 @@ The model as it is presented in this report is unconstrained.  A more accurate p
 
 The shipping dataframe is the basis of the simulation.  It is used to tabulate total cost and to record the values of variables.
 
-#### Capacity Distribtuion and Number of Ships Calculation
+#### Capacity Distribution and Number of Ships Calculation
 
 
 ```python
@@ -240,10 +255,11 @@ cap_distribution = np.random.normal(loc=median , scale=standard_dev, size=ships)
 ```python
 shipping_df = pd.DataFrame(cap_distribution, columns=['co2_capacity_cubic_meters'])
 shipping_df['days_to_port'] = 0
-shipping_df['Europe_port'] = ''
+shipping_df['europe_port'] = ''
 shipping_df["us_port"] =''
 shipping_df['distance'] =''
 shipping_df['price'] = 0
+shipping_df['cost_per_day'] = 0
 shipping_df['co2_capacity_tonnes'] = shipping_df['co2_capacity_cubic_meters']/544.66 ## Verify this factor.  It seems to high
 shipping_df
 ```
@@ -271,163 +287,179 @@ shipping_df
       <th></th>
       <th>co2_capacity_cubic_meters</th>
       <th>days_to_port</th>
-      <th>Europe_port</th>
+      <th>europe_port</th>
       <th>us_port</th>
       <th>distance</th>
       <th>price</th>
+      <th>cost_per_day</th>
       <th>co2_capacity_tonnes</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>114722.058446</td>
+      <td>114726.768979</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
-      <td>210.630592</td>
+      <td>0</td>
+      <td>210.639241</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>114722.867438</td>
+      <td>114728.033129</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
-      <td>210.632078</td>
+      <td>0</td>
+      <td>210.641562</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>114718.413428</td>
+      <td>114720.580272</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
-      <td>210.623900</td>
+      <td>0</td>
+      <td>210.627878</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>114726.644196</td>
+      <td>114721.794142</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
-      <td>210.639012</td>
+      <td>0</td>
+      <td>210.630107</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>114717.890366</td>
+      <td>114714.126221</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
-      <td>210.622940</td>
+      <td>0</td>
+      <td>210.616029</td>
     </tr>
     <tr>
       <th>5</th>
-      <td>114724.390072</td>
+      <td>114720.228896</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
-      <td>210.634873</td>
+      <td>0</td>
+      <td>210.627233</td>
     </tr>
     <tr>
       <th>6</th>
-      <td>114728.150802</td>
+      <td>114721.747831</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
-      <td>210.641778</td>
+      <td>0</td>
+      <td>210.630022</td>
     </tr>
     <tr>
       <th>7</th>
-      <td>114722.486489</td>
+      <td>114729.344104</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
-      <td>210.631378</td>
+      <td>0</td>
+      <td>210.643969</td>
     </tr>
     <tr>
       <th>8</th>
-      <td>114732.540018</td>
+      <td>114717.274015</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
-      <td>210.649837</td>
+      <td>0</td>
+      <td>210.621808</td>
     </tr>
     <tr>
       <th>9</th>
-      <td>114716.979721</td>
+      <td>114722.323457</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
-      <td>210.621268</td>
+      <td>0</td>
+      <td>210.631079</td>
     </tr>
     <tr>
       <th>10</th>
-      <td>114720.899956</td>
+      <td>114718.965118</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
-      <td>210.628465</td>
+      <td>0</td>
+      <td>210.624913</td>
     </tr>
     <tr>
       <th>11</th>
-      <td>114730.255969</td>
+      <td>114714.413894</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
-      <td>210.645643</td>
+      <td>0</td>
+      <td>210.616557</td>
     </tr>
     <tr>
       <th>12</th>
-      <td>114717.927588</td>
+      <td>114727.609267</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
-      <td>210.623008</td>
+      <td>0</td>
+      <td>210.640784</td>
     </tr>
     <tr>
       <th>13</th>
-      <td>114717.983103</td>
+      <td>114727.122969</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
-      <td>210.623110</td>
+      <td>0</td>
+      <td>210.639891</td>
     </tr>
     <tr>
       <th>14</th>
-      <td>114723.044902</td>
+      <td>114718.336977</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
-      <td>210.632404</td>
+      <td>0</td>
+      <td>210.623760</td>
     </tr>
   </tbody>
 </table>
@@ -442,6 +474,7 @@ shipping_df
 
 gisfilepath = "/Users/jnapolitano/Projects/data/energy/PORT_2013_SH/Data/PORT_PT_2013.shp"
 
+
 ports_df = gpd.read_file(gisfilepath)
 
 ports_df = ports_df.to_crs(epsg=3857)
@@ -455,9 +488,12 @@ ports_df = ports_df.to_crs(epsg=3857)
 
 gisfilepath = "/Users/jnapolitano/Projects/data/energy/filtered-wells.geojson"
 
+
 filtered_df = gpd.read_file(gisfilepath)
 
 filtered_df = filtered_df.to_crs(epsg=3857)
+
+
 ```
 
 #### Getting Map Conditions for Us Port Filtering
@@ -476,9 +512,12 @@ map_conditions = filtered_df.TERMID.unique().tolist()
 
 gisfilepath = "/Users/jnapolitano/Projects/data/energy/Liquified_Natural_Gas_Import_Exports_and_Terminals.geojson"
 
+
 terminal_df = gpd.read_file(gisfilepath)
 
 terminal_df = terminal_df.to_crs(epsg=3857)
+
+
 ```
 
 
@@ -486,6 +525,7 @@ terminal_df = terminal_df.to_crs(epsg=3857)
 terminal_df.drop(terminal_df[terminal_df['STATUS'] == 'SUSPENDED'].index, inplace = True)
 terminal_df.rename(columns={"NAME": "TERMINAL_NAME"})
 terminal_df['TERMINAL_GEO'] = terminal_df['geometry'].copy()
+
 ```
 
 
@@ -526,12 +566,12 @@ def random_day():
 
 ### Accounting for Random European Ports
 
-I randomized the port selection process with the following function.  The data provided by EuroStat did not filter according to type of port.  Nonetheless, the distance recorded should be very similiar to those of actual LNG ports.  A better data set could be substituded directly into the function.
+ I randomized the port selection process with the following function.  The data provided by EuroStat did not filter according to type of port.  Nonetheless, the distance recorded should be very similiar to those of actual LNG ports.  A better data set could be substituded directly into the function.
 
 
 ```python
 
-def random_Europe_port():
+def random_europe_port():
     #select a random number along the index of the ports df.  Return the value of hte geometry at the index.  
     #select indices from the dataframe that are valid.  ie capacity has not yet been met.  
     ports_randomized = np.random.choice(ports_df.index, size=1)
@@ -558,21 +598,20 @@ def random_us_port():
 
 ### Calculating Distance Between Ports
 
-I calculated the shortest distance between ports based on their geographic locations with the shapley.distance function.  It returns distance in meters.  I divide by 1000 to convert into Km.   The algorithm could be improved by using official shipping data to randomize a distribution of distances between ports.  Unfortunately, I do not have that data available to me.  
+I calculated the shortest distance between ports based on their geographic locations with the shapley.distance function.  It returns distance in meters.  I divide by 1000 to convert into Km.   The algorithm could be improved by using official shipping data to randomize a distribution of distances between ports.  Unfortunately, I do not have that data available to me. 
 
 
 ```python
 
 def geo_distance(dist1,dist2):
     # return distance in km
-    distance = dist1.distance(dist2)*1000
+    distance = dist1.distance(dist2)/1000
     return(distance)
-
-    
 
 ```
 
 #### Calculating Price of Transport
+
 
 The cost of transport accounts for port fees, liquification, and transport.   Unfortunately, my data is from a paper published in 2004.  I would like to find a more recent paper.   I did not convert the value of 2004 USD to 2022 because I am not sure of the validity of the conversion factors available online.  I would need a better source to correctly model the true cost of transport.  
 
@@ -585,6 +624,14 @@ def price_to_transport(distance):
     price = (distance/100) * 12
     return price
 
+```
+
+### Calculating Cost Per Day
+
+
+```python
+def cost_per_day(price,distance):
+    return price/distance
 ```
 
 ## Costs Per Annum Algorithm
@@ -603,6 +650,7 @@ When the daily counter reaches zero for a tanker:
 
 
 
+
 ```python
 
 days = 365
@@ -610,6 +658,7 @@ day_counter = 0
 carbon_total_millions_metric_tons = 300000000
 total_tons_shipped = 0
 total_price = 0
+cycle_mean_price_samples = np.zeros(shape=days)
 
 #deduction = capacity of empty ships
 for day in range(days):
@@ -617,14 +666,16 @@ for day in range(days):
         # must use apply to account for multiple 0 conditions.  If i simply vectorized the function across the dataframe in a single call i would assign the the same values each day 
         shipping_df['days_to_port'] = shipping_df['days_to_port'] - 1
         shipping_df['us_port'] = shipping_df.apply(lambda x:  random_us_port() if x['days_to_port']<=0 else x['us_port'], axis=1)
-        shipping_df['Europe_port'] = shipping_df.apply(lambda x:  random_Europe_port() if x['days_to_port']<=0 else x['Europe_port'], axis=1)
-        shipping_df['distance'] = shipping_df.apply(lambda x:  geo_distance(x['us_port'], x['Europe_port']) if x['days_to_port']<=0 else x['distance'], axis=1)
+        shipping_df['europe_port'] = shipping_df.apply(lambda x:  random_europe_port() if x['days_to_port']<=0 else x['europe_port'], axis=1)
+        shipping_df['distance'] = shipping_df.apply(lambda x:  geo_distance(x['us_port'], x['europe_port']) if x['days_to_port']<=0 else x['distance'], axis=1)
         shipping_df['price'] = shipping_df.apply(lambda x:  price_to_transport(x['distance']) if x['days_to_port']<=0 else x['price'], axis=1)
+        #calculate cost per day for fun...
         # query all that are = o.  Summate the capacities deduct the total 
         tmp_df=shipping_df.loc[shipping_df['days_to_port'] <= 0]
         sum_of_capacity = tmp_df['co2_capacity_tonnes'].sum()
         sum_of_price = tmp_df['price'].sum()
-        # assign a random number of days for the next round trip excursion
+        mean_of_price = tmp_df['price'].mean()
+        cycle_mean_price_samples[day] = mean_of_price
         shipping_df['days_to_port'] = shipping_df['days_to_port'].apply(lambda x: random_day() if x<=0 else x)
         total_tons_shipped = total_tons_shipped + sum_of_capacity
         total_price = total_price + sum_of_price
@@ -639,11 +690,18 @@ for day in range(days):
 print(day_counter)
 print(total_tons_shipped)
 print(total_price)
+#Drop the nan, ie empty samples
+cycle_mean_price = cycle_mean_price_samples[np.logical_not(np.isnan(cycle_mean_price_samples))]
+#Calculate mean price of filling a ship (around a billion according to the data i have if filled to capacity.  Ridiculous.)
+cycle_mean_price = cycle_mean_price.mean()
+print(cycle_mean_price)
+
 ```
 
     365
-    39177.55734226863
-    273610171402.87534
+    40651.64982665733
+    287553.7090879244
+    1515.578323315146
 
 
 ## Monte Carlo Simulation with 500 iterations
@@ -658,30 +716,34 @@ The only difference between this algorithm and the previous one is an extra for 
 ```python
 
 nsamples = 500
-price_samples = np.zeros(shape=500)
+price_samples = np.zeros(shape=nsamples)
+cycle_mean_price_annual_samples = np.zeros(shape=nsamples)
 
 for sample in range(nsamples):
 
     days = 365
     day_counter = 0 
-    carbon_total_millions_metric_tons = 300000000
+    carbon_total_millions_metric_tons = 300000000 # could randomize.  Need a probability distribution based on historial data. 
     total_tons_shipped = 0
     total_price = 0
+    cycle_mean_price_daily_samples = np.zeros(shape=days)
+
 
     #deduction = capacity of empty ships
     for day in range(days):
         if carbon_total_millions_metric_tons >= 0:
-            # must use apply to account for multiple 0 conditions.  If i simply vectorized a signle call the function I would assign the same values to every 0 condition.  
+            # must use apply to account for multiple 0 conditions.  If i simply vectorized the function across the dataframe in a single call i would assign the the same values each day 
             shipping_df['days_to_port'] = shipping_df['days_to_port'] - 1
             shipping_df['us_port'] = shipping_df.apply(lambda x:  random_us_port() if x['days_to_port']<=0 else x['us_port'], axis=1)
-            shipping_df['Europe_port'] = shipping_df.apply(lambda x:  random_Europe_port() if x['days_to_port']<=0 else x['Europe_port'], axis=1)
-            shipping_df['distance'] = shipping_df.apply(lambda x:  geo_distance(x['us_port'], x['Europe_port']) if x['days_to_port']<=0 else x['distance'], axis=1)
+            shipping_df['europe_port'] = shipping_df.apply(lambda x:  random_europe_port() if x['days_to_port']<=0 else x['europe_port'], axis=1)
+            shipping_df['distance'] = shipping_df.apply(lambda x:  geo_distance(x['us_port'], x['europe_port']) if x['days_to_port']<=0 else x['distance'], axis=1)
             shipping_df['price'] = shipping_df.apply(lambda x:  price_to_transport(x['distance']) if x['days_to_port']<=0 else x['price'], axis=1)
             # query all that are = o.  Summate the capacities deduct the total 
             tmp_df=shipping_df.loc[shipping_df['days_to_port'] == 0]
             sum_of_capacity = tmp_df['co2_capacity_tonnes'].sum()
             sum_of_price = tmp_df['price'].sum()
-            # assign a random number of days for the next round trip excursion
+            mean_of_price = tmp_df['price'].mean()
+            cycle_mean_price_daily_samples[day] = mean_of_price
             shipping_df['days_to_port'] = shipping_df['days_to_port'].apply(lambda x: random_day() if x<=0 else x)
             total_tons_shipped = total_tons_shipped + sum_of_capacity
             total_price = total_price + sum_of_price
@@ -691,7 +753,11 @@ for sample in range(nsamples):
         else: 
             break
 
-        
+    #Drop the nan, ie empty samples
+    cycle_mean_price = cycle_mean_price_samples[np.logical_not(np.isnan(cycle_mean_price_samples))]
+    #Calculate mean price of filling a ship (around a billion according to the data i have if filled to capacity.  Ridiculous.)
+    cycle_mean_price = cycle_mean_price.mean()
+    cycle_mean_price_annual_samples[sample] =cycle_mean_price
         
     
 
@@ -701,17 +767,16 @@ for sample in range(nsamples):
 
 ```
 
-### Creating the Samples DF
+### Creating the Annual Price Samples DF
 
 
 ```python
-samples_df = pd.DataFrame(price_samples, columns=['cost_in_usd'])
+annual_price_samples_df = pd.DataFrame(price_samples, columns=['cost_in_usd'])
 ```
 
 
 ```python
-samples_df['usd_billions'] = samples_df.cost_in_usd / 1000000000
-samples_df.drop(columns=['cost_in_usd'], inplace=True)
+annual_price_samples_df['cost_in_usd_billions'] = annual_price_samples_df.cost_in_usd 
 ```
 
 ## Imports
@@ -739,3 +804,5 @@ import warnings
 warnings.filterwarnings('ignore')
 
 ```
+
+
