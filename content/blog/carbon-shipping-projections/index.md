@@ -535,7 +535,7 @@ def random_day():
 
 ### Accounting for Random European Ports
 
-I randomized the Port Selection Process with the following function.  The Data provided by eurostat did not filter according to type of port.  Nonetheless, the distance recorded should be very similiar to those of actual lng ports.  A better data set could be substituded directly into the function
+I randomized the Port Selection Process with the following function.  The data provided by EuroStat did not filter according to type of port.  Nonetheless, the distance recorded should be very similiar to those of actual lng ports.  A better data set could be substituded directly into the function
 
 
 ```python
@@ -600,14 +600,14 @@ def price_to_transport(distance):
 
 The algorithm I used calculates the daily status of ships transporting co2 across the atlantic from a European port to a port in the United States.  It will run for 365 iterations or until the total carbon capacity of the us ports is reached.  This value could also be dynamically allocated via a similiar algorithm, but the algorithm performance would suffer at the cost of marginal model improvements.  
 
-When the daily counter reaches zero for a ship
-     * The capacity is refilled to full
-     * A random us port is assigned
-     * a random european port is assigned
-     * the distance between ports is calculated
-     * the cost of transport over that distance is calculated per 100 km 
-     * The total shipping price of that cycle is tabulated
-     * The total tonnage of that cycle is tabulated
+When the daily counter reaches zero for a tanker:
+* The capacity is refilled to full
+* A random us port is assigned
+* a random european port is assigned
+* the distance between ports is calculated
+* the cost of transport over that distance is calculated per 100 km 
+* The total shipping price of that cycle is tabulated
+* The total tonnage of that cycle is tabulated
 
 
 
@@ -656,7 +656,7 @@ print(total_price)
 
 ## Monte Carlo Simulation with 500 iterations
 
-The annual rate of shipping can be variable according to shifting dynamics. I account for that by modelling the per annum algorithm 500 times.  Modelling would improve as n increases, but for the sake of time I limited the commputation to 500 iterations
+The annual rate of shipping can be variable according to shifting dynamics. I account for that by modelling the per annum algorithm 500 times.  Modelling would improve as n increases, but for the sake of time I limited the computation to 500 iterations
 
 The only difference between this algorithm and the previous one is an extra for loop.  The algorithmic efficiency is surprisingly good as the I was able to vectorize tabulations with lambda functions across the dataframes.  On my laptop, I was able to complete the algorithm in about 16 minutes of run time.
 
