@@ -1,5 +1,5 @@
 ---
-title:  Monte Carlo Projection of the Annual Cost of Shipping Carbon from Europe to the United States"
+title:  Monte Carlo Projection of the Annual Cost of Shipping Carbon from Europe to the United States
 date: "2022-05-07T18:40:32.169Z"
 description: "Monte Carlo Carbon Shipping Projections"
 author: Justin napolitano
@@ -12,7 +12,7 @@ imageAlt: Justin Napolitano
 
 ## Introduction
 
-I produced an earlier [report](https://blog.jnapolitano.io/wells-near-ports/) that identified potential ports that may be suitable terminals for carbon imports into the united states for storage or industrial applications.  
+I produced an earlier [report](https://blog.jnapolitano.io/wells-near-ports/) that identified potential ports that may be suitable terminals for carbon imports into the United States for storage or industrial applications.  
 
 Following this report I became interested in what the annual cost to ship super critical co2 could be.  In this report, I analyze the results of a Monte Carlo simulation that projects the annual cost of shipping carbon across the atlantic from Europe to the United States.
 
@@ -71,7 +71,7 @@ A total of 15 tankers were modelled.
 
 Shipping carbon from Europe at an uncontrained rate is very clearly a billion doallar industry.  
 
-Across 500 years of modelling we see about 273 billion dollars worth of economic activity per annum.  
+Across 500   years of modelling we see about 273 billion dollars worth of economic activity per annum.  
 
 
 
