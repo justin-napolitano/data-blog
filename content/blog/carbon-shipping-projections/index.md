@@ -76,7 +76,9 @@ A total of 15 tankers were modeled in this example.
 
 Carbon capture is likely a billion dollar industry at scale.  
 
-Across 500 iterations of modeling we see about $273,000 dollars worth of economic activity annualy.  This is fairly reasonable, but thankfully not as high as the billion that I had reported earlier.  
+Across 500 iterations of modeling we see about $273,000 dollars worth of economic activity annualy.  This is fairly sizable and within reason.
+
+It is important to note, that the cost of shipping CO2 was sourced from an article published in 2004.  I will update the value to better reflect the current economy.  I expect an elevation in cost due to inflation and general price increases across the supply chain.  
 
 
 

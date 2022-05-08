@@ -34,7 +34,7 @@ The conversion error has been corrected.
 
 ## Findings
 
-I posted the initial article without reviewing the mean shipping cost per voyage.  I simply trusted the values returned by my algorithm.  Upon reflection, I knew that something was mistaken.  In review, I found that I had converted the distance in meters to centimeters by mistake.  I had in fact elevated prices by a signficant factor that was unreasonable.   
+I posted the initial article without reviewing the mean shipping cost per voyage.  I simply trusted the values returned by my algorithm.  Upon reflection, I knew that something was mistaken.  In review, I found that I had converted the distance in meters to millimeters by mistake.  I had in fact, elevated prices by a signficant factor that was unreasonable.   
 
 
 ### Distance of Transport
