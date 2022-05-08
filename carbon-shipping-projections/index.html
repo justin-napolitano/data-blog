@@ -44,7 +44,7 @@ Università Bocconi, Milan, Italy</p>
 <p>A total of 15 tankers were modelled.</p>
 <h2>Findings</h2>
 <p>Shipping carbon from Europe at an uncontrained rate is very clearly a billion doallar industry.</p>
-<p>Across 500   years of modelling we see about 273 billion dollars worth of economic activity per annum.</p>
+<p>Across 500   years of modeling we see about 273 billion dollars worth of economic activity per annum.</p>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python">samples_df<span class="token punctuation">.</span>describe<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre></div>
 <div style="overflow-x:auto;">
 <style scoped>
@@ -109,7 +109,6 @@ st<span class="token punctuation">.</span>norm<span class="token punctuation">.<
 <div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">(272.32270640728865, 273.11012424532606)</code></pre></div>
 <p>It is safe to assume that 90 percent of the time we would see an annual cost of 272.32 to 273.11 billion dollars usd with the assumptions of the model taken into account.</p>
 <h3>Monte Carlo Historgram</h3>
-<p>The data is nearly normal.  It would be fair to expect a range of about 272.32 to 273.11 billion dollars.</p>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python">samples_df<span class="token punctuation">.</span>plot<span class="token punctuation">.</span>hist<span class="token punctuation">(</span>grid<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> bins<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">,</span> rwidth<span class="token operator">=</span><span class="token number">0.9</span><span class="token punctuation">,</span>
                    color<span class="token operator">=</span><span class="token string">'#607c8e'</span><span class="token punctuation">)</span>
 plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span><span class="token string">'Annual Price Distribution for Shipping Carbon'</span><span class="token punctuation">)</span>
@@ -524,7 +523,7 @@ total_price <span class="token operator">=</span> <span class="token number">0</
 39177.55734226863
 273610171402.87534</code></pre></div>
 <h2>Monte Carlo Simulation with 500 iterations</h2>
-<p>The annual rate of shipping can be variable according to shifting dynamics. I account for that by modelling the per annum algorithm 500 times.  Modelling would improve as n increases, but for the sake of time I limited the computation to 500 iterations</p>
+<p>The annual rate of shipping can be variable according to shifting dynamics. I account for that by modeling the per annum algorithm 500 times.  modeling would improve as n increases, but for the sake of time I limited the computation to 500 iterations</p>
 <p>The only difference between this algorithm and the previous one is an extra for loop.  The algorithmic efficiency is surprisingly good as the I was able to vectorize tabulations with lambda functions across the dataframes.  On my laptop, I was able to complete the algorithm in about 16 minutes of run time.</p>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python">
 nsamples <span class="token operator">=</span> <span class="token number">500</span>
