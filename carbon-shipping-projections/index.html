@@ -47,10 +47,9 @@ Università Bocconi, Milan, Italy</p>
 <p>A total of 15 tankers were modeled in this example.</p>
 <h2>Findings</h2>
 <p>Carbon capture is likely a billion dollar industry at scale.</p>
-<p>Across 500 iterations of modeling we see about $273,000 dollars worth of economic activity annualy.  This is fairly sizable and within reason.</p>
-<p>It is important to note, that the cost of shipping CO2 was sourced from an article published in 2004.  I will update the value to better reflect the current economy.  I expect an elevation in cost due to inflation and general price increases across the supply chain.</p>
+<p>Across 500 iterations of modeling we see about $57.7 million dollars worth of economic activity annualy.</p>
 <h3>The Take Away</h3>
-<p>The Carbon capture and storage economiy is likely a billion dollar economy at scale.  In just reviewing shipping super critical CO2 from Europe to the United States, a $273,000 annual industry could develop as nations move towards a net carbon zero economy.</p>
+<p>The Carbon capture and storage economiy is likely a billion dollar economy at scale.  In just reviewing shipping super critical CO2 from Europe to the United States, a $57.7 million USD annual industry could develop as nations move towards a net carbon zero economy.</p>
 <h2>Limitations of the Model</h2>
 <p>The model as it is presented in this report is unconstrained.  A more accurate portrayal of what would be possible with current systems in place could be designed with better data.  It is also important to note that I have not included incentives into the model.  It is entirely possible that government subsidies could prove the carbon shipping industry to be more expansive than presented here.</p>
 <h2>Data Analysis</h2>
@@ -79,43 +78,43 @@ Università Bocconi, Milan, Italy</p>
   <tbody>
     <tr>
       <th>count</th>
-      <td>500.000000</td>
-      <td>500.000000</td>
+      <td>5.000000e+02</td>
+      <td>5.000000e+02</td>
     </tr>
     <tr>
       <th>mean</th>
-      <td>273016.820135</td>
-      <td>273016.820135</td>
+      <td>5.744345e+07</td>
+      <td>5.744345e+07</td>
     </tr>
     <tr>
       <th>std</th>
-      <td>5877.779527</td>
-      <td>5877.779527</td>
+      <td>1.191639e+06</td>
+      <td>1.191639e+06</td>
     </tr>
     <tr>
       <th>min</th>
-      <td>257901.494075</td>
-      <td>257901.494075</td>
+      <td>5.351741e+07</td>
+      <td>5.351741e+07</td>
     </tr>
     <tr>
       <th>25%</th>
-      <td>269168.897174</td>
-      <td>269168.897174</td>
+      <td>5.663254e+07</td>
+      <td>5.663254e+07</td>
     </tr>
     <tr>
       <th>50%</th>
-      <td>272689.988387</td>
-      <td>272689.988387</td>
+      <td>5.740286e+07</td>
+      <td>5.740286e+07</td>
     </tr>
     <tr>
       <th>75%</th>
-      <td>276863.145130</td>
-      <td>276863.145130</td>
+      <td>5.827798e+07</td>
+      <td>5.827798e+07</td>
     </tr>
     <tr>
       <th>max</th>
-      <td>292092.994239</td>
-      <td>292092.994239</td>
+      <td>6.081661e+07</td>
+      <td>6.081661e+07</td>
     </tr>
   </tbody>
 </table>
@@ -124,8 +123,8 @@ Università Bocconi, Milan, Italy</p>
 <p>The data is nearly normal.  I could test for normality, but that would be beyond the scope of this analysis.  Also, by design the Monte Carlo model should produce a normal distribution with sufficient samples.</p>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python">
 st<span class="token punctuation">.</span>norm<span class="token punctuation">.</span>interval<span class="token punctuation">(</span>alpha<span class="token operator">=</span><span class="token number">0.90</span><span class="token punctuation">,</span> loc<span class="token operator">=</span>np<span class="token punctuation">.</span>mean<span class="token punctuation">(</span>annual_price_samples_df<span class="token punctuation">[</span><span class="token string">'cost_in_usd'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> scale<span class="token operator">=</span>st<span class="token punctuation">.</span>sem<span class="token punctuation">(</span>annual_price_samples_df<span class="token punctuation">[</span><span class="token string">'cost_in_usd'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre></div>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">(272584.4501409735, 273449.19012835127)</code></pre></div>
-<p>It is safe to assume that 90 percent of the time we would see an annual cost of $272,584 to $273,449 USD with the assumptions of the model taken into account.</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">(57355794.336350285, 57531108.50357006)</code></pre></div>
+<p>It is safe to assume that 90 percent of the time we would see an annual cost of $57,355,794 to $57,531,109 USD with the assumptions of the model taken into account.</p>
 <h3>Monte Carlo Histogram</h3>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python">annual_price_samples_df<span class="token punctuation">.</span>plot<span class="token punctuation">.</span>hist<span class="token punctuation">(</span>grid<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> bins<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">,</span> rwidth<span class="token operator">=</span><span class="token number">0.9</span><span class="token punctuation">,</span>
                    color<span class="token operator">=</span><span class="token string">'#607c8e'</span><span class="token punctuation">)</span>
@@ -210,168 +209,168 @@ shipping_df</code></pre></div>
   <tbody>
     <tr>
       <th>0</th>
-      <td>114726.768979</td>
+      <td>114719.277384</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.639241</td>
+      <td>210.625486</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>114728.033129</td>
+      <td>114719.302198</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.641562</td>
+      <td>210.625532</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>114720.580272</td>
+      <td>114717.986907</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.627878</td>
+      <td>210.623117</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>114721.794142</td>
+      <td>114720.952261</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.630107</td>
+      <td>210.628561</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>114714.126221</td>
+      <td>114720.134738</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.616029</td>
+      <td>210.627060</td>
     </tr>
     <tr>
       <th>5</th>
-      <td>114720.228896</td>
+      <td>114727.030286</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.627233</td>
+      <td>210.639721</td>
     </tr>
     <tr>
       <th>6</th>
-      <td>114721.747831</td>
+      <td>114721.222398</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.630022</td>
+      <td>210.629057</td>
     </tr>
     <tr>
       <th>7</th>
-      <td>114729.344104</td>
+      <td>114724.259547</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.643969</td>
+      <td>210.634634</td>
     </tr>
     <tr>
       <th>8</th>
-      <td>114717.274015</td>
+      <td>114729.358745</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.621808</td>
+      <td>210.643996</td>
     </tr>
     <tr>
       <th>9</th>
-      <td>114722.323457</td>
+      <td>114727.005543</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.631079</td>
+      <td>210.639675</td>
     </tr>
     <tr>
       <th>10</th>
-      <td>114718.965118</td>
+      <td>114722.946362</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.624913</td>
+      <td>210.632223</td>
     </tr>
     <tr>
       <th>11</th>
-      <td>114714.413894</td>
+      <td>114726.394450</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.616557</td>
+      <td>210.638553</td>
     </tr>
     <tr>
       <th>12</th>
-      <td>114727.609267</td>
+      <td>114720.412603</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.640784</td>
+      <td>210.627571</td>
     </tr>
     <tr>
       <th>13</th>
-      <td>114727.122969</td>
+      <td>114726.647417</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.639891</td>
+      <td>210.639018</td>
     </tr>
     <tr>
       <th>14</th>
-      <td>114718.336977</td>
+      <td>114717.266732</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.623760</td>
+      <td>210.621795</td>
     </tr>
   </tbody>
 </table>
@@ -469,8 +468,8 @@ port_terminals_df<span class="token punctuation">[</span><span class="token stri
 <p>The cost of transport accounts for port fees, liquification, and transport.   Unfortunately, my data is from a paper published in 2004.  I would like to find a more recent paper.   I did not convert the value of 2004 USD to 2022 because I am not sure of the validity of the conversion factors available online.  I would need a better source to correctly model the true cost of transport.</p>
 <p><a href="https://ieaghg.org/docs/General_Docs/Reports/PH4-30%20Ship%20Transport.pdf">source</a></p>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python">
-<span class="token keyword">def</span> <span class="token function">price_to_transport</span><span class="token punctuation">(</span>distance<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    price <span class="token operator">=</span> <span class="token punctuation">(</span>distance<span class="token operator">/</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">12</span>
+<span class="token keyword">def</span> <span class="token function">price_to_transport</span><span class="token punctuation">(</span>distance<span class="token punctuation">,</span>tonnes<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    price <span class="token operator">=</span> <span class="token punctuation">(</span>distance<span class="token operator">/</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">12</span> <span class="token operator">*</span> tonnes
     <span class="token keyword">return</span> price
 </code></pre></div>
 <h3>Calculating Cost Per Day</h3>
@@ -504,7 +503,7 @@ cycle_mean_price_samples <span class="token operator">=</span> np<span class="to
         shipping_df<span class="token punctuation">[</span><span class="token string">'us_port'</span><span class="token punctuation">]</span> <span class="token operator">=</span> shipping_df<span class="token punctuation">.</span><span class="token builtin">apply</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span>  random_us_port<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">if</span> x<span class="token punctuation">[</span><span class="token string">'days_to_port'</span><span class="token punctuation">]</span><span class="token operator">&lt;=</span><span class="token number">0</span> <span class="token keyword">else</span> x<span class="token punctuation">[</span><span class="token string">'us_port'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
         shipping_df<span class="token punctuation">[</span><span class="token string">'europe_port'</span><span class="token punctuation">]</span> <span class="token operator">=</span> shipping_df<span class="token punctuation">.</span><span class="token builtin">apply</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span>  random_europe_port<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">if</span> x<span class="token punctuation">[</span><span class="token string">'days_to_port'</span><span class="token punctuation">]</span><span class="token operator">&lt;=</span><span class="token number">0</span> <span class="token keyword">else</span> x<span class="token punctuation">[</span><span class="token string">'europe_port'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
         shipping_df<span class="token punctuation">[</span><span class="token string">'distance'</span><span class="token punctuation">]</span> <span class="token operator">=</span> shipping_df<span class="token punctuation">.</span><span class="token builtin">apply</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span>  geo_distance<span class="token punctuation">(</span>x<span class="token punctuation">[</span><span class="token string">'us_port'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> x<span class="token punctuation">[</span><span class="token string">'europe_port'</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">if</span> x<span class="token punctuation">[</span><span class="token string">'days_to_port'</span><span class="token punctuation">]</span><span class="token operator">&lt;=</span><span class="token number">0</span> <span class="token keyword">else</span> x<span class="token punctuation">[</span><span class="token string">'distance'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
-        shipping_df<span class="token punctuation">[</span><span class="token string">'price'</span><span class="token punctuation">]</span> <span class="token operator">=</span> shipping_df<span class="token punctuation">.</span><span class="token builtin">apply</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span>  price_to_transport<span class="token punctuation">(</span>x<span class="token punctuation">[</span><span class="token string">'distance'</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">if</span> x<span class="token punctuation">[</span><span class="token string">'days_to_port'</span><span class="token punctuation">]</span><span class="token operator">&lt;=</span><span class="token number">0</span> <span class="token keyword">else</span> x<span class="token punctuation">[</span><span class="token string">'price'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+        shipping_df<span class="token punctuation">[</span><span class="token string">'price'</span><span class="token punctuation">]</span> <span class="token operator">=</span> shipping_df<span class="token punctuation">.</span><span class="token builtin">apply</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span>  price_to_transport<span class="token punctuation">(</span>x<span class="token punctuation">[</span><span class="token string">'distance'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>x<span class="token punctuation">[</span><span class="token string">'co2_capacity_tonnes'</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">if</span> x<span class="token punctuation">[</span><span class="token string">'days_to_port'</span><span class="token punctuation">]</span><span class="token operator">&lt;=</span><span class="token number">0</span> <span class="token keyword">else</span> x<span class="token punctuation">[</span><span class="token string">'price'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
         <span class="token comment">#calculate cost per day for fun...</span>
         <span class="token comment"># query all that are = o.  Summate the capacities deduct the total </span>
         tmp_df<span class="token operator">=</span>shipping_df<span class="token punctuation">.</span>loc<span class="token punctuation">[</span>shipping_df<span class="token punctuation">[</span><span class="token string">'days_to_port'</span><span class="token punctuation">]</span> <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">]</span>
@@ -533,9 +532,9 @@ cycle_mean_price <span class="token operator">=</span> cycle_mean_price<span cla
 <span class="token keyword">print</span><span class="token punctuation">(</span>cycle_mean_price<span class="token punctuation">)</span>
 </code></pre></div>
 <div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">365
-40651.64982665733
-287553.7090879244
-1515.578323315146</code></pre></div>
+41073.187985943456
+60039059.413350895
+308098.2720296601</code></pre></div>
 <h2>Monte Carlo Simulation with 500 iterations</h2>
 <p>The annual rate of shipping can be variable according to shifting dynamics. I account for that by modeling the per annum algorithm 500 times.  Modeling would improve as n increases, but for the sake of time I limited the computation to 500 iterations</p>
 <p>The only difference between this algorithm and the previous one is an extra for loop.  The algorithmic efficiency is surprisingly good as the I was able to vectorize tabulations with lambda functions across the dataframes.  On my laptop, I was able to complete the algorithm in about 16 minutes of run time.</p>
@@ -562,7 +561,7 @@ cycle_mean_price_annual_samples <span class="token operator">=</span> np<span cl
             shipping_df<span class="token punctuation">[</span><span class="token string">'us_port'</span><span class="token punctuation">]</span> <span class="token operator">=</span> shipping_df<span class="token punctuation">.</span><span class="token builtin">apply</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span>  random_us_port<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">if</span> x<span class="token punctuation">[</span><span class="token string">'days_to_port'</span><span class="token punctuation">]</span><span class="token operator">&lt;=</span><span class="token number">0</span> <span class="token keyword">else</span> x<span class="token punctuation">[</span><span class="token string">'us_port'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
             shipping_df<span class="token punctuation">[</span><span class="token string">'europe_port'</span><span class="token punctuation">]</span> <span class="token operator">=</span> shipping_df<span class="token punctuation">.</span><span class="token builtin">apply</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span>  random_europe_port<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">if</span> x<span class="token punctuation">[</span><span class="token string">'days_to_port'</span><span class="token punctuation">]</span><span class="token operator">&lt;=</span><span class="token number">0</span> <span class="token keyword">else</span> x<span class="token punctuation">[</span><span class="token string">'europe_port'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
             shipping_df<span class="token punctuation">[</span><span class="token string">'distance'</span><span class="token punctuation">]</span> <span class="token operator">=</span> shipping_df<span class="token punctuation">.</span><span class="token builtin">apply</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span>  geo_distance<span class="token punctuation">(</span>x<span class="token punctuation">[</span><span class="token string">'us_port'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> x<span class="token punctuation">[</span><span class="token string">'europe_port'</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">if</span> x<span class="token punctuation">[</span><span class="token string">'days_to_port'</span><span class="token punctuation">]</span><span class="token operator">&lt;=</span><span class="token number">0</span> <span class="token keyword">else</span> x<span class="token punctuation">[</span><span class="token string">'distance'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
-            shipping_df<span class="token punctuation">[</span><span class="token string">'price'</span><span class="token punctuation">]</span> <span class="token operator">=</span> shipping_df<span class="token punctuation">.</span><span class="token builtin">apply</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span>  price_to_transport<span class="token punctuation">(</span>x<span class="token punctuation">[</span><span class="token string">'distance'</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">if</span> x<span class="token punctuation">[</span><span class="token string">'days_to_port'</span><span class="token punctuation">]</span><span class="token operator">&lt;=</span><span class="token number">0</span> <span class="token keyword">else</span> x<span class="token punctuation">[</span><span class="token string">'price'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+            shipping_df<span class="token punctuation">[</span><span class="token string">'price'</span><span class="token punctuation">]</span> <span class="token operator">=</span> shipping_df<span class="token punctuation">.</span><span class="token builtin">apply</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span>  price_to_transport<span class="token punctuation">(</span>x<span class="token punctuation">[</span><span class="token string">'distance'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> x<span class="token punctuation">[</span><span class="token string">'co2_capacity_tonnes'</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">if</span> x<span class="token punctuation">[</span><span class="token string">'days_to_port'</span><span class="token punctuation">]</span><span class="token operator">&lt;=</span><span class="token number">0</span> <span class="token keyword">else</span> x<span class="token punctuation">[</span><span class="token string">'price'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
             <span class="token comment"># query all that are = o.  Summate the capacities deduct the total </span>
             tmp_df<span class="token operator">=</span>shipping_df<span class="token punctuation">.</span>loc<span class="token punctuation">[</span>shipping_df<span class="token punctuation">[</span><span class="token string">'days_to_port'</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">]</span>
             sum_of_capacity <span class="token operator">=</span> tmp_df<span class="token punctuation">[</span><span class="token string">'co2_capacity_tonnes'</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
@@ -613,4 +612,7 @@ cycle_mean_price_annual_samples <span class="token operator">=</span> np<span cl
 <span class="token keyword">import</span> warnings
 
 warnings<span class="token punctuation">.</span>filterwarnings<span class="token punctuation">(</span><span class="token string">'ignore'</span><span class="token punctuation">)</span>
-</code></pre></div></section><hr/><footer><div class="bio"><p>Maintained by <strong>Justin Napolitano</strong>. <!-- --> <a href="https://twitter.com/just_napolitano">Follow me on Twitter</a></p></div></footer></article><nav class="blog-post-nav"><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li><a rel="prev" href="/wells-near-ports/">← <!-- -->Potential Carbon and Hydrogen Storage Facilities Near Import/Export Ports</a></li><li><a rel="next" href="/feasibility_study_shipping_carbon/">Feasibility of Shipping Carbon Across the Atlantic<!-- --> →</a></li></ul></nav></main><footer>© <!-- -->2022<!-- -->, Created by<!-- --> <a href="https://jnapolitano.io">Justin Napolitano</a></footer></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/carbon-shipping-projections/";window.___webpackCompilationHash="94d5381ffed2c0734ea1";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"polyfill":["/polyfill-67664a8ccc6c9f02b880.js"],"app":["/app-f7e5c1385f3295987325.js"],"component---src-pages-404-js":["/component---src-pages-404-js-27981ca7dd461cb4280e.js"],"component---src-pages-index-js":["/component---src-pages-index-js-59a21146d37aa180d12f.js"],"component---src-pages-using-typescript-tsx":["/component---src-pages-using-typescript-tsx-2f9b97cf148785549d09.js"],"component---src-templates-blog-post-js":["/component---src-templates-blog-post-js-8c1fd17216c44ce835d5.js"]};/*]]>*/</script><script src="/polyfill-67664a8ccc6c9f02b880.js" nomodule=""></script><script src="/component---src-templates-blog-post-js-8c1fd17216c44ce835d5.js" async=""></script><script src="/commons-9979cba14fa891b0ecd4.js" async=""></script><script src="/app-f7e5c1385f3295987325.js" async=""></script><script src="/framework-e413e527015be9a1bdfd.js" async=""></script><script src="/webpack-runtime-beac12f331292c6e9ad8.js" async=""></script></body></html>
+</code></pre></div>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">/Users/jnapolitano/venvs/finance/lib/python3.9/site-packages/geopandas/_compat.py:111: UserWarning: The Shapely GEOS version (3.10.2-CAPI-1.16.0) is incompatible with the GEOS version PyGEOS was compiled with (3.10.1-CAPI-1.16.0). Conversions between both will be slow.
+  warnings.warn(</code></pre></div>
+<div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python"></code></pre></div></section><hr/><footer><div class="bio"><p>Maintained by <strong>Justin Napolitano</strong>. <!-- --> <a href="https://twitter.com/just_napolitano">Follow me on Twitter</a></p></div></footer></article><nav class="blog-post-nav"><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li><a rel="prev" href="/feasibility_study_shipping_carbon/">← <!-- -->Feasibility of Shipping Carbon Across the Atlantic</a></li><li></li></ul></nav></main><footer>© <!-- -->2022<!-- -->, Created by<!-- --> <a href="https://jnapolitano.io">Justin Napolitano</a></footer></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/carbon-shipping-projections/";window.___webpackCompilationHash="94d5381ffed2c0734ea1";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"polyfill":["/polyfill-67664a8ccc6c9f02b880.js"],"app":["/app-f7e5c1385f3295987325.js"],"component---src-pages-404-js":["/component---src-pages-404-js-27981ca7dd461cb4280e.js"],"component---src-pages-index-js":["/component---src-pages-index-js-59a21146d37aa180d12f.js"],"component---src-pages-using-typescript-tsx":["/component---src-pages-using-typescript-tsx-2f9b97cf148785549d09.js"],"component---src-templates-blog-post-js":["/component---src-templates-blog-post-js-8c1fd17216c44ce835d5.js"]};/*]]>*/</script><script src="/polyfill-67664a8ccc6c9f02b880.js" nomodule=""></script><script src="/component---src-templates-blog-post-js-8c1fd17216c44ce835d5.js" async=""></script><script src="/commons-9979cba14fa891b0ecd4.js" async=""></script><script src="/app-f7e5c1385f3295987325.js" async=""></script><script src="/framework-e413e527015be9a1bdfd.js" async=""></script><script src="/webpack-runtime-beac12f331292c6e9ad8.js" async=""></script></body></html>
