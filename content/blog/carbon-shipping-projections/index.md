@@ -76,14 +76,14 @@ A total of 15 tankers were modeled in this example.
 
 Carbon capture is likely a billion dollar industry at scale.  
 
-Across 500 iterations of modeling we see about $57.7 million dollars worth of economic activity annualy.
+Across 500 iterations of modeling we see about $57.5 million dollars worth of economic activity annualy.
 
 
 
 
 ### The Take Away
 
-The Carbon capture and storage economiy is likely a billion dollar economy at scale.  In just reviewing shipping super critical CO2 from Europe to the United States, a $57.7 million USD annual industry could develop as nations move towards a net carbon zero economy. 
+The Carbon capture and storage economiy is likely a billion dollar economy at scale.  In just reviewing shipping super critical CO2 from Europe to the United States, a $57.5 million USD annual industry could develop as nations move towards a net carbon zero economy. 
 
 ## Limitations of the Model 
 

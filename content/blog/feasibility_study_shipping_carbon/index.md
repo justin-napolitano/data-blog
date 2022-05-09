@@ -16,24 +16,15 @@ An earlier version of this report had reported values that were erroneously elev
 Situations like this one, are why I always publish with code.  Transparency is the key to rigor.  
 
 
-## Introduction
-
-Yesterday I published a [Monte Carlo Simulation of shipping CO2 across the atlantic from Europe to the United States](https://blog.jnapolitano.io/carbon-shipping-projections/).  I stated wrongly that the industry could be a 270 billion dollar annual industry. Upon reflection, I realized that this number seemed too high. In fact, that would equate to nearly 1 billion dollars in economic activity per day. 
-
-In this report, I rectify those mistakes.  
-
-
-
 ## Methodology
 
-Please review the my [previous post](https://blog.jnapolitano.io/carbon-shipping-projections/) which details design of my model.  
+Please review the my [previous post](https://blog.jnapolitano.io/carbon-shipping-projections/) which details the design of my model.  
 
 The major difference in this report is the sampling of the mean price per voyage.
 
 The conversion error has been corrected.
 
 ## Findings
- 
 
 ### Distance of Transport
 
@@ -43,25 +34,25 @@ This would present a secondary problem piping the co2 to the interior of the Cou
 
 ### Price of Transport
 
-The price of transport is fixed at 12.00 USD per 100 km per tonne as suggested by this [source](https://ieaghg.org/docs/General_Docs/Reports/PH4-30%20Ship%20Transport.pdf).   For reference the cost to transport standard freight from China to the United States ranges from $5,000 to $8,000 USD in total per tonne; or $5.00 to $8.00 USD per Kilo in total.  These data were recorded in 2022.  The 12.00 USD per tonne recorded seems low.  I would like to complete another study to verify the source.  
+The price of transport is fixed at $12.00 USD per 100 km per tonne as suggested by this [source](https://ieaghg.org/docs/General_Docs/Reports/PH4-30%20Ship%20Transport.pdf).  A rough estimate for the total cost per tonne from London to Houston is about USD $936.00. For reference the cost to transport standard freight from China to the United States ranges from $5,000 to $8,000 USD in total per tonne; or $5.00 to $8.00 USD per Kilo in total.     
+
 ### Industrial Applications 
 
-Another study must be completed to estimate the value of CO2 to industrial applications in order to comment on the validity of shipping it to the US in order to sell on the open market.  
+Another study must be completed to calculate value of supercritical CO2 to industrial applications in order to attempt to justify shipping CO2 such large distances.  Simply, shipping such large quantities of CO2 to simply store it is most likely unreasonable, however, at only about $316,665 USD average cost per voyage it is a reasonable figure if proper incentives are in place.  
 
 ### Carbon Storage
 
-Shipping large quantities of CO2 to store in the US is most likely unreasonable.  Especially considering that unused coal mines in Germany could serve the same purpose as any in the United States.   That said, at only about $1,468 USD average cost per voyage it is actually quite reasonable for international corporations to ship excess CO2 to the United States if tax incentives are offered to offset the cost of shipping.  I can envision the emissions captured by US companies in Europe being shipped back to the United States in order to reduce tax liability.  
-
+Based on this model, it is somewhat reasonable to transport CO2, especially if the US incentivises companies that do so.  Nonetheless, at $50-$60 carbon tax credits per tonne captured (verify this data), it would be unfeasible to account for the high cost of shipping across the Atlantic under current programs.
 
 ## Limitations of the Model
 
 ### Accounting for the Return Trip to Port
  
-It is important to note that I did not account for the differential costs for the return trip to a European port.  I need to revise top reflect historic trends.  Nonetheless, the model as it is fairly accurate.  
+It is important to note that I did not account for the differential costs for the return trip to a european port.  Though, the cost of shipping per ton was fixed at 12.00 USD, doubling distance of travel may double pricing. That said, it would be unlikely for ships to return to port empty. I would expect tankers to be refilled with LNG for return.  Nonetheless, this is a slight methodological that should be improved upon.  
 
 ### Cost to Transport
 
-The cost to transport per 100 km is fixed at 12.00 USD as suggested by this [source](https://ieaghg.org/docs/General_Docs/Reports/PH4-30%20Ship%20Transport.pdf).  It accounts for the cost of liquification, shipping costs, and port fees.  The source however, was published in 2004.  The costs may have been reduced by technological advance and demand for super critical CO2 for industrial applications.
+The cost to transport per 100 km is fixed at 12.00 USD as suggested by this [source](https://ieaghg.org/docs/General_Docs/Reports/PH4-30%20Ship%20Transport.pdf).  It accounts for the cost of liquification, shipping costs, and port fees.  The source however, was published in 2004.  The costs may have been reduced by technological advance and demand for super critical CO2.
 
 ### Volumes of Transport
 
@@ -69,7 +60,7 @@ I simply converted the volumes of standard LNG ships to liquifed CO2.  There may
 
 ## Conclusion
 
-It is still unlikely that CO2 will be shipped to the United States simply for storage unless companies are incentivized to do so. A transatlantic trade may develop, but I would assume in order to meet demands for the industrial applications of super critical CO2.
+It is unlikely that CO2 will be shipped to the United States simply for storage unless companies are incentivized to do so. A transatlantic trade may develop, but I would assume in order to meet demands for the industrial applications of super critical CO2.
 
 ## Mean Voyage Data Analysis
 
@@ -109,31 +100,31 @@ mean_price_per_cycle_df.describe()
     </tr>
     <tr>
       <th>mean</th>
-      <td>1.468437e+03</td>
+      <td>3.166652e+05</td>
     </tr>
     <tr>
       <th>std</th>
-      <td>2.276014e-13</td>
+      <td>1.165319e-10</td>
     </tr>
     <tr>
       <th>min</th>
-      <td>1.468437e+03</td>
+      <td>3.166652e+05</td>
     </tr>
     <tr>
       <th>25%</th>
-      <td>1.468437e+03</td>
+      <td>3.166652e+05</td>
     </tr>
     <tr>
       <th>50%</th>
-      <td>1.468437e+03</td>
+      <td>3.166652e+05</td>
     </tr>
     <tr>
       <th>75%</th>
-      <td>1.468437e+03</td>
+      <td>3.166652e+05</td>
     </tr>
     <tr>
       <th>max</th>
-      <td>1.468437e+03</td>
+      <td>3.166652e+05</td>
     </tr>
   </tbody>
 </table>
@@ -154,11 +145,11 @@ st.norm.interval(alpha=0.90, loc=np.mean(mean_price_per_cycle_df['Voyage Cost US
 
 
 
-    (1468.4374594693923, 1468.4374594693923)
+    (316665.2057796428, 316665.2057796428)
 
 
 
-It is safe to assume that 90 percent of the time we would see an annual cost 1,468 dollars USD with the assumptions of the model taken into account.  As the price per 100 km is fixed, the standard deviations is minimal.  The distances as well to port seem to be fairly consistent.  The cost of transport through Europe is minimal.
+It is safe to assume that 90 percent of the time we would see an annual cost 316,665 dollars USD with the assumptions of the model taken into account.  As the price per 100 km is fixed, the standard deviations is minimal.  The distances as well to port seem to be fairly consistent.  The cost of transport through Europe is minimal.
 
 ### Histogram of Mean Voyage Price Samples
 
@@ -216,35 +207,35 @@ annual_price_samples_df.describe()
   <tbody>
     <tr>
       <th>count</th>
-      <td>500.000000</td>
+      <td>5.000000e+02</td>
     </tr>
     <tr>
       <th>mean</th>
-      <td>273310.293899</td>
+      <td>5.744043e+07</td>
     </tr>
     <tr>
       <th>std</th>
-      <td>5815.147052</td>
+      <td>1.160779e+06</td>
     </tr>
     <tr>
       <th>min</th>
-      <td>255119.652932</td>
+      <td>5.408210e+07</td>
     </tr>
     <tr>
       <th>25%</th>
-      <td>269238.422073</td>
+      <td>5.660839e+07</td>
     </tr>
     <tr>
       <th>50%</th>
-      <td>273365.024377</td>
+      <td>5.737843e+07</td>
     </tr>
     <tr>
       <th>75%</th>
-      <td>276991.116325</td>
+      <td>5.819101e+07</td>
     </tr>
     <tr>
       <th>max</th>
-      <td>290126.216432</td>
+      <td>6.092949e+07</td>
     </tr>
   </tbody>
 </table>
@@ -265,13 +256,13 @@ st.norm.interval(alpha=0.90, loc=np.mean(annual_price_samples_df['cost_in_usd'])
 
 
 
-    (272882.531156206, 273738.05664255185)
+    (57355047.61667279, 57525821.6547037)
 
 
 
-It is safe to assume that 90 percent of the time we would see an annual cost of 272.88 to 273.68 billion dollars USD with the assumptions of the model taken into account.  
+It is safe to assume that 90 percent of the time we would see an annual cost of 57.36 to 57.52 million dollars USD with the assumptions of the model taken into account.  
 
-### Monte Carlo Histogram
+### Histogram of Annual Price Distribution
 
 
 ```python
@@ -382,168 +373,168 @@ shipping_df
   <tbody>
     <tr>
       <th>0</th>
-      <td>114736.054161</td>
+      <td>114720.479228</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.656289</td>
+      <td>210.627693</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>114725.455184</td>
+      <td>114722.019258</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.636829</td>
+      <td>210.630520</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>114718.844178</td>
+      <td>114717.260040</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.624691</td>
+      <td>210.621782</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>114715.467564</td>
+      <td>114715.555903</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.618491</td>
+      <td>210.618654</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>114730.192747</td>
+      <td>114711.076224</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.645527</td>
+      <td>210.610429</td>
     </tr>
     <tr>
       <th>5</th>
-      <td>114713.967741</td>
+      <td>114717.940270</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.615738</td>
+      <td>210.623031</td>
     </tr>
     <tr>
       <th>6</th>
-      <td>114731.671836</td>
+      <td>114721.291722</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.648243</td>
+      <td>210.629185</td>
     </tr>
     <tr>
       <th>7</th>
-      <td>114724.519528</td>
+      <td>114723.060928</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.635111</td>
+      <td>210.632433</td>
     </tr>
     <tr>
       <th>8</th>
-      <td>114724.739566</td>
+      <td>114724.416053</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.635515</td>
+      <td>210.634921</td>
     </tr>
     <tr>
       <th>9</th>
-      <td>114714.204250</td>
+      <td>114730.832971</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.616172</td>
+      <td>210.646702</td>
     </tr>
     <tr>
       <th>10</th>
-      <td>114726.819219</td>
+      <td>114727.128385</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.639333</td>
+      <td>210.639901</td>
     </tr>
     <tr>
       <th>11</th>
-      <td>114714.217968</td>
+      <td>114723.001878</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.616197</td>
+      <td>210.632325</td>
     </tr>
     <tr>
       <th>12</th>
-      <td>114723.291289</td>
+      <td>114715.038614</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.632856</td>
+      <td>210.617704</td>
     </tr>
     <tr>
       <th>13</th>
-      <td>114724.804021</td>
+      <td>114721.502327</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.635633</td>
+      <td>210.629571</td>
     </tr>
     <tr>
       <th>14</th>
-      <td>114727.384795</td>
+      <td>114722.089811</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.640372</td>
+      <td>210.630650</td>
     </tr>
   </tbody>
 </table>
@@ -696,7 +687,7 @@ def geo_distance(dist1,dist2):
 
 ```
 
-#### Calculating Price of Transport
+### Calculating Price of Transport
 
 
 The cost of transport accounts for port fees, liquification, and transport.   Unfortunately, my data is from a paper published in 2004.  I would like to find a more recent paper.   I did not convert the value of 2004 USD to 2022 because I am not sure of the validity of the conversion factors available online.  I would need a better source to correctly model the true cost of transport.  
@@ -706,8 +697,8 @@ The cost of transport accounts for port fees, liquification, and transport.   Un
 
 ```python
 
-def price_to_transport(distance):
-    price = (distance/100) * 12
+def price_to_transport(distance,tonnes):
+    price = (distance/100) * 12 * tonnes
     return price
 
 ```
@@ -755,7 +746,7 @@ for day in range(days):
         shipping_df['us_port'] = shipping_df.apply(lambda x:  random_us_port() if x['days_to_port']<=0 else x['us_port'], axis=1)
         shipping_df['europe_port'] = shipping_df.apply(lambda x:  random_europe_port() if x['days_to_port']<=0 else x['europe_port'], axis=1)
         shipping_df['distance'] = shipping_df.apply(lambda x:  geo_distance(x['us_port'], x['europe_port']) if x['days_to_port']<=0 else x['distance'], axis=1)
-        shipping_df['price'] = shipping_df.apply(lambda x:  price_to_transport(x['distance']) if x['days_to_port']<=0 else x['price'], axis=1)
+        shipping_df['price'] = shipping_df.apply(lambda x:  price_to_transport(x['distance'],x['co2_capacity_tonnes']) if x['days_to_port']<=0 else x['price'], axis=1)
         #calculate cost per day for fun...
         # query all that are = o.  Summate the capacities deduct the total 
         tmp_df=shipping_df.loc[shipping_df['days_to_port'] <= 0]
@@ -780,16 +771,15 @@ print(total_price)
 #Drop the nan, ie empty samples
 cycle_mean_price = cycle_mean_price_samples[np.logical_not(np.isnan(cycle_mean_price_samples))]
 #Calculate mean price of filling a ship (around a billion according to the data i have if filled to capacity.  Ridiculous.)
-# The sanity check was valid... aftre reviewing the functions i found that the distance calculation multiplied by 1000 instead of dividing.
 cycle_mean_price = cycle_mean_price.mean()
 print(cycle_mean_price)
 
 ```
 
     365
-    38335.241156942
-    266874.0326511727
-    1468.4374594693925
+    41072.53151865029
+    62067313.75358563
+    316665.2057796429
 
 
 ## Monte Carlo Simulation with 500 Iterations
@@ -825,7 +815,7 @@ for sample in range(nsamples):
             shipping_df['us_port'] = shipping_df.apply(lambda x:  random_us_port() if x['days_to_port']<=0 else x['us_port'], axis=1)
             shipping_df['europe_port'] = shipping_df.apply(lambda x:  random_europe_port() if x['days_to_port']<=0 else x['europe_port'], axis=1)
             shipping_df['distance'] = shipping_df.apply(lambda x:  geo_distance(x['us_port'], x['europe_port']) if x['days_to_port']<=0 else x['distance'], axis=1)
-            shipping_df['price'] = shipping_df.apply(lambda x:  price_to_transport(x['distance']) if x['days_to_port']<=0 else x['price'], axis=1)
+            shipping_df['price'] = shipping_df.apply(lambda x:  price_to_transport(x['distance'], x['co2_capacity_tonnes']) if x['days_to_port']<=0 else x['price'], axis=1)
             # query all that are = o.  Summate the capacities deduct the total 
             tmp_df=shipping_df.loc[shipping_df['days_to_port'] == 0]
             sum_of_capacity = tmp_df['co2_capacity_tonnes'].sum()
@@ -844,7 +834,6 @@ for sample in range(nsamples):
     #Drop the nan, ie empty samples
     cycle_mean_price = cycle_mean_price_samples[np.logical_not(np.isnan(cycle_mean_price_samples))]
     #Calculate mean price of filling a ship (around a billion according to the data i have if filled to capacity.  Ridiculous.)
-    # The sanity check was valid... aftre reviewing the functions i found that the distance calculation multiplied by 1000 instead of dividing.
     cycle_mean_price = cycle_mean_price.mean()
     cycle_mean_price_annual_samples[sample] =cycle_mean_price
         
