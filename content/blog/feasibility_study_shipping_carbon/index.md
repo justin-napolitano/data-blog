@@ -34,21 +34,21 @@ This would present a secondary problem piping the co2 to the interior of the Cou
 
 ### Price of Transport
 
-The price of transport is fixed at $12.00 USD per 100 km per tonne as suggested by this [source](https://ieaghg.org/docs/General_Docs/Reports/PH4-30%20Ship%20Transport.pdf).  A rough estimate for the total cost per tonne from London to Houston is about USD $936.00. For reference the cost to transport standard freight from China to the United States ranges from $5,000 to $8,000 USD in total per tonne; or $5.00 to $8.00 USD per Kilo in total.     
+The price of transport is fixed at $12.00 USD per 100 km per tonne as suggested by this [source](https://ieaghg.org/docs/General_Docs/Reports/PH4-30%20Ship%20Transport.pdf).  A rough estimate for the total cost per tonne from London to Houston is about USD $936.00. For reference the cost to transport standard freight from China to the United States ranges from $5,000 to $8,000 USD in total per tonne; or $5.00 to $8.00 USD per kilo in total.     
 
 ### Industrial Applications 
 
-Another study must be completed to calculate value of supercritical CO2 to industrial applications in order to attempt to justify shipping CO2 such large distances.  Simply, shipping such large quantities of CO2 to simply store it is most likely unreasonable, however, at only about $316,665 USD average cost per voyage it is a reasonable figure if proper incentives are in place.  
+Another study must be completed to calculate value of super critical CO2 to industrial applications in order to attempt to justify shipping CO2 such large distances.  Shipping large quantities of CO2 to  store is most likely unreasonable, however, at only about $316,665 USD average cost per voyage it is a reasonable figure if proper incentives are in place.  
 
 ### Carbon Storage
 
-Based on this model, it is somewhat reasonable to transport CO2, especially if the US incentivises companies that do so.  Nonetheless, at $50-$60 carbon tax credits per tonne captured (verify this data), it would be unfeasible to account for the high cost of shipping across the Atlantic under current programs.
+Based on this model, it is somewhat reasonable to transport CO2, especially if the US incentivises companies that do so.  Nonetheless, at $50-$60 carbon tax credits per tonne captured (verify this data), it would be unfeasible to account for the estimated 936 per tonne cost of shipping across the Atlantic under current programs.
 
 ## Limitations of the Model
 
 ### Accounting for the Return Trip to Port
  
-It is important to note that I did not account for the differential costs for the return trip to a european port.  Though, the cost of shipping per ton was fixed at 12.00 USD, doubling distance of travel may double pricing. That said, it would be unlikely for ships to return to port empty. I would expect tankers to be refilled with LNG for return.  Nonetheless, this is a slight methodological that should be improved upon.  
+It is important to note that I did not account for the differential costs for the return trip to a european port.  Though, the cost of shipping per ton was fixed at 12.00 USD, doubling distance of travel may double pricing. That said, it would be unlikely for ships to return to port empty. I would expect tankers to be refilled with LNG for return.  Nonetheless, this is a slight methodological issue that should be improved upon.  
 
 ### Cost to Transport
 
