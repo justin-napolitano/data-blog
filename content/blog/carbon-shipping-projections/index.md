@@ -76,16 +76,14 @@ A total of 15 tankers were modeled in this example.
 
 Carbon capture is likely a billion dollar industry at scale.  
 
-Across 500 iterations of modeling we see about $273,000 dollars worth of economic activity annualy.  This is fairly sizable and within reason.
-
-It is important to note, that the cost of shipping CO2 was sourced from an article published in 2004.  I will update the value to better reflect the current economy.  I expect an elevation in cost due to inflation and general price increases across the supply chain.  
+Across 500 iterations of modeling we see about $57.7 million dollars worth of economic activity annualy.
 
 
 
 
 ### The Take Away
 
-The Carbon capture and storage economiy is likely a billion dollar economy at scale.  In just reviewing shipping super critical CO2 from Europe to the United States, a $273,000 annual industry could develop as nations move towards a net carbon zero economy. 
+The Carbon capture and storage economiy is likely a billion dollar economy at scale.  In just reviewing shipping super critical CO2 from Europe to the United States, a $57.7 million USD annual industry could develop as nations move towards a net carbon zero economy. 
 
 ## Limitations of the Model 
 
@@ -126,43 +124,43 @@ annual_price_samples_df.describe()
   <tbody>
     <tr>
       <th>count</th>
-      <td>500.000000</td>
-      <td>500.000000</td>
+      <td>5.000000e+02</td>
+      <td>5.000000e+02</td>
     </tr>
     <tr>
       <th>mean</th>
-      <td>273016.820135</td>
-      <td>273016.820135</td>
+      <td>5.744345e+07</td>
+      <td>5.744345e+07</td>
     </tr>
     <tr>
       <th>std</th>
-      <td>5877.779527</td>
-      <td>5877.779527</td>
+      <td>1.191639e+06</td>
+      <td>1.191639e+06</td>
     </tr>
     <tr>
       <th>min</th>
-      <td>257901.494075</td>
-      <td>257901.494075</td>
+      <td>5.351741e+07</td>
+      <td>5.351741e+07</td>
     </tr>
     <tr>
       <th>25%</th>
-      <td>269168.897174</td>
-      <td>269168.897174</td>
+      <td>5.663254e+07</td>
+      <td>5.663254e+07</td>
     </tr>
     <tr>
       <th>50%</th>
-      <td>272689.988387</td>
-      <td>272689.988387</td>
+      <td>5.740286e+07</td>
+      <td>5.740286e+07</td>
     </tr>
     <tr>
       <th>75%</th>
-      <td>276863.145130</td>
-      <td>276863.145130</td>
+      <td>5.827798e+07</td>
+      <td>5.827798e+07</td>
     </tr>
     <tr>
       <th>max</th>
-      <td>292092.994239</td>
-      <td>292092.994239</td>
+      <td>6.081661e+07</td>
+      <td>6.081661e+07</td>
     </tr>
   </tbody>
 </table>
@@ -183,11 +181,11 @@ st.norm.interval(alpha=0.90, loc=np.mean(annual_price_samples_df['cost_in_usd'])
 
 
 
-    (272584.4501409735, 273449.19012835127)
+    (57355794.336350285, 57531108.50357006)
 
 
 
-It is safe to assume that 90 percent of the time we would see an annual cost of $272,584 to $273,449 USD with the assumptions of the model taken into account.  
+It is safe to assume that 90 percent of the time we would see an annual cost of $57,355,794 to $57,531,109 USD with the assumptions of the model taken into account.  
 
 ### Monte Carlo Histogram
 
@@ -300,168 +298,168 @@ shipping_df
   <tbody>
     <tr>
       <th>0</th>
-      <td>114726.768979</td>
+      <td>114719.277384</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.639241</td>
+      <td>210.625486</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>114728.033129</td>
+      <td>114719.302198</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.641562</td>
+      <td>210.625532</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>114720.580272</td>
+      <td>114717.986907</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.627878</td>
+      <td>210.623117</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>114721.794142</td>
+      <td>114720.952261</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.630107</td>
+      <td>210.628561</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>114714.126221</td>
+      <td>114720.134738</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.616029</td>
+      <td>210.627060</td>
     </tr>
     <tr>
       <th>5</th>
-      <td>114720.228896</td>
+      <td>114727.030286</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.627233</td>
+      <td>210.639721</td>
     </tr>
     <tr>
       <th>6</th>
-      <td>114721.747831</td>
+      <td>114721.222398</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.630022</td>
+      <td>210.629057</td>
     </tr>
     <tr>
       <th>7</th>
-      <td>114729.344104</td>
+      <td>114724.259547</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.643969</td>
+      <td>210.634634</td>
     </tr>
     <tr>
       <th>8</th>
-      <td>114717.274015</td>
+      <td>114729.358745</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.621808</td>
+      <td>210.643996</td>
     </tr>
     <tr>
       <th>9</th>
-      <td>114722.323457</td>
+      <td>114727.005543</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.631079</td>
+      <td>210.639675</td>
     </tr>
     <tr>
       <th>10</th>
-      <td>114718.965118</td>
+      <td>114722.946362</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.624913</td>
+      <td>210.632223</td>
     </tr>
     <tr>
       <th>11</th>
-      <td>114714.413894</td>
+      <td>114726.394450</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.616557</td>
+      <td>210.638553</td>
     </tr>
     <tr>
       <th>12</th>
-      <td>114727.609267</td>
+      <td>114720.412603</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.640784</td>
+      <td>210.627571</td>
     </tr>
     <tr>
       <th>13</th>
-      <td>114727.122969</td>
+      <td>114726.647417</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.639891</td>
+      <td>210.639018</td>
     </tr>
     <tr>
       <th>14</th>
-      <td>114718.336977</td>
+      <td>114717.266732</td>
       <td>0</td>
       <td></td>
       <td></td>
       <td></td>
       <td>0</td>
       <td>0</td>
-      <td>210.623760</td>
+      <td>210.621795</td>
     </tr>
   </tbody>
 </table>
@@ -622,8 +620,8 @@ The cost of transport accounts for port fees, liquification, and transport.   Un
 
 ```python
 
-def price_to_transport(distance):
-    price = (distance/100) * 12
+def price_to_transport(distance,tonnes):
+    price = (distance/100) * 12 * tonnes
     return price
 
 ```
@@ -670,7 +668,7 @@ for day in range(days):
         shipping_df['us_port'] = shipping_df.apply(lambda x:  random_us_port() if x['days_to_port']<=0 else x['us_port'], axis=1)
         shipping_df['europe_port'] = shipping_df.apply(lambda x:  random_europe_port() if x['days_to_port']<=0 else x['europe_port'], axis=1)
         shipping_df['distance'] = shipping_df.apply(lambda x:  geo_distance(x['us_port'], x['europe_port']) if x['days_to_port']<=0 else x['distance'], axis=1)
-        shipping_df['price'] = shipping_df.apply(lambda x:  price_to_transport(x['distance']) if x['days_to_port']<=0 else x['price'], axis=1)
+        shipping_df['price'] = shipping_df.apply(lambda x:  price_to_transport(x['distance'],x['co2_capacity_tonnes']) if x['days_to_port']<=0 else x['price'], axis=1)
         #calculate cost per day for fun...
         # query all that are = o.  Summate the capacities deduct the total 
         tmp_df=shipping_df.loc[shipping_df['days_to_port'] <= 0]
@@ -701,9 +699,9 @@ print(cycle_mean_price)
 ```
 
     365
-    40651.64982665733
-    287553.7090879244
-    1515.578323315146
+    41073.187985943456
+    60039059.413350895
+    308098.2720296601
 
 
 ## Monte Carlo Simulation with 500 iterations
@@ -739,7 +737,7 @@ for sample in range(nsamples):
             shipping_df['us_port'] = shipping_df.apply(lambda x:  random_us_port() if x['days_to_port']<=0 else x['us_port'], axis=1)
             shipping_df['europe_port'] = shipping_df.apply(lambda x:  random_europe_port() if x['days_to_port']<=0 else x['europe_port'], axis=1)
             shipping_df['distance'] = shipping_df.apply(lambda x:  geo_distance(x['us_port'], x['europe_port']) if x['days_to_port']<=0 else x['distance'], axis=1)
-            shipping_df['price'] = shipping_df.apply(lambda x:  price_to_transport(x['distance']) if x['days_to_port']<=0 else x['price'], axis=1)
+            shipping_df['price'] = shipping_df.apply(lambda x:  price_to_transport(x['distance'], x['co2_capacity_tonnes']) if x['days_to_port']<=0 else x['price'], axis=1)
             # query all that are = o.  Summate the capacities deduct the total 
             tmp_df=shipping_df.loc[shipping_df['days_to_port'] == 0]
             sum_of_capacity = tmp_df['co2_capacity_tonnes'].sum()
@@ -807,4 +805,11 @@ warnings.filterwarnings('ignore')
 
 ```
 
+    /Users/jnapolitano/venvs/finance/lib/python3.9/site-packages/geopandas/_compat.py:111: UserWarning: The Shapely GEOS version (3.10.2-CAPI-1.16.0) is incompatible with the GEOS version PyGEOS was compiled with (3.10.1-CAPI-1.16.0). Conversions between both will be slow.
+      warnings.warn(
 
+
+
+```python
+
+```
