@@ -1,5 +1,5 @@
 ---
-title:  Feasibility of Shipping Carbon Across the Atlantic
+title: Feasibility of Shipping Carbon Across the Atlantic
 date: "2022-05-07T18:40:32.169Z"
 description: "A feasibility study of shipping carbon from Europe to the United States for storage"
 author: Justin Napolitano

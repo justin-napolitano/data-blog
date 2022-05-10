@@ -1,7 +1,7 @@
 ---
 title:  Monte Carlo Projection of the Annual Cost of Shipping Carbon from Europe to the United States
 date: "2022-05-07T18:40:32.169Z"
-description: "Monte Carlo Carbon Shipping Projections"
+description: Monte Carlo Carbon Shipping Projections
 author: Justin Napolitano
 image: post-image.jpeg
 imageAlt: Justin Napolitano
