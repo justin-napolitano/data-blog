@@ -9,809 +9,809 @@
 <p>The first step is to create a search result page object.</p>
 <p>The code below documents the search_result page.  It contains a number of helper functions to convert the nodes within the result to json or graphml.  The code can also be used to generate a networkx in memory graph.</p>
 <h3>The Search Result Object</h3>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">class search_results_page():
+<div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">search_results_page</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
 
-    def __init__(self,base_url = "https://www.loc.gov/collections",collection = "united-states-reports",json_parameter = "fo=json",results_per_page = "c=79",query_param = "?",page_param ="sp=",page_num = 1):
-        #pprint(num_columns)
-        self.search_url = self.create_search_url(base_url,collection,json_parameter,results_per_page,query_param,page_param,page_num)
-        self.response = self.request_data()
-        self.response_json = self.response_to_json()
-        #self.soup_html = self.html_parse()
-        self.next_url = self.get_next_url()
-        self.page_num = page_num
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>base_url <span class="token operator">=</span> <span class="token string">"https://www.loc.gov/collections"</span><span class="token punctuation">,</span>collection <span class="token operator">=</span> <span class="token string">"united-states-reports"</span><span class="token punctuation">,</span>json_parameter <span class="token operator">=</span> <span class="token string">"fo=json"</span><span class="token punctuation">,</span>results_per_page <span class="token operator">=</span> <span class="token string">"c=79"</span><span class="token punctuation">,</span>query_param <span class="token operator">=</span> <span class="token string">"?"</span><span class="token punctuation">,</span>page_param <span class="token operator">=</span><span class="token string">"sp="</span><span class="token punctuation">,</span>page_num <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment">#pprint(num_columns)</span>
+        self<span class="token punctuation">.</span>search_url <span class="token operator">=</span> self<span class="token punctuation">.</span>create_search_url<span class="token punctuation">(</span>base_url<span class="token punctuation">,</span>collection<span class="token punctuation">,</span>json_parameter<span class="token punctuation">,</span>results_per_page<span class="token punctuation">,</span>query_param<span class="token punctuation">,</span>page_param<span class="token punctuation">,</span>page_num<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>response <span class="token operator">=</span> self<span class="token punctuation">.</span>request_data<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>response_json <span class="token operator">=</span> self<span class="token punctuation">.</span>response_to_json<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token comment">#self.soup_html = self.html_parse()</span>
+        self<span class="token punctuation">.</span>next_url <span class="token operator">=</span> self<span class="token punctuation">.</span>get_next_url<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>page_num <span class="token operator">=</span> page_num
 
-    def to_json(self, file_name = 'result_',file_num = 0, extension =".json"):
-        output_name = file_name + str(file_num)
-        output_name = output_name + extension
-        with open(output_name, 'w') as outfile:
-            json.dump(self.response_json, outfile)
+    <span class="token keyword">def</span> <span class="token function">to_json</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> file_name <span class="token operator">=</span> <span class="token string">'result_'</span><span class="token punctuation">,</span>file_num <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> extension <span class="token operator">=</span><span class="token string">".json"</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        output_name <span class="token operator">=</span> file_name <span class="token operator">+</span> <span class="token builtin">str</span><span class="token punctuation">(</span>file_num<span class="token punctuation">)</span>
+        output_name <span class="token operator">=</span> output_name <span class="token operator">+</span> extension
+        <span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span>output_name<span class="token punctuation">,</span> <span class="token string">'w'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> outfile<span class="token punctuation">:</span>
+            json<span class="token punctuation">.</span>dump<span class="token punctuation">(</span>self<span class="token punctuation">.</span>response_json<span class="token punctuation">,</span> outfile<span class="token punctuation">)</span>
 
-    def to_pandas(self):
-        df = nx.to_pandas_edgelist(self.graph)
-        return(df)
+    <span class="token keyword">def</span> <span class="token function">to_pandas</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        df <span class="token operator">=</span> nx<span class="token punctuation">.</span>to_pandas_edgelist<span class="token punctuation">(</span>self<span class="token punctuation">.</span>graph<span class="token punctuation">)</span>
+        <span class="token keyword">return</span><span class="token punctuation">(</span>df<span class="token punctuation">)</span>
 
-    def to_csv(self,file_name = 'result_',file_num = 0, extension =".csv"):
-        output_name = file_name + str(file_num)
-        output_name = output_name + extension
-        df = self.to_pandas()
-        df.to_csv(output_name)
-
-
-    def write_graphml(self,file_name = 'result_', file_num=0, extension = ".graphml"):
-        output_name = file_name + str(file_num)
-        output_name = output_name + extension
-        nx.write_graphml(self.graph, output_name)
-
-    def write_to_file(self,data = None, file_name = 'result_',file_num = 0, extension = ".json"):
-        output_name = file_name + str(file_num)
-        output_name = output_name + extension
-        with open(output_name, 'w') as outfile:
-            json.dump(data, outfile)
+    <span class="token keyword">def</span> <span class="token function">to_csv</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>file_name <span class="token operator">=</span> <span class="token string">'result_'</span><span class="token punctuation">,</span>file_num <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> extension <span class="token operator">=</span><span class="token string">".csv"</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        output_name <span class="token operator">=</span> file_name <span class="token operator">+</span> <span class="token builtin">str</span><span class="token punctuation">(</span>file_num<span class="token punctuation">)</span>
+        output_name <span class="token operator">=</span> output_name <span class="token operator">+</span> extension
+        df <span class="token operator">=</span> self<span class="token punctuation">.</span>to_pandas<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        df<span class="token punctuation">.</span>to_csv<span class="token punctuation">(</span>output_name<span class="token punctuation">)</span>
 
 
-    def node_gen_2(self, data, root ='result', node_list = [], edge_list = [], previous_k = None, previous_edge = None, graph = None):
-        #root = root 
-        if type(data) is dict:
-            for k, v in data.items():
-                if k is not None and k not in node_list:
-                    graph.add_node(k, type = k)
-                    #node_list.append((k, {'type' : k}))
-                    #(1, 2, color='red', weight=0.84, size=300)\
-                    graph.add_edge(root,k, relationship = "of", type = "root")
-                    #edge_list.append((root , k, {"relationship" : "of"}, {"type" : 'root'}))
-                #pprint('passing_value')
-                #save k
-                previous_k = k
-                previous_edge = (root , k)
-                self.node_gen_2(v,root = root, node_list = node_list,edge_list = edge_list, previous_k = k, previous_edge = previous_edge, graph = graph)
+    <span class="token keyword">def</span> <span class="token function">write_graphml</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>file_name <span class="token operator">=</span> <span class="token string">'result_'</span><span class="token punctuation">,</span> file_num<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> extension <span class="token operator">=</span> <span class="token string">".graphml"</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        output_name <span class="token operator">=</span> file_name <span class="token operator">+</span> <span class="token builtin">str</span><span class="token punctuation">(</span>file_num<span class="token punctuation">)</span>
+        output_name <span class="token operator">=</span> output_name <span class="token operator">+</span> extension
+        nx<span class="token punctuation">.</span>write_graphml<span class="token punctuation">(</span>self<span class="token punctuation">.</span>graph<span class="token punctuation">,</span> output_name<span class="token punctuation">)</span>
 
-        elif type(data) is list:
-            for item in data:
-                #pprint('passing_data')
+    <span class="token keyword">def</span> <span class="token function">write_to_file</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>data <span class="token operator">=</span> <span class="token boolean">None</span><span class="token punctuation">,</span> file_name <span class="token operator">=</span> <span class="token string">'result_'</span><span class="token punctuation">,</span>file_num <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> extension <span class="token operator">=</span> <span class="token string">".json"</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        output_name <span class="token operator">=</span> file_name <span class="token operator">+</span> <span class="token builtin">str</span><span class="token punctuation">(</span>file_num<span class="token punctuation">)</span>
+        output_name <span class="token operator">=</span> output_name <span class="token operator">+</span> extension
+        <span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span>output_name<span class="token punctuation">,</span> <span class="token string">'w'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> outfile<span class="token punctuation">:</span>
+            json<span class="token punctuation">.</span>dump<span class="token punctuation">(</span>data<span class="token punctuation">,</span> outfile<span class="token punctuation">)</span>
 
-                self.node_gen_2(item,root = root, node_list = node_list,edge_list = edge_list,previous_k = previous_k, previous_edge= previous_edge, graph = graph)
-                #create_edge to k
 
-        else:
-            #this item is no longer a dictionary or list
-            pprint('appending_data')
-            #create edge to k
-            if data is not None:
-                graph.add_node(data,type = data)
-                #node_list.append((data, {"type" : data}))
-                graph.add_edge(previous_k, data, relationship = "is", type = previous_k)
-                #edge_list.append((previous_k ,data,{'relationship': "is"}, {'type' : data}))
-                #edge_list.append((root,data))
+    <span class="token keyword">def</span> <span class="token function">node_gen_2</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> data<span class="token punctuation">,</span> root <span class="token operator">=</span><span class="token string">'result'</span><span class="token punctuation">,</span> node_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> edge_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> previous_k <span class="token operator">=</span> <span class="token boolean">None</span><span class="token punctuation">,</span> previous_edge <span class="token operator">=</span> <span class="token boolean">None</span><span class="token punctuation">,</span> graph <span class="token operator">=</span> <span class="token boolean">None</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment">#root = root </span>
+        <span class="token keyword">if</span> <span class="token builtin">type</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token keyword">is</span> <span class="token builtin">dict</span><span class="token punctuation">:</span>
+            <span class="token keyword">for</span> k<span class="token punctuation">,</span> v <span class="token keyword">in</span> data<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                <span class="token keyword">if</span> k <span class="token keyword">is</span> <span class="token keyword">not</span> <span class="token boolean">None</span> <span class="token keyword">and</span> k <span class="token keyword">not</span> <span class="token keyword">in</span> node_list<span class="token punctuation">:</span>
+                    graph<span class="token punctuation">.</span>add_node<span class="token punctuation">(</span>k<span class="token punctuation">,</span> <span class="token builtin">type</span> <span class="token operator">=</span> k<span class="token punctuation">)</span>
+                    <span class="token comment">#node_list.append((k, {'type' : k}))</span>
+                    <span class="token comment">#(1, 2, color='red', weight=0.84, size=300)\</span>
+                    graph<span class="token punctuation">.</span>add_edge<span class="token punctuation">(</span>root<span class="token punctuation">,</span>k<span class="token punctuation">,</span> relationship <span class="token operator">=</span> <span class="token string">"of"</span><span class="token punctuation">,</span> <span class="token builtin">type</span> <span class="token operator">=</span> <span class="token string">"root"</span><span class="token punctuation">)</span>
+                    <span class="token comment">#edge_list.append((root , k, {"relationship" : "of"}, {"type" : 'root'}))</span>
+                <span class="token comment">#pprint('passing_value')</span>
+                <span class="token comment">#save k</span>
+                previous_k <span class="token operator">=</span> k
+                previous_edge <span class="token operator">=</span> <span class="token punctuation">(</span>root <span class="token punctuation">,</span> k<span class="token punctuation">)</span>
+                self<span class="token punctuation">.</span>node_gen_2<span class="token punctuation">(</span>v<span class="token punctuation">,</span>root <span class="token operator">=</span> root<span class="token punctuation">,</span> node_list <span class="token operator">=</span> node_list<span class="token punctuation">,</span>edge_list <span class="token operator">=</span> edge_list<span class="token punctuation">,</span> previous_k <span class="token operator">=</span> k<span class="token punctuation">,</span> previous_edge <span class="token operator">=</span> previous_edge<span class="token punctuation">,</span> graph <span class="token operator">=</span> graph<span class="token punctuation">)</span>
 
-    #flatten(hierarchak)_dict)
-        return graph 
+        <span class="token keyword">elif</span> <span class="token builtin">type</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token keyword">is</span> <span class="token builtin">list</span><span class="token punctuation">:</span>
+            <span class="token keyword">for</span> item <span class="token keyword">in</span> data<span class="token punctuation">:</span>
+                <span class="token comment">#pprint('passing_data')</span>
+
+                self<span class="token punctuation">.</span>node_gen_2<span class="token punctuation">(</span>item<span class="token punctuation">,</span>root <span class="token operator">=</span> root<span class="token punctuation">,</span> node_list <span class="token operator">=</span> node_list<span class="token punctuation">,</span>edge_list <span class="token operator">=</span> edge_list<span class="token punctuation">,</span>previous_k <span class="token operator">=</span> previous_k<span class="token punctuation">,</span> previous_edge<span class="token operator">=</span> previous_edge<span class="token punctuation">,</span> graph <span class="token operator">=</span> graph<span class="token punctuation">)</span>
+                <span class="token comment">#create_edge to k</span>
+
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token comment">#this item is no longer a dictionary or list</span>
+            pprint<span class="token punctuation">(</span><span class="token string">'appending_data'</span><span class="token punctuation">)</span>
+            <span class="token comment">#create edge to k</span>
+            <span class="token keyword">if</span> data <span class="token keyword">is</span> <span class="token keyword">not</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+                graph<span class="token punctuation">.</span>add_node<span class="token punctuation">(</span>data<span class="token punctuation">,</span><span class="token builtin">type</span> <span class="token operator">=</span> data<span class="token punctuation">)</span>
+                <span class="token comment">#node_list.append((data, {"type" : data}))</span>
+                graph<span class="token punctuation">.</span>add_edge<span class="token punctuation">(</span>previous_k<span class="token punctuation">,</span> data<span class="token punctuation">,</span> relationship <span class="token operator">=</span> <span class="token string">"is"</span><span class="token punctuation">,</span> <span class="token builtin">type</span> <span class="token operator">=</span> previous_k<span class="token punctuation">)</span>
+                <span class="token comment">#edge_list.append((previous_k ,data,{'relationship': "is"}, {'type' : data}))</span>
+                <span class="token comment">#edge_list.append((root,data))</span>
+
+    <span class="token comment">#flatten(hierarchak)_dict)</span>
+        <span class="token keyword">return</span> graph 
 
     
-    def node_runner(self,data,graph):
+    <span class="token keyword">def</span> <span class="token function">node_runner</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>data<span class="token punctuation">,</span>graph<span class="token punctuation">)</span><span class="token punctuation">:</span>
         
-        node_list = []
-        edge_list = []
-        for item in data:
-            #root = item['title']
-            graph = self.node_gen_2(data = item, node_list = node_list, graph = graph)
-        #pprint(edge_list)
-        return graph
+        node_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        edge_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> item <span class="token keyword">in</span> data<span class="token punctuation">:</span>
+            <span class="token comment">#root = item['title']</span>
+            graph <span class="token operator">=</span> self<span class="token punctuation">.</span>node_gen_2<span class="token punctuation">(</span>data <span class="token operator">=</span> item<span class="token punctuation">,</span> node_list <span class="token operator">=</span> node_list<span class="token punctuation">,</span> graph <span class="token operator">=</span> graph<span class="token punctuation">)</span>
+        <span class="token comment">#pprint(edge_list)</span>
+        <span class="token keyword">return</span> graph
 
-    def node_generator(self, data, root ='title_testing', node_list = [], edge_list = [], previous_k = None, previous_edge = None):
-        #pprint(data)
-        if type(data) is dict:
-            for k, v in data.items():
-                if k is not None and k not in node_list:
-                    node_list.append(k)
-                    edge_list.append((root , k))
-                #pprint('passing_value')
-                #save k
-                previous_k = k
-                previous_edge = (root , k)
-                self.node_generator(v,root = root, node_list = node_list,edge_list = edge_list, previous_k = k, previous_edge = previous_edge)
+    <span class="token keyword">def</span> <span class="token function">node_generator</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> data<span class="token punctuation">,</span> root <span class="token operator">=</span><span class="token string">'title_testing'</span><span class="token punctuation">,</span> node_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> edge_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> previous_k <span class="token operator">=</span> <span class="token boolean">None</span><span class="token punctuation">,</span> previous_edge <span class="token operator">=</span> <span class="token boolean">None</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment">#pprint(data)</span>
+        <span class="token keyword">if</span> <span class="token builtin">type</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token keyword">is</span> <span class="token builtin">dict</span><span class="token punctuation">:</span>
+            <span class="token keyword">for</span> k<span class="token punctuation">,</span> v <span class="token keyword">in</span> data<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                <span class="token keyword">if</span> k <span class="token keyword">is</span> <span class="token keyword">not</span> <span class="token boolean">None</span> <span class="token keyword">and</span> k <span class="token keyword">not</span> <span class="token keyword">in</span> node_list<span class="token punctuation">:</span>
+                    node_list<span class="token punctuation">.</span>append<span class="token punctuation">(</span>k<span class="token punctuation">)</span>
+                    edge_list<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">(</span>root <span class="token punctuation">,</span> k<span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token comment">#pprint('passing_value')</span>
+                <span class="token comment">#save k</span>
+                previous_k <span class="token operator">=</span> k
+                previous_edge <span class="token operator">=</span> <span class="token punctuation">(</span>root <span class="token punctuation">,</span> k<span class="token punctuation">)</span>
+                self<span class="token punctuation">.</span>node_generator<span class="token punctuation">(</span>v<span class="token punctuation">,</span>root <span class="token operator">=</span> root<span class="token punctuation">,</span> node_list <span class="token operator">=</span> node_list<span class="token punctuation">,</span>edge_list <span class="token operator">=</span> edge_list<span class="token punctuation">,</span> previous_k <span class="token operator">=</span> k<span class="token punctuation">,</span> previous_edge <span class="token operator">=</span> previous_edge<span class="token punctuation">)</span>
 
-        elif type(data) is list:
-            for item in data:
-                #pprint('passing_data')
+        <span class="token keyword">elif</span> <span class="token builtin">type</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token keyword">is</span> <span class="token builtin">list</span><span class="token punctuation">:</span>
+            <span class="token keyword">for</span> item <span class="token keyword">in</span> data<span class="token punctuation">:</span>
+                <span class="token comment">#pprint('passing_data')</span>
 
-                self.node_generator(item,root = root, node_list = node_list,edge_list = edge_list,previous_k = previous_k, previous_edge= previous_edge)
-                #create_edge to k
+                self<span class="token punctuation">.</span>node_generator<span class="token punctuation">(</span>item<span class="token punctuation">,</span>root <span class="token operator">=</span> root<span class="token punctuation">,</span> node_list <span class="token operator">=</span> node_list<span class="token punctuation">,</span>edge_list <span class="token operator">=</span> edge_list<span class="token punctuation">,</span>previous_k <span class="token operator">=</span> previous_k<span class="token punctuation">,</span> previous_edge<span class="token operator">=</span> previous_edge<span class="token punctuation">)</span>
+                <span class="token comment">#create_edge to k</span>
 
-        else:
-            #this item is no longer a dictionary or list
-            pprint('appending_data')
-            #create edge to k
-            if data is not None:
-                node_list.append(data)
-                edge_list.append((previous_k ,data))
-                edge_list.append((root,data))
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token comment">#this item is no longer a dictionary or list</span>
+            pprint<span class="token punctuation">(</span><span class="token string">'appending_data'</span><span class="token punctuation">)</span>
+            <span class="token comment">#create edge to k</span>
+            <span class="token keyword">if</span> data <span class="token keyword">is</span> <span class="token keyword">not</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+                node_list<span class="token punctuation">.</span>append<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+                edge_list<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">(</span>previous_k <span class="token punctuation">,</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span>
+                edge_list<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-    #flatten(hierarchak)_dict)
-        return node_list, edge_list 
-        #self.json_graph = self.create_json_graph()
+    <span class="token comment">#flatten(hierarchak)_dict)</span>
+        <span class="token keyword">return</span> node_list<span class="token punctuation">,</span> edge_list 
+        <span class="token comment">#self.json_graph = self.create_json_graph()</span>
 
 
-    def create_json_graph(self):
-        #graph = nx.Graph(self.response_json)
-        graph = nx.from_dict_of_dicts(self.response_json)
-        #graph = json_graph.node_link_graph(self.response_json)
-        nx.draw(graph)
-        return graph
+    <span class="token keyword">def</span> <span class="token function">create_json_graph</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment">#graph = nx.Graph(self.response_json)</span>
+        graph <span class="token operator">=</span> nx<span class="token punctuation">.</span>from_dict_of_dicts<span class="token punctuation">(</span>self<span class="token punctuation">.</span>response_json<span class="token punctuation">)</span>
+        <span class="token comment">#graph = json_graph.node_link_graph(self.response_json)</span>
+        nx<span class="token punctuation">.</span>draw<span class="token punctuation">(</span>graph<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> graph
         
-        #self.node_list = self.node_generator`
+        <span class="token comment">#self.node_list = self.node_generator`</span>
 
 
 
-    def create_search_result_node(self):
+    <span class="token keyword">def</span> <span class="token function">create_search_result_node</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
      
-        for item in self.response_json_flat:
-            for k,v in item.items():
-                if k not in self.column_lookup_table:
-                    column_string = self.colnum_string()
+        <span class="token keyword">for</span> item <span class="token keyword">in</span> self<span class="token punctuation">.</span>response_json_flat<span class="token punctuation">:</span>
+            <span class="token keyword">for</span> k<span class="token punctuation">,</span>v <span class="token keyword">in</span> item<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                <span class="token keyword">if</span> k <span class="token keyword">not</span> <span class="token keyword">in</span> self<span class="token punctuation">.</span>column_lookup_table<span class="token punctuation">:</span>
+                    column_string <span class="token operator">=</span> self<span class="token punctuation">.</span>colnum_string<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-                    self.column_lookup_table[k] = self.colnum_string(self.num_columns)
-                    self.num_columns += 1
-                else:
-                    continue
+                    self<span class="token punctuation">.</span>column_lookup_table<span class="token punctuation">[</span>k<span class="token punctuation">]</span> <span class="token operator">=</span> self<span class="token punctuation">.</span>colnum_string<span class="token punctuation">(</span>self<span class="token punctuation">.</span>num_columns<span class="token punctuation">)</span>
+                    self<span class="token punctuation">.</span>num_columns <span class="token operator">+=</span> <span class="token number">1</span>
+                <span class="token keyword">else</span><span class="token punctuation">:</span>
+                    <span class="token keyword">continue</span>
 
-    def append_to_data_list(self,rnge,d):#rename to _data_list
-        request_body = {
-            'range': rnge,
-            "majorDimension": "COLUMNS",
-            "values": [d]
-        }
-        return request_body
-        #data_list.append(request_body_tmp)
+    <span class="token keyword">def</span> <span class="token function">append_to_data_list</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>rnge<span class="token punctuation">,</span>d<span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token comment">#rename to _data_list</span>
+        request_body <span class="token operator">=</span> <span class="token punctuation">{</span>
+            <span class="token string">'range'</span><span class="token punctuation">:</span> rnge<span class="token punctuation">,</span>
+            <span class="token string">"majorDimension"</span><span class="token punctuation">:</span> <span class="token string">"COLUMNS"</span><span class="token punctuation">,</span>
+            <span class="token string">"values"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>d<span class="token punctuation">]</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> request_body
+        <span class="token comment">#data_list.append(request_body_tmp)</span>
 
-    def map_column_to_range(self,column_key):
+    <span class="token keyword">def</span> <span class="token function">map_column_to_range</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>column_key<span class="token punctuation">)</span><span class="token punctuation">:</span>
         
-        rnge = "'Sheet1'" + "!" + column_key + str(1)
-        return rnge
+        rnge <span class="token operator">=</span> <span class="token string">"'Sheet1'"</span> <span class="token operator">+</span> <span class="token string">"!"</span> <span class="token operator">+</span> column_key <span class="token operator">+</span> <span class="token builtin">str</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> rnge
                 
 
-    def colnum_string(self,num_columns):
-        string = ""
-        #pprint("conlum_string")
-        #pprint(num_columns)
-        while num_columns > 0:
-            num_columns, remainder = divmod(num_columns - 1, 26)
-            string = chr(65 + remainder) + string
-            #pprint(string)
-        return string
+    <span class="token keyword">def</span> <span class="token function">colnum_string</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>num_columns<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        string <span class="token operator">=</span> <span class="token string">""</span>
+        <span class="token comment">#pprint("conlum_string")</span>
+        <span class="token comment">#pprint(num_columns)</span>
+        <span class="token keyword">while</span> num_columns <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">:</span>
+            num_columns<span class="token punctuation">,</span> remainder <span class="token operator">=</span> <span class="token builtin">divmod</span><span class="token punctuation">(</span>num_columns <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">26</span><span class="token punctuation">)</span>
+            string <span class="token operator">=</span> <span class="token builtin">chr</span><span class="token punctuation">(</span><span class="token number">65</span> <span class="token operator">+</span> remainder<span class="token punctuation">)</span> <span class="token operator">+</span> string
+            <span class="token comment">#pprint(string)</span>
+        <span class="token keyword">return</span> string
 
-    def map_columns_to_lookup_table(self):
+    <span class="token keyword">def</span> <span class="token function">map_columns_to_lookup_table</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
 
-        #print('first_map_columns_print')
-        #num_columns_tmp = self.num_columns
-        #pprint(num_columns_tmp)
-        for item in self.response_json_flat:
-            for k in item.keys():
-                num_columns_tmp = self.num_columns
-                if k not in self.column_lookup_table:
-                    #print('second_map_Columns_print')
-                    #pprint(num_columns_tmp)
-                    self.column_lookup_table[k] = self.colnum_string(num_columns = num_columns_tmp)
-                    self.num_columns = self.num_columns + 1
+        <span class="token comment">#print('first_map_columns_print')</span>
+        <span class="token comment">#num_columns_tmp = self.num_columns</span>
+        <span class="token comment">#pprint(num_columns_tmp)</span>
+        <span class="token keyword">for</span> item <span class="token keyword">in</span> self<span class="token punctuation">.</span>response_json_flat<span class="token punctuation">:</span>
+            <span class="token keyword">for</span> k <span class="token keyword">in</span> item<span class="token punctuation">.</span>keys<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                num_columns_tmp <span class="token operator">=</span> self<span class="token punctuation">.</span>num_columns
+                <span class="token keyword">if</span> k <span class="token keyword">not</span> <span class="token keyword">in</span> self<span class="token punctuation">.</span>column_lookup_table<span class="token punctuation">:</span>
+                    <span class="token comment">#print('second_map_Columns_print')</span>
+                    <span class="token comment">#pprint(num_columns_tmp)</span>
+                    self<span class="token punctuation">.</span>column_lookup_table<span class="token punctuation">[</span>k<span class="token punctuation">]</span> <span class="token operator">=</span> self<span class="token punctuation">.</span>colnum_string<span class="token punctuation">(</span>num_columns <span class="token operator">=</span> num_columns_tmp<span class="token punctuation">)</span>
+                    self<span class="token punctuation">.</span>num_columns <span class="token operator">=</span> self<span class="token punctuation">.</span>num_columns <span class="token operator">+</span> <span class="token number">1</span>
        
-                    #append range to request... 
-                    #append collumn to batch lookup
+                    <span class="token comment">#append range to request... </span>
+                    <span class="token comment">#append collumn to batch lookup</span>
                 
 
-                else:
-                    continue
+                <span class="token keyword">else</span><span class="token punctuation">:</span>
+                    <span class="token keyword">continue</span>
     
-    def column_request_list_generator(self):
-        request_list = []
-        for k,v in self.column_lookup_table.items():
-            rnge = self.map_column_to_range(k)
-            request_body = self.append_to_data_list(rnge,v)
-            #pprint(request_body)
-            request_list.append(request_body)
-        return request_list
+    <span class="token keyword">def</span> <span class="token function">column_request_list_generator</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        request_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> k<span class="token punctuation">,</span>v <span class="token keyword">in</span> self<span class="token punctuation">.</span>column_lookup_table<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            rnge <span class="token operator">=</span> self<span class="token punctuation">.</span>map_column_to_range<span class="token punctuation">(</span>k<span class="token punctuation">)</span>
+            request_body <span class="token operator">=</span> self<span class="token punctuation">.</span>append_to_data_list<span class="token punctuation">(</span>rnge<span class="token punctuation">,</span>v<span class="token punctuation">)</span>
+            <span class="token comment">#pprint(request_body)</span>
+            request_list<span class="token punctuation">.</span>append<span class="token punctuation">(</span>request_body<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> request_list
 
 
 
 
 
-        #return column_lookup_table
+        <span class="token comment">#return column_lookup_table</span>
 
-    def get_next_url(self):
-        return (self.response_json['pagination']['next'])
+    <span class="token keyword">def</span> <span class="token function">get_next_url</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span>self<span class="token punctuation">.</span>response_json<span class="token punctuation">[</span><span class="token string">'pagination'</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">'next'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
 
-    def create_search_url(self,base_url,collection,json_parameter,results_per_page,query_param,page_param,page_num):
-        url_sep ="/"
-        page_param = page_param +(str(page_num))
-        query = "&amp;".join([json_parameter,results_per_page,page_param])
-        query = query_param + query
-        search_url = url_sep.join([base_url,collection,query])
-        #pprint(search_url)
+    <span class="token keyword">def</span> <span class="token function">create_search_url</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>base_url<span class="token punctuation">,</span>collection<span class="token punctuation">,</span>json_parameter<span class="token punctuation">,</span>results_per_page<span class="token punctuation">,</span>query_param<span class="token punctuation">,</span>page_param<span class="token punctuation">,</span>page_num<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        url_sep <span class="token operator">=</span><span class="token string">"/"</span>
+        page_param <span class="token operator">=</span> page_param <span class="token operator">+</span><span class="token punctuation">(</span><span class="token builtin">str</span><span class="token punctuation">(</span>page_num<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        query <span class="token operator">=</span> <span class="token string">"&amp;"</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">[</span>json_parameter<span class="token punctuation">,</span>results_per_page<span class="token punctuation">,</span>page_param<span class="token punctuation">]</span><span class="token punctuation">)</span>
+        query <span class="token operator">=</span> query_param <span class="token operator">+</span> query
+        search_url <span class="token operator">=</span> url_sep<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">[</span>base_url<span class="token punctuation">,</span>collection<span class="token punctuation">,</span>query<span class="token punctuation">]</span><span class="token punctuation">)</span>
+        <span class="token comment">#pprint(search_url)</span>
         
-        return search_url
+        <span class="token keyword">return</span> search_url
 
-    def say_hello(self):
-        pprint(self.base_url)
+    <span class="token keyword">def</span> <span class="token function">say_hello</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        pprint<span class="token punctuation">(</span>self<span class="token punctuation">.</span>base_url<span class="token punctuation">)</span>
 
-    def request_data(self):
-        headers = {'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.11 (KHTML, like Gecko) Version/9.0.2 Safari/601.3.9',
-                    'Accept-Encoding': 'identity'
-                }
-        return requests.get(self.search_url,headers=headers)
+    <span class="token keyword">def</span> <span class="token function">request_data</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        headers <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">'User-Agent'</span><span class="token punctuation">:</span><span class="token string">'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.11 (KHTML, like Gecko) Version/9.0.2 Safari/601.3.9'</span><span class="token punctuation">,</span>
+                    <span class="token string">'Accept-Encoding'</span><span class="token punctuation">:</span> <span class="token string">'identity'</span>
+                <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span>self<span class="token punctuation">.</span>search_url<span class="token punctuation">,</span>headers<span class="token operator">=</span>headers<span class="token punctuation">)</span>
 
-    def response_to_json(self):
-        return self.response.json()
+    <span class="token keyword">def</span> <span class="token function">response_to_json</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>response<span class="token punctuation">.</span>json<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-    def html_parse(self):
-        soup=BeautifulSoup(self.response.content,'lxml')
-        #pprint(soup)
-        return soup
+    <span class="token keyword">def</span> <span class="token function">html_parse</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        soup<span class="token operator">=</span>BeautifulSoup<span class="token punctuation">(</span>self<span class="token punctuation">.</span>response<span class="token punctuation">.</span>content<span class="token punctuation">,</span><span class="token string">'lxml'</span><span class="token punctuation">)</span>
+        <span class="token comment">#pprint(soup)</span>
+        <span class="token keyword">return</span> soup
 
-    def flatten_result(self):
-        flat_result_list = []
-        for item in self.response_json['results']:
-            flat_json = flatten(item)
-            flat_result_list.append(flat_json)
-        return flat_result_list
+    <span class="token keyword">def</span> <span class="token function">flatten_result</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        flat_result_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> item <span class="token keyword">in</span> self<span class="token punctuation">.</span>response_json<span class="token punctuation">[</span><span class="token string">'results'</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+            flat_json <span class="token operator">=</span> flatten<span class="token punctuation">(</span>item<span class="token punctuation">)</span>
+            flat_result_list<span class="token punctuation">.</span>append<span class="token punctuation">(</span>flat_json<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> flat_result_list
 </code></pre></div>
 <h2>The Generator</h2>
 <p>The generator yields a search result page if the pagination link included in the response is valid.</p>
 <p>Depending on your use case you could pass the page_num and collection you would like to crawl.</p>
 <p>The api is limited to 80 results per minute.  The sleep function limits calls to the desired rate.  The amount of results returned can be passed to the search result page_object.  Review the code above to see which values can be passed.</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">def search_result_generator(condition = True):
-    #column_lookup_table = {}
-    #pprint(num_columns)
-    page_num = 1
-    column_lookup_table = {}
-    while condition ==True:
-        #pprint(num_columns)
-        time.sleep(61)
-        search_results_page_object = create_search_results_page_object(page_num = page_num)
-        if search_results_page_object.next_url != None:
-            condition = True
-            page_num = page_num + 1            
-            yield (search_results_page_object)
-        else:
-            condition = False
-            yield (search_results_page_object)</code></pre></div>
+<div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">search_result_generator</span><span class="token punctuation">(</span>condition <span class="token operator">=</span> <span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment">#column_lookup_table = {}</span>
+    <span class="token comment">#pprint(num_columns)</span>
+    page_num <span class="token operator">=</span> <span class="token number">1</span>
+    column_lookup_table <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+    <span class="token keyword">while</span> condition <span class="token operator">==</span><span class="token boolean">True</span><span class="token punctuation">:</span>
+        <span class="token comment">#pprint(num_columns)</span>
+        time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">61</span><span class="token punctuation">)</span>
+        search_results_page_object <span class="token operator">=</span> create_search_results_page_object<span class="token punctuation">(</span>page_num <span class="token operator">=</span> page_num<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> search_results_page_object<span class="token punctuation">.</span>next_url <span class="token operator">!=</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+            condition <span class="token operator">=</span> <span class="token boolean">True</span>
+            page_num <span class="token operator">=</span> page_num <span class="token operator">+</span> <span class="token number">1</span>            
+            <span class="token keyword">yield</span> <span class="token punctuation">(</span>search_results_page_object<span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            condition <span class="token operator">=</span> <span class="token boolean">False</span>
+            <span class="token keyword">yield</span> <span class="token punctuation">(</span>search_results_page_object<span class="token punctuation">)</span></code></pre></div>
 <h2>The Runner Function</h2>
 <p>To initiate the crawl simply run the algorithm below.  It writes each result page to json.</p>
 <p>As a follow up project, I will post how to integrate the data returned into a neo4j database.</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">for obj in search_result_generator():   
-        page_num = obj.page_num
-        with cd("output_2"):
-            #print('hahaha')
-            obj.to_json(file_num = page_num)
-            #obj.write_graphml(file_num= page_num)
-            #obj.to_pandas()
-            #obj.write_to_file(data = obj.dict_of_dicts, file_num = page_num)
-            #obj.to_csv()
-        write_last_page_num(page_num)
-        print("{} Search Results Crawled".format(page_num))
+<div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python"><span class="token keyword">for</span> obj <span class="token keyword">in</span> search_result_generator<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>   
+        page_num <span class="token operator">=</span> obj<span class="token punctuation">.</span>page_num
+        <span class="token keyword">with</span> cd<span class="token punctuation">(</span><span class="token string">"output_2"</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token comment">#print('hahaha')</span>
+            obj<span class="token punctuation">.</span>to_json<span class="token punctuation">(</span>file_num <span class="token operator">=</span> page_num<span class="token punctuation">)</span>
+            <span class="token comment">#obj.write_graphml(file_num= page_num)</span>
+            <span class="token comment">#obj.to_pandas()</span>
+            <span class="token comment">#obj.write_to_file(data = obj.dict_of_dicts, file_num = page_num)</span>
+            <span class="token comment">#obj.to_csv()</span>
+        write_last_page_num<span class="token punctuation">(</span>page_num<span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"{} Search Results Crawled"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>page_num<span class="token punctuation">)</span><span class="token punctuation">)</span>
 </code></pre></div>
 <h2>Putting Everything Together</h2>
 <p>The code below is the entire program as it stands.  There is built in functionality to upload the results to a google sheet if that is what you desire using an extension of the google api.   That code can be found at <a href="https://github.com/justin-napolitano/GoogleAPI">https://github.com/justin-napolitano/GoogleAPI</a></p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">#library_of_congress_scraper.py
-from __future__ import print_function
-from bs4 import BeautifulSoup
-import requests
-import lxml.etree as etree
-import xml.etree.ElementTree as ET
-import json
-import pandas as pd
-import os
-import time
-import random
-import math
-from pprint import pprint
-#import load_vars as lv
-import html
-import yaml
-from yaml import Loader, Dumper
-import glob
-import datetime
-import os.path
-from googleapiclient.discovery import build
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from google.oauth2 import service_account
-from googleapiclient.http import MediaIoBaseDownload, MediaFileUpload
-from flatten_json import flatten
-import networkx as nx
-import matplotlib
-from networkx.readwrite import json_graph
-import matplotlib.pyplot as plt
-import tracemalloc
-import os
-#from ratelimiter import RateLimiter
+<div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python"><span class="token comment">#library_of_congress_scraper.py</span>
+<span class="token keyword">from</span> __future__ <span class="token keyword">import</span> print_function
+<span class="token keyword">from</span> bs4 <span class="token keyword">import</span> BeautifulSoup
+<span class="token keyword">import</span> requests
+<span class="token keyword">import</span> lxml<span class="token punctuation">.</span>etree <span class="token keyword">as</span> etree
+<span class="token keyword">import</span> xml<span class="token punctuation">.</span>etree<span class="token punctuation">.</span>ElementTree <span class="token keyword">as</span> ET
+<span class="token keyword">import</span> json
+<span class="token keyword">import</span> pandas <span class="token keyword">as</span> pd
+<span class="token keyword">import</span> os
+<span class="token keyword">import</span> time
+<span class="token keyword">import</span> random
+<span class="token keyword">import</span> math
+<span class="token keyword">from</span> pprint <span class="token keyword">import</span> pprint
+<span class="token comment">#import load_vars as lv</span>
+<span class="token keyword">import</span> html
+<span class="token keyword">import</span> yaml
+<span class="token keyword">from</span> yaml <span class="token keyword">import</span> Loader<span class="token punctuation">,</span> Dumper
+<span class="token keyword">import</span> glob
+<span class="token keyword">import</span> datetime
+<span class="token keyword">import</span> os<span class="token punctuation">.</span>path
+<span class="token keyword">from</span> googleapiclient<span class="token punctuation">.</span>discovery <span class="token keyword">import</span> build
+<span class="token keyword">from</span> google_auth_oauthlib<span class="token punctuation">.</span>flow <span class="token keyword">import</span> InstalledAppFlow
+<span class="token keyword">from</span> google<span class="token punctuation">.</span>auth<span class="token punctuation">.</span>transport<span class="token punctuation">.</span>requests <span class="token keyword">import</span> Request
+<span class="token keyword">from</span> google<span class="token punctuation">.</span>oauth2<span class="token punctuation">.</span>credentials <span class="token keyword">import</span> Credentials
+<span class="token keyword">from</span> google<span class="token punctuation">.</span>oauth2 <span class="token keyword">import</span> service_account
+<span class="token keyword">from</span> googleapiclient<span class="token punctuation">.</span>http <span class="token keyword">import</span> MediaIoBaseDownload<span class="token punctuation">,</span> MediaFileUpload
+<span class="token keyword">from</span> flatten_json <span class="token keyword">import</span> flatten
+<span class="token keyword">import</span> networkx <span class="token keyword">as</span> nx
+<span class="token keyword">import</span> matplotlib
+<span class="token keyword">from</span> networkx<span class="token punctuation">.</span>readwrite <span class="token keyword">import</span> json_graph
+<span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt
+<span class="token keyword">import</span> tracemalloc
+<span class="token keyword">import</span> os
+<span class="token comment">#from ratelimiter import RateLimiter</span>
 
 
-class cd:
-    """Context manager for changing the current working directory"""
-    def __init__(self, newPath):
-        self.newPath = os.path.expanduser(newPath)
+<span class="token keyword">class</span> <span class="token class-name">cd</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""Context manager for changing the current working directory"""</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> newPath<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>newPath <span class="token operator">=</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>expanduser<span class="token punctuation">(</span>newPath<span class="token punctuation">)</span>
 
-    def __enter__(self):
-        self.savedPath = os.getcwd()
-        os.chdir(self.newPath)
+    <span class="token keyword">def</span> <span class="token function">__enter__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>savedPath <span class="token operator">=</span> os<span class="token punctuation">.</span>getcwd<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        os<span class="token punctuation">.</span>chdir<span class="token punctuation">(</span>self<span class="token punctuation">.</span>newPath<span class="token punctuation">)</span>
 
-    def __exit__(self, etype, value, traceback):
-        os.chdir(self.savedPath)
+    <span class="token keyword">def</span> <span class="token function">__exit__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> etype<span class="token punctuation">,</span> value<span class="token punctuation">,</span> traceback<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        os<span class="token punctuation">.</span>chdir<span class="token punctuation">(</span>self<span class="token punctuation">.</span>savedPath<span class="token punctuation">)</span>
 
-class search_results_page():
+<span class="token keyword">class</span> <span class="token class-name">search_results_page</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
 
-    def __init__(self,base_url = "https://www.loc.gov/collections",collection = "united-states-reports",json_parameter = "fo=json",results_per_page = "c=79",query_param = "?",page_param ="sp=",page_num = 1):
-        #pprint(num_columns)
-        self.search_url = self.create_search_url(base_url,collection,json_parameter,results_per_page,query_param,page_param,page_num)
-        self.response = self.request_data()
-        self.response_json = self.response_to_json()
-        #self.soup_html = self.html_parse()
-        self.next_url = self.get_next_url()
-        self.page_num = page_num
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>base_url <span class="token operator">=</span> <span class="token string">"https://www.loc.gov/collections"</span><span class="token punctuation">,</span>collection <span class="token operator">=</span> <span class="token string">"united-states-reports"</span><span class="token punctuation">,</span>json_parameter <span class="token operator">=</span> <span class="token string">"fo=json"</span><span class="token punctuation">,</span>results_per_page <span class="token operator">=</span> <span class="token string">"c=79"</span><span class="token punctuation">,</span>query_param <span class="token operator">=</span> <span class="token string">"?"</span><span class="token punctuation">,</span>page_param <span class="token operator">=</span><span class="token string">"sp="</span><span class="token punctuation">,</span>page_num <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment">#pprint(num_columns)</span>
+        self<span class="token punctuation">.</span>search_url <span class="token operator">=</span> self<span class="token punctuation">.</span>create_search_url<span class="token punctuation">(</span>base_url<span class="token punctuation">,</span>collection<span class="token punctuation">,</span>json_parameter<span class="token punctuation">,</span>results_per_page<span class="token punctuation">,</span>query_param<span class="token punctuation">,</span>page_param<span class="token punctuation">,</span>page_num<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>response <span class="token operator">=</span> self<span class="token punctuation">.</span>request_data<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>response_json <span class="token operator">=</span> self<span class="token punctuation">.</span>response_to_json<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token comment">#self.soup_html = self.html_parse()</span>
+        self<span class="token punctuation">.</span>next_url <span class="token operator">=</span> self<span class="token punctuation">.</span>get_next_url<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>page_num <span class="token operator">=</span> page_num
 
-    def to_json(self, file_name = 'result_',file_num = 0, extension =".json"):
-        output_name = file_name + str(file_num)
-        output_name = output_name + extension
-        with open(output_name, 'w') as outfile:
-            json.dump(self.response_json, outfile)
+    <span class="token keyword">def</span> <span class="token function">to_json</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> file_name <span class="token operator">=</span> <span class="token string">'result_'</span><span class="token punctuation">,</span>file_num <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> extension <span class="token operator">=</span><span class="token string">".json"</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        output_name <span class="token operator">=</span> file_name <span class="token operator">+</span> <span class="token builtin">str</span><span class="token punctuation">(</span>file_num<span class="token punctuation">)</span>
+        output_name <span class="token operator">=</span> output_name <span class="token operator">+</span> extension
+        <span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span>output_name<span class="token punctuation">,</span> <span class="token string">'w'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> outfile<span class="token punctuation">:</span>
+            json<span class="token punctuation">.</span>dump<span class="token punctuation">(</span>self<span class="token punctuation">.</span>response_json<span class="token punctuation">,</span> outfile<span class="token punctuation">)</span>
 
-    def to_pandas(self):
-        df = nx.to_pandas_edgelist(self.graph)
-        return(df)
+    <span class="token keyword">def</span> <span class="token function">to_pandas</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        df <span class="token operator">=</span> nx<span class="token punctuation">.</span>to_pandas_edgelist<span class="token punctuation">(</span>self<span class="token punctuation">.</span>graph<span class="token punctuation">)</span>
+        <span class="token keyword">return</span><span class="token punctuation">(</span>df<span class="token punctuation">)</span>
 
-    def to_csv(self,file_name = 'result_',file_num = 0, extension =".csv"):
-        output_name = file_name + str(file_num)
-        output_name = output_name + extension
-        df = self.to_pandas()
-        df.to_csv(output_name)
-
-
-    def write_graphml(self,file_name = 'result_', file_num=0, extension = ".graphml"):
-        output_name = file_name + str(file_num)
-        output_name = output_name + extension
-        nx.write_graphml(self.graph, output_name)
-
-    def write_to_file(self,data = None, file_name = 'result_',file_num = 0, extension = ".json"):
-        output_name = file_name + str(file_num)
-        output_name = output_name + extension
-        with open(output_name, 'w') as outfile:
-            json.dump(data, outfile)
+    <span class="token keyword">def</span> <span class="token function">to_csv</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>file_name <span class="token operator">=</span> <span class="token string">'result_'</span><span class="token punctuation">,</span>file_num <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> extension <span class="token operator">=</span><span class="token string">".csv"</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        output_name <span class="token operator">=</span> file_name <span class="token operator">+</span> <span class="token builtin">str</span><span class="token punctuation">(</span>file_num<span class="token punctuation">)</span>
+        output_name <span class="token operator">=</span> output_name <span class="token operator">+</span> extension
+        df <span class="token operator">=</span> self<span class="token punctuation">.</span>to_pandas<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        df<span class="token punctuation">.</span>to_csv<span class="token punctuation">(</span>output_name<span class="token punctuation">)</span>
 
 
-    def node_gen_2(self, data, root ='result', node_list = [], edge_list = [], previous_k = None, previous_edge = None, graph = None):
-        #root = root 
-        if type(data) is dict:
-            for k, v in data.items():
-                if k is not None and k not in node_list:
-                    graph.add_node(k, type = k)
-                    #node_list.append((k, {'type' : k}))
-                    #(1, 2, color='red', weight=0.84, size=300)\
-                    graph.add_edge(root,k, relationship = "of", type = "root")
-                    #edge_list.append((root , k, {"relationship" : "of"}, {"type" : 'root'}))
-                #pprint('passing_value')
-                #save k
-                previous_k = k
-                previous_edge = (root , k)
-                self.node_gen_2(v,root = root, node_list = node_list,edge_list = edge_list, previous_k = k, previous_edge = previous_edge, graph = graph)
+    <span class="token keyword">def</span> <span class="token function">write_graphml</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>file_name <span class="token operator">=</span> <span class="token string">'result_'</span><span class="token punctuation">,</span> file_num<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> extension <span class="token operator">=</span> <span class="token string">".graphml"</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        output_name <span class="token operator">=</span> file_name <span class="token operator">+</span> <span class="token builtin">str</span><span class="token punctuation">(</span>file_num<span class="token punctuation">)</span>
+        output_name <span class="token operator">=</span> output_name <span class="token operator">+</span> extension
+        nx<span class="token punctuation">.</span>write_graphml<span class="token punctuation">(</span>self<span class="token punctuation">.</span>graph<span class="token punctuation">,</span> output_name<span class="token punctuation">)</span>
 
-        elif type(data) is list:
-            for item in data:
-                #pprint('passing_data')
+    <span class="token keyword">def</span> <span class="token function">write_to_file</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>data <span class="token operator">=</span> <span class="token boolean">None</span><span class="token punctuation">,</span> file_name <span class="token operator">=</span> <span class="token string">'result_'</span><span class="token punctuation">,</span>file_num <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> extension <span class="token operator">=</span> <span class="token string">".json"</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        output_name <span class="token operator">=</span> file_name <span class="token operator">+</span> <span class="token builtin">str</span><span class="token punctuation">(</span>file_num<span class="token punctuation">)</span>
+        output_name <span class="token operator">=</span> output_name <span class="token operator">+</span> extension
+        <span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span>output_name<span class="token punctuation">,</span> <span class="token string">'w'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> outfile<span class="token punctuation">:</span>
+            json<span class="token punctuation">.</span>dump<span class="token punctuation">(</span>data<span class="token punctuation">,</span> outfile<span class="token punctuation">)</span>
 
-                self.node_gen_2(item,root = root, node_list = node_list,edge_list = edge_list,previous_k = previous_k, previous_edge= previous_edge, graph = graph)
-                #create_edge to k
 
-        else:
-            #this item is no longer a dictionary or list
-            pprint('appending_data')
-            #create edge to k
-            if data is not None:
-                graph.add_node(data,type = data)
-                #node_list.append((data, {"type" : data}))
-                graph.add_edge(previous_k, data, relationship = "is", type = previous_k)
-                #edge_list.append((previous_k ,data,{'relationship': "is"}, {'type' : data}))
-                #edge_list.append((root,data))
+    <span class="token keyword">def</span> <span class="token function">node_gen_2</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> data<span class="token punctuation">,</span> root <span class="token operator">=</span><span class="token string">'result'</span><span class="token punctuation">,</span> node_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> edge_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> previous_k <span class="token operator">=</span> <span class="token boolean">None</span><span class="token punctuation">,</span> previous_edge <span class="token operator">=</span> <span class="token boolean">None</span><span class="token punctuation">,</span> graph <span class="token operator">=</span> <span class="token boolean">None</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment">#root = root </span>
+        <span class="token keyword">if</span> <span class="token builtin">type</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token keyword">is</span> <span class="token builtin">dict</span><span class="token punctuation">:</span>
+            <span class="token keyword">for</span> k<span class="token punctuation">,</span> v <span class="token keyword">in</span> data<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                <span class="token keyword">if</span> k <span class="token keyword">is</span> <span class="token keyword">not</span> <span class="token boolean">None</span> <span class="token keyword">and</span> k <span class="token keyword">not</span> <span class="token keyword">in</span> node_list<span class="token punctuation">:</span>
+                    graph<span class="token punctuation">.</span>add_node<span class="token punctuation">(</span>k<span class="token punctuation">,</span> <span class="token builtin">type</span> <span class="token operator">=</span> k<span class="token punctuation">)</span>
+                    <span class="token comment">#node_list.append((k, {'type' : k}))</span>
+                    <span class="token comment">#(1, 2, color='red', weight=0.84, size=300)\</span>
+                    graph<span class="token punctuation">.</span>add_edge<span class="token punctuation">(</span>root<span class="token punctuation">,</span>k<span class="token punctuation">,</span> relationship <span class="token operator">=</span> <span class="token string">"of"</span><span class="token punctuation">,</span> <span class="token builtin">type</span> <span class="token operator">=</span> <span class="token string">"root"</span><span class="token punctuation">)</span>
+                    <span class="token comment">#edge_list.append((root , k, {"relationship" : "of"}, {"type" : 'root'}))</span>
+                <span class="token comment">#pprint('passing_value')</span>
+                <span class="token comment">#save k</span>
+                previous_k <span class="token operator">=</span> k
+                previous_edge <span class="token operator">=</span> <span class="token punctuation">(</span>root <span class="token punctuation">,</span> k<span class="token punctuation">)</span>
+                self<span class="token punctuation">.</span>node_gen_2<span class="token punctuation">(</span>v<span class="token punctuation">,</span>root <span class="token operator">=</span> root<span class="token punctuation">,</span> node_list <span class="token operator">=</span> node_list<span class="token punctuation">,</span>edge_list <span class="token operator">=</span> edge_list<span class="token punctuation">,</span> previous_k <span class="token operator">=</span> k<span class="token punctuation">,</span> previous_edge <span class="token operator">=</span> previous_edge<span class="token punctuation">,</span> graph <span class="token operator">=</span> graph<span class="token punctuation">)</span>
 
-    #flatten(hierarchak)_dict)
-        return graph 
+        <span class="token keyword">elif</span> <span class="token builtin">type</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token keyword">is</span> <span class="token builtin">list</span><span class="token punctuation">:</span>
+            <span class="token keyword">for</span> item <span class="token keyword">in</span> data<span class="token punctuation">:</span>
+                <span class="token comment">#pprint('passing_data')</span>
+
+                self<span class="token punctuation">.</span>node_gen_2<span class="token punctuation">(</span>item<span class="token punctuation">,</span>root <span class="token operator">=</span> root<span class="token punctuation">,</span> node_list <span class="token operator">=</span> node_list<span class="token punctuation">,</span>edge_list <span class="token operator">=</span> edge_list<span class="token punctuation">,</span>previous_k <span class="token operator">=</span> previous_k<span class="token punctuation">,</span> previous_edge<span class="token operator">=</span> previous_edge<span class="token punctuation">,</span> graph <span class="token operator">=</span> graph<span class="token punctuation">)</span>
+                <span class="token comment">#create_edge to k</span>
+
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token comment">#this item is no longer a dictionary or list</span>
+            pprint<span class="token punctuation">(</span><span class="token string">'appending_data'</span><span class="token punctuation">)</span>
+            <span class="token comment">#create edge to k</span>
+            <span class="token keyword">if</span> data <span class="token keyword">is</span> <span class="token keyword">not</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+                graph<span class="token punctuation">.</span>add_node<span class="token punctuation">(</span>data<span class="token punctuation">,</span><span class="token builtin">type</span> <span class="token operator">=</span> data<span class="token punctuation">)</span>
+                <span class="token comment">#node_list.append((data, {"type" : data}))</span>
+                graph<span class="token punctuation">.</span>add_edge<span class="token punctuation">(</span>previous_k<span class="token punctuation">,</span> data<span class="token punctuation">,</span> relationship <span class="token operator">=</span> <span class="token string">"is"</span><span class="token punctuation">,</span> <span class="token builtin">type</span> <span class="token operator">=</span> previous_k<span class="token punctuation">)</span>
+                <span class="token comment">#edge_list.append((previous_k ,data,{'relationship': "is"}, {'type' : data}))</span>
+                <span class="token comment">#edge_list.append((root,data))</span>
+
+    <span class="token comment">#flatten(hierarchak)_dict)</span>
+        <span class="token keyword">return</span> graph 
 
     
-    def node_runner(self,data,graph):
+    <span class="token keyword">def</span> <span class="token function">node_runner</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>data<span class="token punctuation">,</span>graph<span class="token punctuation">)</span><span class="token punctuation">:</span>
         
-        node_list = []
-        edge_list = []
-        for item in data:
-            #root = item['title']
-            graph = self.node_gen_2(data = item, node_list = node_list, graph = graph)
-        #pprint(edge_list)
-        return graph
+        node_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        edge_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> item <span class="token keyword">in</span> data<span class="token punctuation">:</span>
+            <span class="token comment">#root = item['title']</span>
+            graph <span class="token operator">=</span> self<span class="token punctuation">.</span>node_gen_2<span class="token punctuation">(</span>data <span class="token operator">=</span> item<span class="token punctuation">,</span> node_list <span class="token operator">=</span> node_list<span class="token punctuation">,</span> graph <span class="token operator">=</span> graph<span class="token punctuation">)</span>
+        <span class="token comment">#pprint(edge_list)</span>
+        <span class="token keyword">return</span> graph
 
-    def node_generator(self, data, root ='title_testing', node_list = [], edge_list = [], previous_k = None, previous_edge = None):
-        #pprint(data)
-        if type(data) is dict:
-            for k, v in data.items():
-                if k is not None and k not in node_list:
-                    node_list.append(k)
-                    edge_list.append((root , k))
-                #pprint('passing_value')
-                #save k
-                previous_k = k
-                previous_edge = (root , k)
-                self.node_generator(v,root = root, node_list = node_list,edge_list = edge_list, previous_k = k, previous_edge = previous_edge)
+    <span class="token keyword">def</span> <span class="token function">node_generator</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> data<span class="token punctuation">,</span> root <span class="token operator">=</span><span class="token string">'title_testing'</span><span class="token punctuation">,</span> node_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> edge_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> previous_k <span class="token operator">=</span> <span class="token boolean">None</span><span class="token punctuation">,</span> previous_edge <span class="token operator">=</span> <span class="token boolean">None</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment">#pprint(data)</span>
+        <span class="token keyword">if</span> <span class="token builtin">type</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token keyword">is</span> <span class="token builtin">dict</span><span class="token punctuation">:</span>
+            <span class="token keyword">for</span> k<span class="token punctuation">,</span> v <span class="token keyword">in</span> data<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                <span class="token keyword">if</span> k <span class="token keyword">is</span> <span class="token keyword">not</span> <span class="token boolean">None</span> <span class="token keyword">and</span> k <span class="token keyword">not</span> <span class="token keyword">in</span> node_list<span class="token punctuation">:</span>
+                    node_list<span class="token punctuation">.</span>append<span class="token punctuation">(</span>k<span class="token punctuation">)</span>
+                    edge_list<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">(</span>root <span class="token punctuation">,</span> k<span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token comment">#pprint('passing_value')</span>
+                <span class="token comment">#save k</span>
+                previous_k <span class="token operator">=</span> k
+                previous_edge <span class="token operator">=</span> <span class="token punctuation">(</span>root <span class="token punctuation">,</span> k<span class="token punctuation">)</span>
+                self<span class="token punctuation">.</span>node_generator<span class="token punctuation">(</span>v<span class="token punctuation">,</span>root <span class="token operator">=</span> root<span class="token punctuation">,</span> node_list <span class="token operator">=</span> node_list<span class="token punctuation">,</span>edge_list <span class="token operator">=</span> edge_list<span class="token punctuation">,</span> previous_k <span class="token operator">=</span> k<span class="token punctuation">,</span> previous_edge <span class="token operator">=</span> previous_edge<span class="token punctuation">)</span>
 
-        elif type(data) is list:
-            for item in data:
-                #pprint('passing_data')
+        <span class="token keyword">elif</span> <span class="token builtin">type</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token keyword">is</span> <span class="token builtin">list</span><span class="token punctuation">:</span>
+            <span class="token keyword">for</span> item <span class="token keyword">in</span> data<span class="token punctuation">:</span>
+                <span class="token comment">#pprint('passing_data')</span>
 
-                self.node_generator(item,root = root, node_list = node_list,edge_list = edge_list,previous_k = previous_k, previous_edge= previous_edge)
-                #create_edge to k
+                self<span class="token punctuation">.</span>node_generator<span class="token punctuation">(</span>item<span class="token punctuation">,</span>root <span class="token operator">=</span> root<span class="token punctuation">,</span> node_list <span class="token operator">=</span> node_list<span class="token punctuation">,</span>edge_list <span class="token operator">=</span> edge_list<span class="token punctuation">,</span>previous_k <span class="token operator">=</span> previous_k<span class="token punctuation">,</span> previous_edge<span class="token operator">=</span> previous_edge<span class="token punctuation">)</span>
+                <span class="token comment">#create_edge to k</span>
 
-        else:
-            #this item is no longer a dictionary or list
-            pprint('appending_data')
-            #create edge to k
-            if data is not None:
-                node_list.append(data)
-                edge_list.append((previous_k ,data))
-                edge_list.append((root,data))
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token comment">#this item is no longer a dictionary or list</span>
+            pprint<span class="token punctuation">(</span><span class="token string">'appending_data'</span><span class="token punctuation">)</span>
+            <span class="token comment">#create edge to k</span>
+            <span class="token keyword">if</span> data <span class="token keyword">is</span> <span class="token keyword">not</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+                node_list<span class="token punctuation">.</span>append<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+                edge_list<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">(</span>previous_k <span class="token punctuation">,</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span>
+                edge_list<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-    #flatten(hierarchak)_dict)
-        return node_list, edge_list 
-        #self.json_graph = self.create_json_graph()
+    <span class="token comment">#flatten(hierarchak)_dict)</span>
+        <span class="token keyword">return</span> node_list<span class="token punctuation">,</span> edge_list 
+        <span class="token comment">#self.json_graph = self.create_json_graph()</span>
 
 
-    def create_json_graph(self):
-        #graph = nx.Graph(self.response_json)
-        graph = nx.from_dict_of_dicts(self.response_json)
-        #graph = json_graph.node_link_graph(self.response_json)
-        nx.draw(graph)
-        return graph
+    <span class="token keyword">def</span> <span class="token function">create_json_graph</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment">#graph = nx.Graph(self.response_json)</span>
+        graph <span class="token operator">=</span> nx<span class="token punctuation">.</span>from_dict_of_dicts<span class="token punctuation">(</span>self<span class="token punctuation">.</span>response_json<span class="token punctuation">)</span>
+        <span class="token comment">#graph = json_graph.node_link_graph(self.response_json)</span>
+        nx<span class="token punctuation">.</span>draw<span class="token punctuation">(</span>graph<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> graph
         
-        #self.node_list = self.node_generator`
+        <span class="token comment">#self.node_list = self.node_generator`</span>
 
 
 
-    def create_search_result_node(self):
+    <span class="token keyword">def</span> <span class="token function">create_search_result_node</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
      
-        for item in self.response_json_flat:
-            for k,v in item.items():
-                if k not in self.column_lookup_table:
-                    column_string = self.colnum_string()
+        <span class="token keyword">for</span> item <span class="token keyword">in</span> self<span class="token punctuation">.</span>response_json_flat<span class="token punctuation">:</span>
+            <span class="token keyword">for</span> k<span class="token punctuation">,</span>v <span class="token keyword">in</span> item<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                <span class="token keyword">if</span> k <span class="token keyword">not</span> <span class="token keyword">in</span> self<span class="token punctuation">.</span>column_lookup_table<span class="token punctuation">:</span>
+                    column_string <span class="token operator">=</span> self<span class="token punctuation">.</span>colnum_string<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-                    self.column_lookup_table[k] = self.colnum_string(self.num_columns)
-                    self.num_columns += 1
-                else:
-                    continue
+                    self<span class="token punctuation">.</span>column_lookup_table<span class="token punctuation">[</span>k<span class="token punctuation">]</span> <span class="token operator">=</span> self<span class="token punctuation">.</span>colnum_string<span class="token punctuation">(</span>self<span class="token punctuation">.</span>num_columns<span class="token punctuation">)</span>
+                    self<span class="token punctuation">.</span>num_columns <span class="token operator">+=</span> <span class="token number">1</span>
+                <span class="token keyword">else</span><span class="token punctuation">:</span>
+                    <span class="token keyword">continue</span>
 
-    def append_to_data_list(self,rnge,d):#rename to _data_list
-        request_body = {
-            'range': rnge,
-            "majorDimension": "COLUMNS",
-            "values": [d]
-        }
-        return request_body
-        #data_list.append(request_body_tmp)
+    <span class="token keyword">def</span> <span class="token function">append_to_data_list</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>rnge<span class="token punctuation">,</span>d<span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token comment">#rename to _data_list</span>
+        request_body <span class="token operator">=</span> <span class="token punctuation">{</span>
+            <span class="token string">'range'</span><span class="token punctuation">:</span> rnge<span class="token punctuation">,</span>
+            <span class="token string">"majorDimension"</span><span class="token punctuation">:</span> <span class="token string">"COLUMNS"</span><span class="token punctuation">,</span>
+            <span class="token string">"values"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>d<span class="token punctuation">]</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> request_body
+        <span class="token comment">#data_list.append(request_body_tmp)</span>
 
-    def map_column_to_range(self,column_key):
+    <span class="token keyword">def</span> <span class="token function">map_column_to_range</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>column_key<span class="token punctuation">)</span><span class="token punctuation">:</span>
         
-        rnge = "'Sheet1'" + "!" + column_key + str(1)
-        return rnge
+        rnge <span class="token operator">=</span> <span class="token string">"'Sheet1'"</span> <span class="token operator">+</span> <span class="token string">"!"</span> <span class="token operator">+</span> column_key <span class="token operator">+</span> <span class="token builtin">str</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> rnge
                 
 
-    def colnum_string(self,num_columns):
-        string = ""
-        #pprint("conlum_string")
-        #pprint(num_columns)
-        while num_columns > 0:
-            num_columns, remainder = divmod(num_columns - 1, 26)
-            string = chr(65 + remainder) + string
-            #pprint(string)
-        return string
+    <span class="token keyword">def</span> <span class="token function">colnum_string</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>num_columns<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        string <span class="token operator">=</span> <span class="token string">""</span>
+        <span class="token comment">#pprint("conlum_string")</span>
+        <span class="token comment">#pprint(num_columns)</span>
+        <span class="token keyword">while</span> num_columns <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">:</span>
+            num_columns<span class="token punctuation">,</span> remainder <span class="token operator">=</span> <span class="token builtin">divmod</span><span class="token punctuation">(</span>num_columns <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">26</span><span class="token punctuation">)</span>
+            string <span class="token operator">=</span> <span class="token builtin">chr</span><span class="token punctuation">(</span><span class="token number">65</span> <span class="token operator">+</span> remainder<span class="token punctuation">)</span> <span class="token operator">+</span> string
+            <span class="token comment">#pprint(string)</span>
+        <span class="token keyword">return</span> string
 
-    def map_columns_to_lookup_table(self):
+    <span class="token keyword">def</span> <span class="token function">map_columns_to_lookup_table</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
 
-        #print('first_map_columns_print')
-        #num_columns_tmp = self.num_columns
-        #pprint(num_columns_tmp)
-        for item in self.response_json_flat:
-            for k in item.keys():
-                num_columns_tmp = self.num_columns
-                if k not in self.column_lookup_table:
-                    #print('second_map_Columns_print')
-                    #pprint(num_columns_tmp)
-                    self.column_lookup_table[k] = self.colnum_string(num_columns = num_columns_tmp)
-                    self.num_columns = self.num_columns + 1
+        <span class="token comment">#print('first_map_columns_print')</span>
+        <span class="token comment">#num_columns_tmp = self.num_columns</span>
+        <span class="token comment">#pprint(num_columns_tmp)</span>
+        <span class="token keyword">for</span> item <span class="token keyword">in</span> self<span class="token punctuation">.</span>response_json_flat<span class="token punctuation">:</span>
+            <span class="token keyword">for</span> k <span class="token keyword">in</span> item<span class="token punctuation">.</span>keys<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                num_columns_tmp <span class="token operator">=</span> self<span class="token punctuation">.</span>num_columns
+                <span class="token keyword">if</span> k <span class="token keyword">not</span> <span class="token keyword">in</span> self<span class="token punctuation">.</span>column_lookup_table<span class="token punctuation">:</span>
+                    <span class="token comment">#print('second_map_Columns_print')</span>
+                    <span class="token comment">#pprint(num_columns_tmp)</span>
+                    self<span class="token punctuation">.</span>column_lookup_table<span class="token punctuation">[</span>k<span class="token punctuation">]</span> <span class="token operator">=</span> self<span class="token punctuation">.</span>colnum_string<span class="token punctuation">(</span>num_columns <span class="token operator">=</span> num_columns_tmp<span class="token punctuation">)</span>
+                    self<span class="token punctuation">.</span>num_columns <span class="token operator">=</span> self<span class="token punctuation">.</span>num_columns <span class="token operator">+</span> <span class="token number">1</span>
        
-                    #append range to request... 
-                    #append collumn to batch lookup
+                    <span class="token comment">#append range to request... </span>
+                    <span class="token comment">#append collumn to batch lookup</span>
                 
 
-                else:
-                    continue
+                <span class="token keyword">else</span><span class="token punctuation">:</span>
+                    <span class="token keyword">continue</span>
     
-    def column_request_list_generator(self):
-        request_list = []
-        for k,v in self.column_lookup_table.items():
-            rnge = self.map_column_to_range(k)
-            request_body = self.append_to_data_list(rnge,v)
-            #pprint(request_body)
-            request_list.append(request_body)
-        return request_list
+    <span class="token keyword">def</span> <span class="token function">column_request_list_generator</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        request_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> k<span class="token punctuation">,</span>v <span class="token keyword">in</span> self<span class="token punctuation">.</span>column_lookup_table<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            rnge <span class="token operator">=</span> self<span class="token punctuation">.</span>map_column_to_range<span class="token punctuation">(</span>k<span class="token punctuation">)</span>
+            request_body <span class="token operator">=</span> self<span class="token punctuation">.</span>append_to_data_list<span class="token punctuation">(</span>rnge<span class="token punctuation">,</span>v<span class="token punctuation">)</span>
+            <span class="token comment">#pprint(request_body)</span>
+            request_list<span class="token punctuation">.</span>append<span class="token punctuation">(</span>request_body<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> request_list
 
 
 
 
 
-        #return column_lookup_table
+        <span class="token comment">#return column_lookup_table</span>
 
-    def get_next_url(self):
-        return (self.response_json['pagination']['next'])
+    <span class="token keyword">def</span> <span class="token function">get_next_url</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span>self<span class="token punctuation">.</span>response_json<span class="token punctuation">[</span><span class="token string">'pagination'</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">'next'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
 
-    def create_search_url(self,base_url,collection,json_parameter,results_per_page,query_param,page_param,page_num):
-        url_sep ="/"
-        page_param = page_param +(str(page_num))
-        query = "&amp;".join([json_parameter,results_per_page,page_param])
-        query = query_param + query
-        search_url = url_sep.join([base_url,collection,query])
-        #pprint(search_url)
+    <span class="token keyword">def</span> <span class="token function">create_search_url</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>base_url<span class="token punctuation">,</span>collection<span class="token punctuation">,</span>json_parameter<span class="token punctuation">,</span>results_per_page<span class="token punctuation">,</span>query_param<span class="token punctuation">,</span>page_param<span class="token punctuation">,</span>page_num<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        url_sep <span class="token operator">=</span><span class="token string">"/"</span>
+        page_param <span class="token operator">=</span> page_param <span class="token operator">+</span><span class="token punctuation">(</span><span class="token builtin">str</span><span class="token punctuation">(</span>page_num<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        query <span class="token operator">=</span> <span class="token string">"&amp;"</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">[</span>json_parameter<span class="token punctuation">,</span>results_per_page<span class="token punctuation">,</span>page_param<span class="token punctuation">]</span><span class="token punctuation">)</span>
+        query <span class="token operator">=</span> query_param <span class="token operator">+</span> query
+        search_url <span class="token operator">=</span> url_sep<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">[</span>base_url<span class="token punctuation">,</span>collection<span class="token punctuation">,</span>query<span class="token punctuation">]</span><span class="token punctuation">)</span>
+        <span class="token comment">#pprint(search_url)</span>
         
-        return search_url
+        <span class="token keyword">return</span> search_url
 
-    def say_hello(self):
-        pprint(self.base_url)
+    <span class="token keyword">def</span> <span class="token function">say_hello</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        pprint<span class="token punctuation">(</span>self<span class="token punctuation">.</span>base_url<span class="token punctuation">)</span>
 
-    def request_data(self):
-        headers = {'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.11 (KHTML, like Gecko) Version/9.0.2 Safari/601.3.9',
-                    'Accept-Encoding': 'identity'
-                }
-        return requests.get(self.search_url,headers=headers)
+    <span class="token keyword">def</span> <span class="token function">request_data</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        headers <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">'User-Agent'</span><span class="token punctuation">:</span><span class="token string">'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.11 (KHTML, like Gecko) Version/9.0.2 Safari/601.3.9'</span><span class="token punctuation">,</span>
+                    <span class="token string">'Accept-Encoding'</span><span class="token punctuation">:</span> <span class="token string">'identity'</span>
+                <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span>self<span class="token punctuation">.</span>search_url<span class="token punctuation">,</span>headers<span class="token operator">=</span>headers<span class="token punctuation">)</span>
 
-    def response_to_json(self):
-        return self.response.json()
+    <span class="token keyword">def</span> <span class="token function">response_to_json</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>response<span class="token punctuation">.</span>json<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-    def html_parse(self):
-        soup=BeautifulSoup(self.response.content,'lxml')
-        #pprint(soup)
-        return soup
+    <span class="token keyword">def</span> <span class="token function">html_parse</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        soup<span class="token operator">=</span>BeautifulSoup<span class="token punctuation">(</span>self<span class="token punctuation">.</span>response<span class="token punctuation">.</span>content<span class="token punctuation">,</span><span class="token string">'lxml'</span><span class="token punctuation">)</span>
+        <span class="token comment">#pprint(soup)</span>
+        <span class="token keyword">return</span> soup
 
-    def flatten_result(self):
-        flat_result_list = []
-        for item in self.response_json['results']:
-            flat_json = flatten(item)
-            flat_result_list.append(flat_json)
-        return flat_result_list
+    <span class="token keyword">def</span> <span class="token function">flatten_result</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        flat_result_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> item <span class="token keyword">in</span> self<span class="token punctuation">.</span>response_json<span class="token punctuation">[</span><span class="token string">'results'</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+            flat_json <span class="token operator">=</span> flatten<span class="token punctuation">(</span>item<span class="token punctuation">)</span>
+            flat_result_list<span class="token punctuation">.</span>append<span class="token punctuation">(</span>flat_json<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> flat_result_list
 
 
 
-class search_result():
+<span class="token keyword">class</span> <span class="token class-name">search_result</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
     
-    def __init__(self,dict_item,num_columns,colnum_string):
-        self.key = dict_item.key()
-        self.value = dict_item.value()
-        self.column_string = colnum_string
-        self.index = num_columns
-        self.range = self.create_column_range_string()
-        self.request_body = self.create_column_request()
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>dict_item<span class="token punctuation">,</span>num_columns<span class="token punctuation">,</span>colnum_string<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>key <span class="token operator">=</span> dict_item<span class="token punctuation">.</span>key<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>value <span class="token operator">=</span> dict_item<span class="token punctuation">.</span>value<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>column_string <span class="token operator">=</span> colnum_string
+        self<span class="token punctuation">.</span>index <span class="token operator">=</span> num_columns
+        self<span class="token punctuation">.</span><span class="token builtin">range</span> <span class="token operator">=</span> self<span class="token punctuation">.</span>create_column_range_string<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>request_body <span class="token operator">=</span> self<span class="token punctuation">.</span>create_column_request<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-    def create_column_request(self):
-        request_body = {
-            'range': self.range,
-            "majorDimension": "COLUMNS",
-            "values": [self.value]
-        }
-        return request_body
+    <span class="token keyword">def</span> <span class="token function">create_column_request</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        request_body <span class="token operator">=</span> <span class="token punctuation">{</span>
+            <span class="token string">'range'</span><span class="token punctuation">:</span> self<span class="token punctuation">.</span><span class="token builtin">range</span><span class="token punctuation">,</span>
+            <span class="token string">"majorDimension"</span><span class="token punctuation">:</span> <span class="token string">"COLUMNS"</span><span class="token punctuation">,</span>
+            <span class="token string">"values"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>self<span class="token punctuation">.</span>value<span class="token punctuation">]</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> request_body
 
     
-    def create_column_range_string(self):
+    <span class="token keyword">def</span> <span class="token function">create_column_range_string</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
 
-        rnge = "'Sheet1'" + "!" + self.column_string + str(1)
-        return rnge
-    def colnum_string(self, num_columns):
-        string = ""
-        while num_columns > 0:
-            num_columns, remainder = divmod(num_columns - 1, 26)
-            string = chr(65 + remainder) + string
-        return string
+        rnge <span class="token operator">=</span> <span class="token string">"'Sheet1'"</span> <span class="token operator">+</span> <span class="token string">"!"</span> <span class="token operator">+</span> self<span class="token punctuation">.</span>column_string <span class="token operator">+</span> <span class="token builtin">str</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> rnge
+    <span class="token keyword">def</span> <span class="token function">colnum_string</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> num_columns<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        string <span class="token operator">=</span> <span class="token string">""</span>
+        <span class="token keyword">while</span> num_columns <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">:</span>
+            num_columns<span class="token punctuation">,</span> remainder <span class="token operator">=</span> <span class="token builtin">divmod</span><span class="token punctuation">(</span>num_columns <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">26</span><span class="token punctuation">)</span>
+            string <span class="token operator">=</span> <span class="token builtin">chr</span><span class="token punctuation">(</span><span class="token number">65</span> <span class="token operator">+</span> remainder<span class="token punctuation">)</span> <span class="token operator">+</span> string
+        <span class="token keyword">return</span> string
 
-class google_drive:
-    def __init__(self,creds):
-        self.service = self.get_drive_service(creds)
+<span class="token keyword">class</span> <span class="token class-name">google_drive</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>creds<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>service <span class="token operator">=</span> self<span class="token punctuation">.</span>get_drive_service<span class="token punctuation">(</span>creds<span class="token punctuation">)</span>
 
-    def test(self):
-        pprint("hello I exist")
+    <span class="token keyword">def</span> <span class="token function">test</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        pprint<span class="token punctuation">(</span><span class="token string">"hello I exist"</span><span class="token punctuation">)</span>
 
-    def get_drive_service(self, creds):
-        """Shows basic usage of the Drive v3 API.
+    <span class="token keyword">def</span> <span class="token function">get_drive_service</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> creds<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""Shows basic usage of the Drive v3 API.
         Prints the names and ids of the first 10 files the user has access to.
-        """
-        SCOPES = []
-        #creds = None
-        # The file token.json stores the user's access and refresh tokens, and is
-        # created automatically when the authorization flow completes for the first
-        # time.
+        """</span>
+        SCOPES <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token comment">#creds = None</span>
+        <span class="token comment"># The file token.json stores the user's access and refresh tokens, and is</span>
+        <span class="token comment"># created automatically when the authorization flow completes for the first</span>
+        <span class="token comment"># time.</span>
 
-        service = build('drive', 'v3', credentials=creds)
+        service <span class="token operator">=</span> build<span class="token punctuation">(</span><span class="token string">'drive'</span><span class="token punctuation">,</span> <span class="token string">'v3'</span><span class="token punctuation">,</span> credentials<span class="token operator">=</span>creds<span class="token punctuation">)</span>
 
-        # Call the Drive v3 API
-        results = service.files().list(
-            pageSize=10, fields="nextPageToken, files(id, name)").execute()
-        items = results.get('files', [])
+        <span class="token comment"># Call the Drive v3 API</span>
+        results <span class="token operator">=</span> service<span class="token punctuation">.</span>files<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token builtin">list</span><span class="token punctuation">(</span>
+            pageSize<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">,</span> fields<span class="token operator">=</span><span class="token string">"nextPageToken, files(id, name)"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>execute<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        items <span class="token operator">=</span> results<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'files'</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
 
-        if not items:
-            print('No files found.')
-        else:
-            print('Files:')
-            for item in items:
-                print(u'{0} ({1})'.format(item['name'], item['id']))
+        <span class="token keyword">if</span> <span class="token keyword">not</span> items<span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'No files found.'</span><span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Files:'</span><span class="token punctuation">)</span>
+            <span class="token keyword">for</span> item <span class="token keyword">in</span> items<span class="token punctuation">:</span>
+                <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">u'{0} ({1})'</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>item<span class="token punctuation">[</span><span class="token string">'name'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> item<span class="token punctuation">[</span><span class="token string">'id'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-        return service
+        <span class="token keyword">return</span> service
     
     
 
-    def create_folder(self,title):
-        drive_service = self.service
-        file_metadata = {
-            'name': '{}'.format(title),
-            'mimeType': 'application/vnd.google-apps.folder'
-        }
-        file = drive_service.files().create(body=file_metadata,
-                                            fields='id').execute()
-        print('Folder ID: %s' % file.get('id'))
+    <span class="token keyword">def</span> <span class="token function">create_folder</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>title<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        drive_service <span class="token operator">=</span> self<span class="token punctuation">.</span>service
+        file_metadata <span class="token operator">=</span> <span class="token punctuation">{</span>
+            <span class="token string">'name'</span><span class="token punctuation">:</span> <span class="token string">'{}'</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>title<span class="token punctuation">)</span><span class="token punctuation">,</span>
+            <span class="token string">'mimeType'</span><span class="token punctuation">:</span> <span class="token string">'application/vnd.google-apps.folder'</span>
+        <span class="token punctuation">}</span>
+        <span class="token builtin">file</span> <span class="token operator">=</span> drive_service<span class="token punctuation">.</span>files<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>create<span class="token punctuation">(</span>body<span class="token operator">=</span>file_metadata<span class="token punctuation">,</span>
+                                            fields<span class="token operator">=</span><span class="token string">'id'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>execute<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Folder ID: %s'</span> <span class="token operator">%</span> <span class="token builtin">file</span><span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
 
 
-    def add_spreadsheet_to_folder(self ,folder_id,title):
-        drive_service = self.service
+    <span class="token keyword">def</span> <span class="token function">add_spreadsheet_to_folder</span><span class="token punctuation">(</span>self <span class="token punctuation">,</span>folder_id<span class="token punctuation">,</span>title<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        drive_service <span class="token operator">=</span> self<span class="token punctuation">.</span>service
     
-        file_metadata = {
-        'name': '{}'.format(title),
-        'parents': [folder_id],
-        'mimeType': 'application/vnd.google-apps.spreadsheet',
-        }
+        file_metadata <span class="token operator">=</span> <span class="token punctuation">{</span>
+        <span class="token string">'name'</span><span class="token punctuation">:</span> <span class="token string">'{}'</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>title<span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token string">'parents'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>folder_id<span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token string">'mimeType'</span><span class="token punctuation">:</span> <span class="token string">'application/vnd.google-apps.spreadsheet'</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span>
 
-        res = drive_service.files().create(body=file_metadata).execute()
-        #print(res)
+        res <span class="token operator">=</span> drive_service<span class="token punctuation">.</span>files<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>create<span class="token punctuation">(</span>body<span class="token operator">=</span>file_metadata<span class="token punctuation">)</span><span class="token punctuation">.</span>execute<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token comment">#print(res)</span>
 
-        return res
+        <span class="token keyword">return</span> res
 
-class google_sheet():
+<span class="token keyword">class</span> <span class="token class-name">google_sheet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
 
-    def __init__(self,creds):
-        self.service =self.get_sheet_service(creds)
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>creds<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>service <span class="token operator">=</span>self<span class="token punctuation">.</span>get_sheet_service<span class="token punctuation">(</span>creds<span class="token punctuation">)</span>
 
 
-    def get_sheet_service(self,creds):
-        service = build('sheets', 'v4', credentials=creds)
-        return service.spreadsheets()
+    <span class="token keyword">def</span> <span class="token function">get_sheet_service</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>creds<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        service <span class="token operator">=</span> build<span class="token punctuation">(</span><span class="token string">'sheets'</span><span class="token punctuation">,</span> <span class="token string">'v4'</span><span class="token punctuation">,</span> credentials<span class="token operator">=</span>creds<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> service<span class="token punctuation">.</span>spreadsheets<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-class google_creds():
+<span class="token keyword">class</span> <span class="token class-name">google_creds</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
 
-    def __init__(self,creds_path):
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>creds_path<span class="token punctuation">)</span><span class="token punctuation">:</span>
 
-        self.creds = self.get_creds(creds_path)
+        self<span class="token punctuation">.</span>creds <span class="token operator">=</span> self<span class="token punctuation">.</span>get_creds<span class="token punctuation">(</span>creds_path<span class="token punctuation">)</span>
    
-    def get_creds(self,creds_path):
+    <span class="token keyword">def</span> <span class="token function">get_creds</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>creds_path<span class="token punctuation">)</span><span class="token punctuation">:</span>
 
-        creds = None
-        # The file token.json stores the user's access and refresh tokens, and is
-        # created automatically when the authorization flow completes for the first
-        # time.
-        if os.path.exists('token.json'):
-            creds = Credentials.from_authorized_user_file('token.json', SCOPES)
-        # If there are no (valid) credentials available, let the user log in.
-        if not creds or not creds.valid:
-            if creds and creds.expired and creds.refresh_token:
-                creds.refresh(Request())
-                print("no creds")
-            else:
-                creds = service_account.Credentials.from_service_account_file(creds_path)
-                #creds = ServiceAccountCredentials.from_json_keyfile_name('add_json_file_here.json', SCOPES)
-                #flow = InstalledAppFlow.from_client_secrets_file(
-                #    'credentials.json', SCOPES)
-                #creds = flow.run_local_server(port=0)
-            # Save the credentials for the next run
-            #with open('token.json', 'w') as token:
-            #    token.write(creds.to_json())
-        return creds
+        creds <span class="token operator">=</span> <span class="token boolean">None</span>
+        <span class="token comment"># The file token.json stores the user's access and refresh tokens, and is</span>
+        <span class="token comment"># created automatically when the authorization flow completes for the first</span>
+        <span class="token comment"># time.</span>
+        <span class="token keyword">if</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>exists<span class="token punctuation">(</span><span class="token string">'token.json'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            creds <span class="token operator">=</span> Credentials<span class="token punctuation">.</span>from_authorized_user_file<span class="token punctuation">(</span><span class="token string">'token.json'</span><span class="token punctuation">,</span> SCOPES<span class="token punctuation">)</span>
+        <span class="token comment"># If there are no (valid) credentials available, let the user log in.</span>
+        <span class="token keyword">if</span> <span class="token keyword">not</span> creds <span class="token keyword">or</span> <span class="token keyword">not</span> creds<span class="token punctuation">.</span>valid<span class="token punctuation">:</span>
+            <span class="token keyword">if</span> creds <span class="token keyword">and</span> creds<span class="token punctuation">.</span>expired <span class="token keyword">and</span> creds<span class="token punctuation">.</span>refresh_token<span class="token punctuation">:</span>
+                creds<span class="token punctuation">.</span>refresh<span class="token punctuation">(</span>Request<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"no creds"</span><span class="token punctuation">)</span>
+            <span class="token keyword">else</span><span class="token punctuation">:</span>
+                creds <span class="token operator">=</span> service_account<span class="token punctuation">.</span>Credentials<span class="token punctuation">.</span>from_service_account_file<span class="token punctuation">(</span>creds_path<span class="token punctuation">)</span>
+                <span class="token comment">#creds = ServiceAccountCredentials.from_json_keyfile_name('add_json_file_here.json', SCOPES)</span>
+                <span class="token comment">#flow = InstalledAppFlow.from_client_secrets_file(</span>
+                <span class="token comment">#    'credentials.json', SCOPES)</span>
+                <span class="token comment">#creds = flow.run_local_server(port=0)</span>
+            <span class="token comment"># Save the credentials for the next run</span>
+            <span class="token comment">#with open('token.json', 'w') as token:</span>
+            <span class="token comment">#    token.write(creds.to_json())</span>
+        <span class="token keyword">return</span> creds
 
-class config():
+<span class="token keyword">class</span> <span class="token class-name">config</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
 
-    def __init__(self,file_path):
-        #self.yaml_stream = file("config.yaml", 'r')
-        self.data = self.load_config(file_path)
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>file_path<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment">#self.yaml_stream = file("config.yaml", 'r')</span>
+        self<span class="token punctuation">.</span>data <span class="token operator">=</span> self<span class="token punctuation">.</span>load_config<span class="token punctuation">(</span>file_path<span class="token punctuation">)</span>
 
 
-    def load_config(self,file_path):
-        #print("test")
-        stream = open(file_path, 'r')
-        data = yaml.load(stream,Loader = Loader)
-        #pprint(data)
-        return data
+    <span class="token keyword">def</span> <span class="token function">load_config</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>file_path<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment">#print("test")</span>
+        stream <span class="token operator">=</span> <span class="token builtin">open</span><span class="token punctuation">(</span>file_path<span class="token punctuation">,</span> <span class="token string">'r'</span><span class="token punctuation">)</span>
+        data <span class="token operator">=</span> yaml<span class="token punctuation">.</span>load<span class="token punctuation">(</span>stream<span class="token punctuation">,</span>Loader <span class="token operator">=</span> Loader<span class="token punctuation">)</span>
+        <span class="token comment">#pprint(data)</span>
+        <span class="token keyword">return</span> data
 
-def create_google_credentials_object(creds_path = 'credentials.json'):
-    google_credentials_object = google_creds(creds_path)
-    return google_credentials_object
+<span class="token keyword">def</span> <span class="token function">create_google_credentials_object</span><span class="token punctuation">(</span>creds_path <span class="token operator">=</span> <span class="token string">'credentials.json'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    google_credentials_object <span class="token operator">=</span> google_creds<span class="token punctuation">(</span>creds_path<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> google_credentials_object
     
-def create_config_object(file_path = 'config.yaml'):
-    config_object = config(file_path)
-    return config_object
+<span class="token keyword">def</span> <span class="token function">create_config_object</span><span class="token punctuation">(</span>file_path <span class="token operator">=</span> <span class="token string">'config.yaml'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    config_object <span class="token operator">=</span> config<span class="token punctuation">(</span>file_path<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> config_object
 
 
-def search_result_generator(condition = True):
-    #column_lookup_table = {}
-    #pprint(num_columns)
-    page_num = 1
-    column_lookup_table = {}
-    while condition ==True:
-        #pprint(num_columns)
-        time.sleep(61)
-        search_results_page_object = create_search_results_page_object(page_num = page_num)
-        if search_results_page_object.next_url != None:
-            condition = True
-            page_num = page_num + 1            
-            yield (search_results_page_object)
-        else:
-            condition = False
-            yield (search_results_page_object)
+<span class="token keyword">def</span> <span class="token function">search_result_generator</span><span class="token punctuation">(</span>condition <span class="token operator">=</span> <span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment">#column_lookup_table = {}</span>
+    <span class="token comment">#pprint(num_columns)</span>
+    page_num <span class="token operator">=</span> <span class="token number">1</span>
+    column_lookup_table <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+    <span class="token keyword">while</span> condition <span class="token operator">==</span><span class="token boolean">True</span><span class="token punctuation">:</span>
+        <span class="token comment">#pprint(num_columns)</span>
+        time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">61</span><span class="token punctuation">)</span>
+        search_results_page_object <span class="token operator">=</span> create_search_results_page_object<span class="token punctuation">(</span>page_num <span class="token operator">=</span> page_num<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> search_results_page_object<span class="token punctuation">.</span>next_url <span class="token operator">!=</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+            condition <span class="token operator">=</span> <span class="token boolean">True</span>
+            page_num <span class="token operator">=</span> page_num <span class="token operator">+</span> <span class="token number">1</span>            
+            <span class="token keyword">yield</span> <span class="token punctuation">(</span>search_results_page_object<span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            condition <span class="token operator">=</span> <span class="token boolean">False</span>
+            <span class="token keyword">yield</span> <span class="token punctuation">(</span>search_results_page_object<span class="token punctuation">)</span>
         
-def create_search_results_page_object(base_url = "https://www.loc.gov/collections",collection = "united-states-reports",json_parameter = "fo=json",results_per_page = "c=70",query_param = "?",page_param ="sp=",page_num = 1):
-    #search = search_results(base_url,collection,json_parameter,results_per_page,query_param,page_param,page_num)
-    #pprint(search.search_url)
-    #pprint(num_columns)
-    return search_results_page(base_url,collection,json_parameter,results_per_page,query_param,page_param,page_num)
+<span class="token keyword">def</span> <span class="token function">create_search_results_page_object</span><span class="token punctuation">(</span>base_url <span class="token operator">=</span> <span class="token string">"https://www.loc.gov/collections"</span><span class="token punctuation">,</span>collection <span class="token operator">=</span> <span class="token string">"united-states-reports"</span><span class="token punctuation">,</span>json_parameter <span class="token operator">=</span> <span class="token string">"fo=json"</span><span class="token punctuation">,</span>results_per_page <span class="token operator">=</span> <span class="token string">"c=70"</span><span class="token punctuation">,</span>query_param <span class="token operator">=</span> <span class="token string">"?"</span><span class="token punctuation">,</span>page_param <span class="token operator">=</span><span class="token string">"sp="</span><span class="token punctuation">,</span>page_num <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment">#search = search_results(base_url,collection,json_parameter,results_per_page,query_param,page_param,page_num)</span>
+    <span class="token comment">#pprint(search.search_url)</span>
+    <span class="token comment">#pprint(num_columns)</span>
+    <span class="token keyword">return</span> search_results_page<span class="token punctuation">(</span>base_url<span class="token punctuation">,</span>collection<span class="token punctuation">,</span>json_parameter<span class="token punctuation">,</span>results_per_page<span class="token punctuation">,</span>query_param<span class="token punctuation">,</span>page_param<span class="token punctuation">,</span>page_num<span class="token punctuation">)</span>
 
-def create_google_drive_object(google_creds):
-    drive_service_object = google_drive(google_creds)
-    return drive_service_object
+<span class="token keyword">def</span> <span class="token function">create_google_drive_object</span><span class="token punctuation">(</span>google_creds<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    drive_service_object <span class="token operator">=</span> google_drive<span class="token punctuation">(</span>google_creds<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> drive_service_object
 
-def create_google_sheet_object(google_creds):
-    sheet_service_object = google_sheet(google_creds)
-    return sheet_service_object
+<span class="token keyword">def</span> <span class="token function">create_google_sheet_object</span><span class="token punctuation">(</span>google_creds<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    sheet_service_object <span class="token operator">=</span> google_sheet<span class="token punctuation">(</span>google_creds<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> sheet_service_object
 
-def create_new_google_sheet(google_drive_object,folder_id,title):
-    sheet_meta_data = google_drive_object.add_spreadsheet_to_folder(folder_id, title)
-    return sheet_meta_data
+<span class="token keyword">def</span> <span class="token function">create_new_google_sheet</span><span class="token punctuation">(</span>google_drive_object<span class="token punctuation">,</span>folder_id<span class="token punctuation">,</span>title<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    sheet_meta_data <span class="token operator">=</span> google_drive_object<span class="token punctuation">.</span>add_spreadsheet_to_folder<span class="token punctuation">(</span>folder_id<span class="token punctuation">,</span> title<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> sheet_meta_data
 
-def flatten_result(result_json):
-    flat_json = flatten(result_json)
-    return flat_json
+<span class="token keyword">def</span> <span class="token function">flatten_result</span><span class="token punctuation">(</span>result_json<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    flat_json <span class="token operator">=</span> flatten<span class="token punctuation">(</span>result_json<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> flat_json
 
-def write_last_page_num(page_num):
-    with open('last_page_num.txt', 'w') as f:
-        f.write(str(page_num))
+<span class="token keyword">def</span> <span class="token function">write_last_page_num</span><span class="token punctuation">(</span>page_num<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'last_page_num.txt'</span><span class="token punctuation">,</span> <span class="token string">'w'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span><span class="token builtin">str</span><span class="token punctuation">(</span>page_num<span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-def main():
-    tracemalloc.start()
-    #rate_limiter = RateLimiter(max_calls=1, period=60)
-    #cd to output
-    #result = create_search_results_page_object()
-    #with cd("output"):
-    #    result.write_to_file(data = result.dict_of_dicts, file_num = 1)
+<span class="token keyword">def</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    tracemalloc<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token comment">#rate_limiter = RateLimiter(max_calls=1, period=60)</span>
+    <span class="token comment">#cd to output</span>
+    <span class="token comment">#result = create_search_results_page_object()</span>
+    <span class="token comment">#with cd("output"):</span>
+    <span class="token comment">#    result.write_to_file(data = result.dict_of_dicts, file_num = 1)</span>
 
-    for obj in search_result_generator():   
-        page_num = obj.page_num
-        with cd("output_2"):
-            #print('hahaha')
-            obj.to_json(file_num = page_num)
-            #obj.write_graphml(file_num= page_num)
-            #obj.to_pandas()
-            #obj.write_to_file(data = obj.dict_of_dicts, file_num = page_num)
-            #obj.to_csv()
-        write_last_page_num(page_num)
-        print("{} Search Results Crawled".format(page_num))
+    <span class="token keyword">for</span> obj <span class="token keyword">in</span> search_result_generator<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>   
+        page_num <span class="token operator">=</span> obj<span class="token punctuation">.</span>page_num
+        <span class="token keyword">with</span> cd<span class="token punctuation">(</span><span class="token string">"output_2"</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token comment">#print('hahaha')</span>
+            obj<span class="token punctuation">.</span>to_json<span class="token punctuation">(</span>file_num <span class="token operator">=</span> page_num<span class="token punctuation">)</span>
+            <span class="token comment">#obj.write_graphml(file_num= page_num)</span>
+            <span class="token comment">#obj.to_pandas()</span>
+            <span class="token comment">#obj.write_to_file(data = obj.dict_of_dicts, file_num = page_num)</span>
+            <span class="token comment">#obj.to_csv()</span>
+        write_last_page_num<span class="token punctuation">(</span>page_num<span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"{} Search Results Crawled"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>page_num<span class="token punctuation">)</span><span class="token punctuation">)</span>
 
 
     
-    snapshot = tracemalloc.take_snapshot()
-    top_stats = snapshot.statistics('lineno')
-    print("[ Top 10 ]")
-    for stat in top_stats[:10]:
-        print(stat)
+    snapshot <span class="token operator">=</span> tracemalloc<span class="token punctuation">.</span>take_snapshot<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    top_stats <span class="token operator">=</span> snapshot<span class="token punctuation">.</span>statistics<span class="token punctuation">(</span><span class="token string">'lineno'</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"[ Top 10 ]"</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> stat <span class="token keyword">in</span> top_stats<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>stat<span class="token punctuation">)</span>
 
 
-if __name__ == "__main__":
-    main()
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    main<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
         
         
 
-    </code></pre></div></section><hr/><footer><div class="bio"><p>Maintained by <strong>Justin Napolitano</strong>. <!-- --> <a href="https://twitter.com/just_napolitano">Follow me on Twitter</a></p></div></footer></article><nav class="blog-post-nav"><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li><a rel="prev" href="/carbon-shipping-projections/">← <!-- -->Monte Carlo Projection of the Annual Cost of Shipping Carbon from Europe to the United States</a></li><li></li></ul></nav></main><footer>© <!-- -->2022<!-- -->, Created by<!-- --> <a href="https://jnapolitano.io">Justin Napolitano</a></footer></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/loc_crawler/";window.___webpackCompilationHash="d94363f05044c33a6781";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"polyfill":["/polyfill-67664a8ccc6c9f02b880.js"],"app":["/app-c8d1e6b1e07552f29524.js"],"component---src-pages-404-js":["/component---src-pages-404-js-27981ca7dd461cb4280e.js"],"component---src-pages-index-js":["/component---src-pages-index-js-59a21146d37aa180d12f.js"],"component---src-pages-using-typescript-tsx":["/component---src-pages-using-typescript-tsx-2f9b97cf148785549d09.js"],"component---src-templates-blog-post-js":["/component---src-templates-blog-post-js-2fd61fd1c97edc75b172.js"]};/*]]>*/</script><script src="/polyfill-67664a8ccc6c9f02b880.js" nomodule=""></script><script src="/component---src-templates-blog-post-js-2fd61fd1c97edc75b172.js" async=""></script><script src="/commons-9979cba14fa891b0ecd4.js" async=""></script><script src="/app-c8d1e6b1e07552f29524.js" async=""></script><script src="/framework-e413e527015be9a1bdfd.js" async=""></script><script src="/webpack-runtime-8d4d3bcfd5afb11d1043.js" async=""></script></body></html>
+    </code></pre></div></section><hr/><footer><div class="bio"><p>Maintained by <strong>Justin Napolitano</strong>. <!-- --> <a href="https://twitter.com/just_napolitano">Follow me on Twitter</a></p></div></footer></article><nav class="blog-post-nav"><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li><a rel="prev" href="/carbon-shipping-projections/">← <!-- -->Monte Carlo Projection of the Annual Cost of Shipping Carbon from Europe to the United States</a></li><li><a rel="next" href="/neo4j_integration/">Integrating JSON data to your Neo4j Stack<!-- --> →</a></li></ul></nav></main><footer>© <!-- -->2022<!-- -->, Created by<!-- --> <a href="https://jnapolitano.io">Justin Napolitano</a></footer></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/loc_crawler/";window.___webpackCompilationHash="d94363f05044c33a6781";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"polyfill":["/polyfill-67664a8ccc6c9f02b880.js"],"app":["/app-c8d1e6b1e07552f29524.js"],"component---src-pages-404-js":["/component---src-pages-404-js-27981ca7dd461cb4280e.js"],"component---src-pages-index-js":["/component---src-pages-index-js-59a21146d37aa180d12f.js"],"component---src-pages-using-typescript-tsx":["/component---src-pages-using-typescript-tsx-2f9b97cf148785549d09.js"],"component---src-templates-blog-post-js":["/component---src-templates-blog-post-js-2fd61fd1c97edc75b172.js"]};/*]]>*/</script><script src="/polyfill-67664a8ccc6c9f02b880.js" nomodule=""></script><script src="/component---src-templates-blog-post-js-2fd61fd1c97edc75b172.js" async=""></script><script src="/commons-9979cba14fa891b0ecd4.js" async=""></script><script src="/app-c8d1e6b1e07552f29524.js" async=""></script><script src="/framework-e413e527015be9a1bdfd.js" async=""></script><script src="/webpack-runtime-8d4d3bcfd5afb11d1043.js" async=""></script></body></html>
