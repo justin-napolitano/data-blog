@@ -1,7 +1,7 @@
 ---
 title: "Crawling the Library of Congress API"
 date: "2022-05-16T13:40:32.169Z"
-description: "Crawl the Library of Congress API  for your Next Research Project."
+description: "Crawl the Library of Congress API to automate your next research project."
 author: Justin napolitano
 image: post-image.jpeg
 imageAlt: Justin Napolitano
@@ -24,7 +24,7 @@ The code below documents the search_result page.  It contains a number of helper
 
 ### The Search Result Object
 
-```
+```python
 class search_results_page():
 
     def __init__(self,base_url = "https://www.loc.gov/collections",collection = "united-states-reports",json_parameter = "fo=json",results_per_page = "c=79",query_param = "?",page_param ="sp=",page_num = 1):
@@ -274,13 +274,13 @@ class search_results_page():
 
 ## The Generator
 
-The generator yields a search result page if thye pagination link included in the response is valid.  
+The generator yields a search result page if the pagination link included in the response is valid.  
 
 Depending on your use case you could pass the page_num and collection you would like to crawl.  
 
 The api is limited to 80 results per minute.  The sleep function limits calls to the desired rate.  The amount of results returned can be passed to the search result page_object.  Review the code above to see which values can be passed.  
 
-```
+```python
 def search_result_generator(condition = True):
     #column_lookup_table = {}
     #pprint(num_columns)
@@ -306,7 +306,7 @@ To initiate the crawl simply run the algorithm below.  It writes each result pag
 As a follow up project, I will post how to integrate the data returned into a neo4j database.  
 
 
-```
+```python
 for obj in search_result_generator():   
         page_num = obj.page_num
         with cd("output_2"):
@@ -328,7 +328,7 @@ for obj in search_result_generator():
 
 The code below is the entire program as it stands.  There is built in functionality to upload the results to a google sheet if that is what you desire using an extension of the google api.   That code can be found at [https://github.com/justin-napolitano/GoogleAPI](https://github.com/justin-napolitano/GoogleAPI)
 
-```
+```python
 #library_of_congress_scraper.py
 from __future__ import print_function
 from bs4 import BeautifulSoup
