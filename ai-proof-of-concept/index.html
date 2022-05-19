@@ -69,235 +69,235 @@
 <h2>The Code</h2>
 <h3>Case Centric Training Pipeline</h3>
 <p>I’ve included the entire model below.  Review my <a href="https://docs.jnapolitano.io/parts/ml-ai/tensorflow/project-supcourt-tensorflow/docs/SupremeCourtPredictionsCase/index.html">documentation site</a> for more detail.</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">#supremeCourtPrediction.py
-#a program that uses the segal and spaeth dataset to predict the outcomes of cases
+<div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python"><span class="token comment">#supremeCourtPrediction.py</span>
+<span class="token comment">#a program that uses the segal and spaeth dataset to predict the outcomes of cases</span>
 
 
-import pandas as pd
+<span class="token keyword">import</span> pandas <span class="token keyword">as</span> pd
 
-import tensorflow as tf
+<span class="token keyword">import</span> tensorflow <span class="token keyword">as</span> tf
 
-import math
+<span class="token keyword">import</span> math
 
-import seaborn as sns
-import matplotlib.pyplot as plt
+<span class="token keyword">import</span> seaborn <span class="token keyword">as</span> sns
+<span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt
 
-import shap
-shap.initjs()
+<span class="token keyword">import</span> shap
+shap<span class="token punctuation">.</span>initjs<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-import os 
-import csv
-import datetime
+<span class="token keyword">import</span> os 
+<span class="token keyword">import</span> csv
+<span class="token keyword">import</span> datetime
 
-from tensorflow import feature_column
-from tensorflow.keras import layers
-from sklearn.model_selection import train_test_split
+<span class="token keyword">from</span> tensorflow <span class="token keyword">import</span> feature_column
+<span class="token keyword">from</span> tensorflow<span class="token punctuation">.</span>keras <span class="token keyword">import</span> layers
+<span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>model_selection <span class="token keyword">import</span> train_test_split
 
-from itertools import permutations 
+<span class="token keyword">from</span> itertools <span class="token keyword">import</span> permutations 
 
-import matplotlib.pyplot as plt
-
-
-
-def get_environmental_variables():
-    cwd = os.getcwd()
-    log_dir = os.path.join(cwd,"logs/fit/") + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-    return cwd, log_dir
+<span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt
 
 
 
-def load_data(cwd):
-    data_path = os.path.join(cwd,'data','citation.csv') 
-    drop_path = os.path.join(cwd,'data','features','drop','drop.txt')
-    #print(path)
-    dataframe = pd.read_csv(data_path,encoding= 'unicode_escape')
-    #print(dataframe.head())
+<span class="token keyword">def</span> <span class="token function">get_environmental_variables</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    cwd <span class="token operator">=</span> os<span class="token punctuation">.</span>getcwd<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    log_dir <span class="token operator">=</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>join<span class="token punctuation">(</span>cwd<span class="token punctuation">,</span><span class="token string">"logs/fit/"</span><span class="token punctuation">)</span> <span class="token operator">+</span> datetime<span class="token punctuation">.</span>datetime<span class="token punctuation">.</span>now<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>strftime<span class="token punctuation">(</span><span class="token string">"%Y%m%d-%H%M%S"</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> cwd<span class="token punctuation">,</span> log_dir
+
+
+
+<span class="token keyword">def</span> <span class="token function">load_data</span><span class="token punctuation">(</span>cwd<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    data_path <span class="token operator">=</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>join<span class="token punctuation">(</span>cwd<span class="token punctuation">,</span><span class="token string">'data'</span><span class="token punctuation">,</span><span class="token string">'citation.csv'</span><span class="token punctuation">)</span> 
+    drop_path <span class="token operator">=</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>join<span class="token punctuation">(</span>cwd<span class="token punctuation">,</span><span class="token string">'data'</span><span class="token punctuation">,</span><span class="token string">'features'</span><span class="token punctuation">,</span><span class="token string">'drop'</span><span class="token punctuation">,</span><span class="token string">'drop.txt'</span><span class="token punctuation">)</span>
+    <span class="token comment">#print(path)</span>
+    dataframe <span class="token operator">=</span> pd<span class="token punctuation">.</span>read_csv<span class="token punctuation">(</span>data_path<span class="token punctuation">,</span>encoding<span class="token operator">=</span> <span class="token string">'unicode_escape'</span><span class="token punctuation">)</span>
+    <span class="token comment">#print(dataframe.head())</span>
     
-    with open(drop_path) as fp:
-        for cnt, line in enumerate(fp):
-            #print("Dropping {} from dataframe".format(line))
-            line = line.strip('\n')
-            line = line.strip('\t')
-            line = line.strip("'")
+    <span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span>drop_path<span class="token punctuation">)</span> <span class="token keyword">as</span> fp<span class="token punctuation">:</span>
+        <span class="token keyword">for</span> cnt<span class="token punctuation">,</span> line <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>fp<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token comment">#print("Dropping {} from dataframe".format(line))</span>
+            line <span class="token operator">=</span> line<span class="token punctuation">.</span>strip<span class="token punctuation">(</span><span class="token string">'\n'</span><span class="token punctuation">)</span>
+            line <span class="token operator">=</span> line<span class="token punctuation">.</span>strip<span class="token punctuation">(</span><span class="token string">'\t'</span><span class="token punctuation">)</span>
+            line <span class="token operator">=</span> line<span class="token punctuation">.</span>strip<span class="token punctuation">(</span><span class="token string">"'"</span><span class="token punctuation">)</span>
 
-            dataframe.drop(line,axis=1,inplace=True)
+            dataframe<span class="token punctuation">.</span>drop<span class="token punctuation">(</span>line<span class="token punctuation">,</span>axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span>inplace<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
     
-    dataframe.fillna(0, inplace=True)
-    print(dataframe)
-    #dataframe.issue = dataframe.astype({'issue': 'str'})
-    #dataframe[issue] = dataframe[issue].astype(str)
-    #print(dataframe)
-    #print(dataframe.head())
-    return dataframe
+    dataframe<span class="token punctuation">.</span>fillna<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> inplace<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>dataframe<span class="token punctuation">)</span>
+    <span class="token comment">#dataframe.issue = dataframe.astype({'issue': 'str'})</span>
+    <span class="token comment">#dataframe[issue] = dataframe[issue].astype(str)</span>
+    <span class="token comment">#print(dataframe)</span>
+    <span class="token comment">#print(dataframe.head())</span>
+    <span class="token keyword">return</span> dataframe
 
 
 
-def split_datframe(dataframe):
-    train, test = train_test_split(dataframe, test_size=0.2)
-    train, val = train_test_split(train, test_size=0.2)
-    print(len(train), 'train examples')
-    print(len(val), 'validation examples')
-    print(len(test), 'test examples')
-    return train, test, val
+<span class="token keyword">def</span> <span class="token function">split_datframe</span><span class="token punctuation">(</span>dataframe<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    train<span class="token punctuation">,</span> test <span class="token operator">=</span> train_test_split<span class="token punctuation">(</span>dataframe<span class="token punctuation">,</span> test_size<span class="token operator">=</span><span class="token number">0.2</span><span class="token punctuation">)</span>
+    train<span class="token punctuation">,</span> val <span class="token operator">=</span> train_test_split<span class="token punctuation">(</span>train<span class="token punctuation">,</span> test_size<span class="token operator">=</span><span class="token number">0.2</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>train<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'train examples'</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>val<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'validation examples'</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>test<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'test examples'</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> train<span class="token punctuation">,</span> test<span class="token punctuation">,</span> val
 
 
-    # A utility method to create a tf.data dataset from a Pandas Dataframe
+    <span class="token comment"># A utility method to create a tf.data dataset from a Pandas Dataframe</span>
 
-def df_to_dataset(dataframe, shuffle=True, batch_size=32):
-    dataframe = dataframe.copy()
-    labels = dataframe.pop('declarationUncon')
-    ds = tf.data.Dataset.from_tensor_slices((dict(dataframe), labels))
-    if shuffle:
-        ds = ds.shuffle(buffer_size=len(dataframe))
-    ds = ds.batch(batch_size)
-    print(ds)
-    return ds
-
-
-
-def get_input_pipeline(train, test, val, batch_size=32, shuffle=True):
-    train_ds = df_to_dataset(train, batch_size=batch_size)
-    val_ds = df_to_dataset(val, shuffle=False, batch_size=batch_size)
-    test_ds = df_to_dataset(test, shuffle=False, batch_size=batch_size)
-    return train_ds, val_ds, test_ds
+<span class="token keyword">def</span> <span class="token function">df_to_dataset</span><span class="token punctuation">(</span>dataframe<span class="token punctuation">,</span> shuffle<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> batch_size<span class="token operator">=</span><span class="token number">32</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    dataframe <span class="token operator">=</span> dataframe<span class="token punctuation">.</span>copy<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    labels <span class="token operator">=</span> dataframe<span class="token punctuation">.</span>pop<span class="token punctuation">(</span><span class="token string">'declarationUncon'</span><span class="token punctuation">)</span>
+    ds <span class="token operator">=</span> tf<span class="token punctuation">.</span>data<span class="token punctuation">.</span>Dataset<span class="token punctuation">.</span>from_tensor_slices<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token builtin">dict</span><span class="token punctuation">(</span>dataframe<span class="token punctuation">)</span><span class="token punctuation">,</span> labels<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> shuffle<span class="token punctuation">:</span>
+        ds <span class="token operator">=</span> ds<span class="token punctuation">.</span>shuffle<span class="token punctuation">(</span>buffer_size<span class="token operator">=</span><span class="token builtin">len</span><span class="token punctuation">(</span>dataframe<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    ds <span class="token operator">=</span> ds<span class="token punctuation">.</span>batch<span class="token punctuation">(</span>batch_size<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>ds<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> ds
 
 
 
-def get_feature_layer(cwd): #select the columns for analysis from dataset
-    feature_path = os.path.join(cwd,'data','features','use','features.txt')
-    dict_path = os.path.join(cwd,'data','features','use')
-    feature_columns = []
+<span class="token keyword">def</span> <span class="token function">get_input_pipeline</span><span class="token punctuation">(</span>train<span class="token punctuation">,</span> test<span class="token punctuation">,</span> val<span class="token punctuation">,</span> batch_size<span class="token operator">=</span><span class="token number">32</span><span class="token punctuation">,</span> shuffle<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    train_ds <span class="token operator">=</span> df_to_dataset<span class="token punctuation">(</span>train<span class="token punctuation">,</span> batch_size<span class="token operator">=</span>batch_size<span class="token punctuation">)</span>
+    val_ds <span class="token operator">=</span> df_to_dataset<span class="token punctuation">(</span>val<span class="token punctuation">,</span> shuffle<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span> batch_size<span class="token operator">=</span>batch_size<span class="token punctuation">)</span>
+    test_ds <span class="token operator">=</span> df_to_dataset<span class="token punctuation">(</span>test<span class="token punctuation">,</span> shuffle<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span> batch_size<span class="token operator">=</span>batch_size<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> train_ds<span class="token punctuation">,</span> val_ds<span class="token punctuation">,</span> test_ds
+
+
+
+<span class="token keyword">def</span> <span class="token function">get_feature_layer</span><span class="token punctuation">(</span>cwd<span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment">#select the columns for analysis from dataset</span>
+    feature_path <span class="token operator">=</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>join<span class="token punctuation">(</span>cwd<span class="token punctuation">,</span><span class="token string">'data'</span><span class="token punctuation">,</span><span class="token string">'features'</span><span class="token punctuation">,</span><span class="token string">'use'</span><span class="token punctuation">,</span><span class="token string">'features.txt'</span><span class="token punctuation">)</span>
+    dict_path <span class="token operator">=</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>join<span class="token punctuation">(</span>cwd<span class="token punctuation">,</span><span class="token string">'data'</span><span class="token punctuation">,</span><span class="token string">'features'</span><span class="token punctuation">,</span><span class="token string">'use'</span><span class="token punctuation">)</span>
+    feature_columns <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
     
-    #embedded columns
-    with open(feature_path) as fp:
-        for cnt, line in enumerate(fp):
-            #print("Adding {} to features".format(line))
-            line = line.strip('\n')
-            line = line.strip('\t')
-            line = line.strip("'")
+    <span class="token comment">#embedded columns</span>
+    <span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span>feature_path<span class="token punctuation">)</span> <span class="token keyword">as</span> fp<span class="token punctuation">:</span>
+        <span class="token keyword">for</span> cnt<span class="token punctuation">,</span> line <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>fp<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token comment">#print("Adding {} to features".format(line))</span>
+            line <span class="token operator">=</span> line<span class="token punctuation">.</span>strip<span class="token punctuation">(</span><span class="token string">'\n'</span><span class="token punctuation">)</span>
+            line <span class="token operator">=</span> line<span class="token punctuation">.</span>strip<span class="token punctuation">(</span><span class="token string">'\t'</span><span class="token punctuation">)</span>
+            line <span class="token operator">=</span> line<span class="token punctuation">.</span>strip<span class="token punctuation">(</span><span class="token string">"'"</span><span class="token punctuation">)</span>
 
-            print(cnt)   
-            print(line)
+            <span class="token keyword">print</span><span class="token punctuation">(</span>cnt<span class="token punctuation">)</span>   
+            <span class="token keyword">print</span><span class="token punctuation">(</span>line<span class="token punctuation">)</span>
 
-            indicator = feature_column.numeric_column(line)
+            indicator <span class="token operator">=</span> feature_column<span class="token punctuation">.</span>numeric_column<span class="token punctuation">(</span>line<span class="token punctuation">)</span>
             
-            #feature_column.categorical_column_with_vocabulary_file(
-            #            key = line, vocabulary_file = os.path.join(dict_path,"{}.txt".format(line)), default_value=0)
+            <span class="token comment">#feature_column.categorical_column_with_vocabulary_file(</span>
+            <span class="token comment">#            key = line, vocabulary_file = os.path.join(dict_path,"{}.txt".format(line)), default_value=0)</span>
 
-            print(indicator)
-            feature_columns.append(indicator)
+            <span class="token keyword">print</span><span class="token punctuation">(</span>indicator<span class="token punctuation">)</span>
+            feature_columns<span class="token punctuation">.</span>append<span class="token punctuation">(</span>indicator<span class="token punctuation">)</span>
 
 
-            #feature_columns.append(feature_column.embedding_column(indicator, dimension=8))
+            <span class="token comment">#feature_columns.append(feature_column.embedding_column(indicator, dimension=8))</span>
 
     
-    crossed_feature = feature_column.crossed_column(['issue', 'issueArea', 'naturalCourt'], hash_bucket_size=1000)
-    crossed_feature = feature_column.indicator_column(crossed_feature)
-    feature_columns.append(crossed_feature)
+    crossed_feature <span class="token operator">=</span> feature_column<span class="token punctuation">.</span>crossed_column<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'issue'</span><span class="token punctuation">,</span> <span class="token string">'issueArea'</span><span class="token punctuation">,</span> <span class="token string">'naturalCourt'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> hash_bucket_size<span class="token operator">=</span><span class="token number">1000</span><span class="token punctuation">)</span>
+    crossed_feature <span class="token operator">=</span> feature_column<span class="token punctuation">.</span>indicator_column<span class="token punctuation">(</span>crossed_feature<span class="token punctuation">)</span>
+    feature_columns<span class="token punctuation">.</span>append<span class="token punctuation">(</span>crossed_feature<span class="token punctuation">)</span>
 
 
-    crossed_feature = feature_column.crossed_column(['issue', 'naturalCourt'], hash_bucket_size=1000)
-    crossed_feature = feature_column.indicator_column(crossed_feature)
-    feature_columns.append(crossed_feature)
+    crossed_feature <span class="token operator">=</span> feature_column<span class="token punctuation">.</span>crossed_column<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'issue'</span><span class="token punctuation">,</span> <span class="token string">'naturalCourt'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> hash_bucket_size<span class="token operator">=</span><span class="token number">1000</span><span class="token punctuation">)</span>
+    crossed_feature <span class="token operator">=</span> feature_column<span class="token punctuation">.</span>indicator_column<span class="token punctuation">(</span>crossed_feature<span class="token punctuation">)</span>
+    feature_columns<span class="token punctuation">.</span>append<span class="token punctuation">(</span>crossed_feature<span class="token punctuation">)</span>
 
-    crossed_feature = feature_column.crossed_column(['issueArea', 'naturalCourt'],hash_bucket_size=1000)
-    crossed_feature = feature_column.indicator_column(crossed_feature)
-    feature_columns.append(crossed_feature)
+    crossed_feature <span class="token operator">=</span> feature_column<span class="token punctuation">.</span>crossed_column<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'issueArea'</span><span class="token punctuation">,</span> <span class="token string">'naturalCourt'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>hash_bucket_size<span class="token operator">=</span><span class="token number">1000</span><span class="token punctuation">)</span>
+    crossed_feature <span class="token operator">=</span> feature_column<span class="token punctuation">.</span>indicator_column<span class="token punctuation">(</span>crossed_feature<span class="token punctuation">)</span>
+    feature_columns<span class="token punctuation">.</span>append<span class="token punctuation">(</span>crossed_feature<span class="token punctuation">)</span>
     
-   # court_buckets = feature_column.bucketized_column(naturalCourt, boundaries=[18, 25, 30, 35, 40, 45, 50, 55, 60, 65])
+   <span class="token comment"># court_buckets = feature_column.bucketized_column(naturalCourt, boundaries=[18, 25, 30, 35, 40, 45, 50, 55, 60, 65])</span>
 
-    #print(feature_columns)
-    feature_layer = tf.keras.layers.DenseFeatures(feature_columns)
-    #for item in feature_columns:
-    #    print(item)
-    #    print("\n")
+    <span class="token comment">#print(feature_columns)</span>
+    feature_layer <span class="token operator">=</span> tf<span class="token punctuation">.</span>keras<span class="token punctuation">.</span>layers<span class="token punctuation">.</span>DenseFeatures<span class="token punctuation">(</span>feature_columns<span class="token punctuation">)</span>
+    <span class="token comment">#for item in feature_columns:</span>
+    <span class="token comment">#    print(item)</span>
+    <span class="token comment">#    print("\n")</span>
 
-    return feature_layer
+    <span class="token keyword">return</span> feature_layer
 
      
-    #crossed cols
+    <span class="token comment">#crossed cols</span>
 
 
-    #categorical_columns 
+    <span class="token comment">#categorical_columns </span>
 
-def understand_input_pipeline(train_ds):
-    for feature_batch, label_batch in train_ds.take(1):
-        print('Every feature:', list(feature_batch.keys()))
-        #print('A batch of ages:', feature_batch['age'])
-        print('A batch of targets:', label_batch )
+<span class="token keyword">def</span> <span class="token function">understand_input_pipeline</span><span class="token punctuation">(</span>train_ds<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> feature_batch<span class="token punctuation">,</span> label_batch <span class="token keyword">in</span> train_ds<span class="token punctuation">.</span>take<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Every feature:'</span><span class="token punctuation">,</span> <span class="token builtin">list</span><span class="token punctuation">(</span>feature_batch<span class="token punctuation">.</span>keys<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token comment">#print('A batch of ages:', feature_batch['age'])</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'A batch of targets:'</span><span class="token punctuation">,</span> label_batch <span class="token punctuation">)</span>
 
 
 
-def create_model(log_dir,feature_layer, train_ds, val_ds, epochs = 5):
+<span class="token keyword">def</span> <span class="token function">create_model</span><span class="token punctuation">(</span>log_dir<span class="token punctuation">,</span>feature_layer<span class="token punctuation">,</span> train_ds<span class="token punctuation">,</span> val_ds<span class="token punctuation">,</span> epochs <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
     
-    model = tf.keras.Sequential([
-        feature_layer,
-        layers.Dense(128, activation='relu'),
-        layers.Dense(128, activation='relu'),
-        layers.Dense(1)
-    ])
+    model <span class="token operator">=</span> tf<span class="token punctuation">.</span>keras<span class="token punctuation">.</span>Sequential<span class="token punctuation">(</span><span class="token punctuation">[</span>
+        feature_layer<span class="token punctuation">,</span>
+        layers<span class="token punctuation">.</span>Dense<span class="token punctuation">(</span><span class="token number">128</span><span class="token punctuation">,</span> activation<span class="token operator">=</span><span class="token string">'relu'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        layers<span class="token punctuation">.</span>Dense<span class="token punctuation">(</span><span class="token number">128</span><span class="token punctuation">,</span> activation<span class="token operator">=</span><span class="token string">'relu'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        layers<span class="token punctuation">.</span>Dense<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token punctuation">]</span><span class="token punctuation">)</span>
 
-    model.compile(optimizer='adam',
-            loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
-            metrics=['accuracy', 'mae'])
+    model<span class="token punctuation">.</span><span class="token builtin">compile</span><span class="token punctuation">(</span>optimizer<span class="token operator">=</span><span class="token string">'adam'</span><span class="token punctuation">,</span>
+            loss<span class="token operator">=</span>tf<span class="token punctuation">.</span>keras<span class="token punctuation">.</span>losses<span class="token punctuation">.</span>BinaryCrossentropy<span class="token punctuation">(</span>from_logits<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            metrics<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'accuracy'</span><span class="token punctuation">,</span> <span class="token string">'mae'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
 
-    history = model.fit(train_ds,
-            validation_data=val_ds,
-            epochs=epochs)
+    history <span class="token operator">=</span> model<span class="token punctuation">.</span>fit<span class="token punctuation">(</span>train_ds<span class="token punctuation">,</span>
+            validation_data<span class="token operator">=</span>val_ds<span class="token punctuation">,</span>
+            epochs<span class="token operator">=</span>epochs<span class="token punctuation">)</span>
 
-    loss, accuracy,mae = model.evaluate(test_ds)
-    print("Accuracy", accuracy)
-    print(model.summary())
-    return model,history
-
-
-def plot_history(history):
-
-    hist = pd.DataFrame(history.history)
-    print(hist)
-    hist['epoch'] = history.epoch
-
-    plt.figure()
-    plt.xlabel('Epoch')
-    plt.ylabel('Mean Absolute Error')
-    plt.plot(hist['epoch'], hist['mae'],
-            label='Train Error')
-    plt.plot(hist['epoch'], hist['val_mae'],
-            label = 'Val Error')
-    plt.legend()
+    loss<span class="token punctuation">,</span> accuracy<span class="token punctuation">,</span>mae <span class="token operator">=</span> model<span class="token punctuation">.</span>evaluate<span class="token punctuation">(</span>test_ds<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Accuracy"</span><span class="token punctuation">,</span> accuracy<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>model<span class="token punctuation">.</span>summary<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> model<span class="token punctuation">,</span>history
 
 
+<span class="token keyword">def</span> <span class="token function">plot_history</span><span class="token punctuation">(</span>history<span class="token punctuation">)</span><span class="token punctuation">:</span>
 
-def explain_kernal(df_train,model,train_ds):
+    hist <span class="token operator">=</span> pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">(</span>history<span class="token punctuation">.</span>history<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>hist<span class="token punctuation">)</span>
+    hist<span class="token punctuation">[</span><span class="token string">'epoch'</span><span class="token punctuation">]</span> <span class="token operator">=</span> history<span class="token punctuation">.</span>epoch
+
+    plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span><span class="token string">'Epoch'</span><span class="token punctuation">)</span>
+    plt<span class="token punctuation">.</span>ylabel<span class="token punctuation">(</span><span class="token string">'Mean Absolute Error'</span><span class="token punctuation">)</span>
+    plt<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>hist<span class="token punctuation">[</span><span class="token string">'epoch'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> hist<span class="token punctuation">[</span><span class="token string">'mae'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+            label<span class="token operator">=</span><span class="token string">'Train Error'</span><span class="token punctuation">)</span>
+    plt<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>hist<span class="token punctuation">[</span><span class="token string">'epoch'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> hist<span class="token punctuation">[</span><span class="token string">'val_mae'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+            label <span class="token operator">=</span> <span class="token string">'Val Error'</span><span class="token punctuation">)</span>
+    plt<span class="token punctuation">.</span>legend<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+
+
+<span class="token keyword">def</span> <span class="token function">explain_kernal</span><span class="token punctuation">(</span>df_train<span class="token punctuation">,</span>model<span class="token punctuation">,</span>train_ds<span class="token punctuation">)</span><span class="token punctuation">:</span>
     
-    # KernelExplainer is a general approach that can work with any ML framework
-    # Its inputs are the predictions and training data
+    <span class="token comment"># KernelExplainer is a general approach that can work with any ML framework</span>
+    <span class="token comment"># Its inputs are the predictions and training data</span>
 
-    # Summarize the training set to accelerate analysis
-    df_train_summary = shap.kmeans(df_train.values, 25)
+    <span class="token comment"># Summarize the training set to accelerate analysis</span>
+    df_train_summary <span class="token operator">=</span> shap<span class="token punctuation">.</span>kmeans<span class="token punctuation">(</span>df_train<span class="token punctuation">.</span>values<span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">)</span>
 
-    # Instantiate an explainer with the model predictions and training data summary
-    explainer = shap.KernelExplainer(model.predict, df_train)
+    <span class="token comment"># Instantiate an explainer with the model predictions and training data summary</span>
+    explainer <span class="token operator">=</span> shap<span class="token punctuation">.</span>KernelExplainer<span class="token punctuation">(</span>model<span class="token punctuation">.</span>predict<span class="token punctuation">,</span> df_train<span class="token punctuation">)</span>
 
 
-# Extract Shapley values from the explainer
-    #shap_values = explainer.shap_values(df_train.values)
-if __name__ == "__main__":
-    cwd, log_dir = get_environmental_variables()
-    #print(cwd)
+<span class="token comment"># Extract Shapley values from the explainer</span>
+    <span class="token comment">#shap_values = explainer.shap_values(df_train.values)</span>
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    cwd<span class="token punctuation">,</span> log_dir <span class="token operator">=</span> get_environmental_variables<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token comment">#print(cwd)</span>
 
-    df = load_data(cwd)
+    df <span class="token operator">=</span> load_data<span class="token punctuation">(</span>cwd<span class="token punctuation">)</span>
 
-    train,test,val = split_datframe(df)
-    dataset = df_to_dataset(df)
-    train_ds, val_ds, test_ds = get_input_pipeline(train,test,val,32)
-    understand_input_pipeline(train_ds)
-    feature_layer = get_feature_layer(cwd)
-    model, model_history = create_model(log_dir,feature_layer, train_ds, val_ds)
-    plot_history(model_history)
-    #print(model.predict(train_ds))
-    #print(model.predict)
-    explain_kernal(df,model,train_ds)</code></pre></div>
+    train<span class="token punctuation">,</span>test<span class="token punctuation">,</span>val <span class="token operator">=</span> split_datframe<span class="token punctuation">(</span>df<span class="token punctuation">)</span>
+    dataset <span class="token operator">=</span> df_to_dataset<span class="token punctuation">(</span>df<span class="token punctuation">)</span>
+    train_ds<span class="token punctuation">,</span> val_ds<span class="token punctuation">,</span> test_ds <span class="token operator">=</span> get_input_pipeline<span class="token punctuation">(</span>train<span class="token punctuation">,</span>test<span class="token punctuation">,</span>val<span class="token punctuation">,</span><span class="token number">32</span><span class="token punctuation">)</span>
+    understand_input_pipeline<span class="token punctuation">(</span>train_ds<span class="token punctuation">)</span>
+    feature_layer <span class="token operator">=</span> get_feature_layer<span class="token punctuation">(</span>cwd<span class="token punctuation">)</span>
+    model<span class="token punctuation">,</span> model_history <span class="token operator">=</span> create_model<span class="token punctuation">(</span>log_dir<span class="token punctuation">,</span>feature_layer<span class="token punctuation">,</span> train_ds<span class="token punctuation">,</span> val_ds<span class="token punctuation">)</span>
+    plot_history<span class="token punctuation">(</span>model_history<span class="token punctuation">)</span>
+    <span class="token comment">#print(model.predict(train_ds))</span>
+    <span class="token comment">#print(model.predict)</span>
+    explain_kernal<span class="token punctuation">(</span>df<span class="token punctuation">,</span>model<span class="token punctuation">,</span>train_ds<span class="token punctuation">)</span></code></pre></div>
 <h3>The Justice Centric Training Pipeline</h3>
 <p>The entire pipeline is included below.  Review the <a href="https://docs.jnapolitano.io/parts/ml-ai/tensorflow/project-supcourt-tensorflow/docs/SupremeCourtPredictionsJustice/index.html">documentation</a> for greater detail.</p>
 <div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">#supremeCourtPrediction.py
