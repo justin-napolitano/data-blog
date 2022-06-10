@@ -7,7 +7,7 @@ image: post-image.png
 imageAlt: Justin Napolitano
 ---
 
-# Conduct Legal Resarch with AI: Part 3
+# Conduct Legal Research with AI: Part 3
 
 This is the third post in a series documenting the process of building an ml pipeline that will be used to train models to predict the outcomes of Supreme Court Cases.  
 
@@ -27,7 +27,7 @@ The data set is fairly limited. There are only about 250 issue areas to train ag
 
 The data records primarily the voting behavior of justices, the policy direction of the outcome, and the political ideology score of the outcome.  
 
-Policy direction and political ideology are factors coded by individuals that may be prone to error an bias. In my analysis I will test against the foundigns of this model to determine which factors are most powerful.
+Policy direction and political ideology are factors coded by individuals that may be prone to error an bias. In my analysis I will test against the findings of this model to determine which factors are most powerful.
 
 ## The Model
 
@@ -36,7 +36,7 @@ I tested against case centric and justice centric data orientations.
 
 ### Case Centric Model
 
-The first is case centric.  The power of this model is fairly limited, as it attmempts to discern the outcome of a case from the aggregate behavior of the current justices on the bench.  It essentially creates a score that is modified by each case outcome to determine if the court will vote conservatively or liberally towards a case of regarding a specific issue area.  It is important to note that the database limits each case to one overarching issue area.  
+The first is case centric.  The power of this model is fairly limited, as it attempts to discern the outcome of a case from the aggregate behavior of the current justices on the bench.  It essentially creates a score that is modified by each case outcome to determine if the court will vote conservatively or liberally towards a case of regarding a specific issue area.  It is important to note that the database limits each case to one overarching issue area.  
 
 #### Case Centric Training Features
 
@@ -66,7 +66,7 @@ The models were able to predict the outcomes about 75 percent of the time follow
 
 ### Justice Centric Model
 
-The second is justice centric.  The predictive power of this model, should in theory be greater as it attempts to determine the likely vote of an individual justice against an issue area.  Again this is limited as only the overarching issue area is available in the data.  It may very well prove that justices may favor free speach in most cases, except when the military is the target.  The model could not predict that, because the data is limited.  
+The second is justice centric.  The predictive power of this model, should in theory be greater as it attempts to determine the likely vote of an individual justice against an issue area.  Again this is limited as only the overarching issue area is available in the data.  It may very well prove that justices may favor free speech in most cases, except when the military is the target.  The model could not predict that, because the data is limited.  
 
 #### Justice Centric Training Features
 
@@ -95,7 +95,7 @@ The justice centric pipeline results in accuracy exceeding 82 percent.  This is 
 
 ## Next Steps
 
-I will integrate the models to my neo4j data set.  As of now, the graph database exceed 50,000 individuals nodes and ove 400,000 relationships.  It will allow me to train an algorithm that can determine a justices attitude towards, cases, clauses, sentences, states, petitioners, and any other feature integrated into the dataset.  
+I will integrate the models to my neo4j data set.  As of now, the graph database exceeds 50,000 individuals nodes and over 400,000 relationships.  It will allow me to train an algorithm that can determine a justices attitude towards, cases, clauses, sentences, states, petitioners, and any other feature integrated into the dataset.  
 
 
 ## The Code 
@@ -104,7 +104,7 @@ I will integrate the models to my neo4j data set.  As of now, the graph database
 
 I've included the entire model below.  Review my [documentation site](https://docs.jnapolitano.io/parts/ml-ai/tensorflow/project-supcourt-tensorflow/docs/SupremeCourtPredictionsCase/index.html) for more detail.   
 
-```
+``` Python
 #supremeCourtPrediction.py
 #a program that uses the segal and spaeth dataset to predict the outcomes of cases
 
