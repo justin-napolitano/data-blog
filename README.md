@@ -1,105 +1,116 @@
-<!-- AUTO-GENERATED-CONTENT:START (STARTER) -->
-<p align="center">
-  <a href="https://www.gatsbyjs.com">
-    <img alt="Gatsby" src="https://www.gatsbyjs.com/Gatsby-Monogram.svg" width="60" />
-  </a>
-</p>
-<h1 align="center">
-  Gatsby's blog starter
-</h1>
+# data-blog
 
-Kick off your project with this blog boilerplate. This starter ships with the main Gatsby configuration files you might need to get up and running blazing fast with the blazing fast app generator for React.
+A data-focused blog platform built with Gatsby, designed to integrate Markdown and HTML content for publishing detailed data analyses and research posts.
 
-_Have another more specific idea? You may want to check out our vibrant collection of [official and community-created starters](https://www.gatsbyjs.com/docs/gatsby-starters/)._
+---
 
-## 🚀 Quick start
+## Features
 
-1.  **Create a Gatsby site.**
+- Static site generation using Gatsby with React
+- Support for Markdown and HTML content
+- Syntax highlighting for code blocks
+- Integration with various Gatsby plugins for image optimization, offline support, and smooth scrolling
+- Custom GraphQL queries to generate pages from content
+- Python build automation script for dependency management and site building
 
-    Use the Gatsby CLI ([install instructions](https://www.gatsbyjs.com/docs/tutorial/part-0/#gatsby-cli)) to create a new site, specifying the blog starter.
+## Tech Stack
 
-    ```shell
-    # create a new Gatsby site using the blog starter
-    gatsby new my-blog-starter https://github.com/gatsbyjs/gatsby-starter-blog
-    ```
+- Gatsby (React-based static site generator)
+- React 17
+- GraphQL for data querying
+- Python for build automation
+- GeoPandas, Folium, and other Python libraries for geospatial data analysis (in blog content)
+- PrismJS for syntax highlighting
 
-1.  **Start developing.**
+## Getting Started
 
-    Navigate into your new site’s directory and start it up.
+### Prerequisites
 
-    ```shell
-    cd my-blog-starter/
-    gatsby develop
-    ```
+- Node.js (v14 or higher recommended)
+- npm or yarn
+- Python 3 (for build automation script)
 
-1.  **Open the source code and start editing!**
+### Installation
 
-    Your site is now running at `http://localhost:8000`!
+Clone the repository:
 
-    _Note: You'll also see a second link: _`http://localhost:8000/___graphql`_. This is a tool you can use to experiment with querying your data. Learn more about using this tool in the [Gatsby Tutorial](https://www.gatsbyjs.com/docs/tutorial/part-4/#use-graphiql-to-explore-the-data-layer-and-write-graphql-queries)._
+```bash
+git clone https://github.com/justin-napolitano/data-blog.git
+cd data-blog
+```
 
-    Open the `my-blog-starter` directory in your code editor of choice and edit `src/pages/index.js`. Save your changes and the browser will update in real time!
+Install dependencies:
 
-## 🚀 Quick start (Gatsby Cloud)
+```bash
+npm install
+# or
+# yarn install
+```
 
-Deploy this starter with one click on [Gatsby Cloud](https://www.gatsbyjs.com/cloud/):
+### Running the Development Server
 
-[<img src="https://www.gatsbyjs.com/deploynow.svg" alt="Deploy to Gatsby Cloud">](https://www.gatsbyjs.com/dashboard/deploynow?url=https://github.com/gatsbyjs/gatsby-starter-blog)
+```bash
+npm run develop
+# or
+# yarn develop
+```
 
-## 🧐 What's inside?
+Open your browser at `http://localhost:8000` to view the site.
 
-A quick look at the top-level files and directories you'll see in a Gatsby project.
+### Building the Site
 
-    .
-    ├── node_modules
-    ├── src
-    ├── .gitignore
-    ├── .prettierrc
-    ├── gatsby-browser.js
-    ├── gatsby-config.js
-    ├── gatsby-node.js
-    ├── gatsby-ssr.js
-    ├── LICENSE
-    ├── package-lock.json
-    ├── package.json
-    └── README.md
+```bash
+npm run build
+# or
+# yarn build
+```
 
-1.  **`/node_modules`**: This directory contains all of the modules of code that your project depends on (npm packages) are automatically installed.
+Serve the production build locally:
 
-2.  **`/src`**: This directory will contain all of the code related to what you will see on the front-end of your site (what you see in the browser) such as your site header or a page template. `src` is a convention for “source code”.
+```bash
+npm run serve
+# or
+# yarn serve
+```
 
-3.  **`.gitignore`**: This file tells git which files it should not track / not maintain a version history for.
+### Python Build Script
 
-4.  **`.prettierrc`**: This is a configuration file for [Prettier](https://prettier.io/). Prettier is a tool to help keep the formatting of your code consistent.
+A Python script (`python-build.py`) automates cleaning, building, committing, and pushing the Gatsby site.
 
-5.  **`gatsby-browser.js`**: This file is where Gatsby expects to find any usage of the [Gatsby browser APIs](https://www.gatsbyjs.com/docs/reference/config-files/gatsby-browser/) (if any). These allow customization/extension of default Gatsby settings affecting the browser.
+Run the script:
 
-6.  **`gatsby-config.js`**: This is the main configuration file for a Gatsby site. This is where you can specify information about your site (metadata) like the site title and description, which Gatsby plugins you’d like to include, etc. (Check out the [config docs](https://www.gatsbyjs.com/docs/reference/config-files/gatsby-config/) for more detail).
+```bash
+python python-build.py
+```
 
-7.  **`gatsby-node.js`**: This file is where Gatsby expects to find any usage of the [Gatsby Node APIs](https://www.gatsbyjs.com/docs/reference/config-files/gatsby-node/) (if any). These allow customization/extension of default Gatsby settings affecting pieces of the site build process.
+## Project Structure
 
-8.  **`gatsby-ssr.js`**: This file is where Gatsby expects to find any usage of the [Gatsby server-side rendering APIs](https://www.gatsbyjs.com/docs/reference/config-files/gatsby-ssr/) (if any). These allow customization of default Gatsby settings affecting server-side rendering.
+```
+/data-blog
+├── content/                 # Markdown and HTML blog content organized by topic
+├── src/                     # React components and templates
+├── static/                  # Static assets
+├── user-components/         # Custom user components
+├── gatsby-browser.js        # Browser APIs and CSS imports
+├── gatsby-config.js         # Gatsby configuration and plugins
+├── gatsby-node.js           # Node APIs for page creation and schema customization
+├── html_node.js             # Custom node creation for HTML content
+├── python-build.py          # Python automation script for build and deployment
+├── package.json             # Node.js dependencies and scripts
+├── package-lock.json        # Exact dependency versions
+├── README.md                # This file
+└── LICENSE                  # License file
+```
 
-9.  **`LICENSE`**: This Gatsby starter is licensed under the 0BSD license. This means that you can see this file as a placeholder and replace it with your own license.
+## Future Work / Roadmap
 
-10. **`package-lock.json`** (See `package.json` below, first). This is an automatically generated file based on the exact versions of your npm dependencies that were installed for your project. **(You won’t change this file directly).**
+- Add comprehensive documentation and metadata for blog posts
+- Implement testing for React components and GraphQL queries
+- Enhance Python build script with error handling and logging
+- Add support for additional data visualization components
+- Integrate continuous deployment pipeline
+- Expand content types and support for interactive notebooks
 
-11. **`package.json`**: A manifest file for Node.js projects, which includes things like metadata (the project’s name, author, etc). This manifest is how npm knows which packages to install for your project.
+---
 
-12. **`README.md`**: A text file containing useful reference information about your project.
-
-## 🎓 Learning Gatsby
-
-Looking for more guidance? Full documentation for Gatsby lives [on the website](https://www.gatsbyjs.com/). Here are some places to start:
-
-- **For most developers, we recommend starting with our [in-depth tutorial for creating a site with Gatsby](https://www.gatsbyjs.com/tutorial/).** It starts with zero assumptions about your level of ability and walks through every step of the process.
-
-- **To dive straight into code samples, head [to our documentation](https://www.gatsbyjs.com/docs/).** In particular, check out the _Guides_, _API Reference_, and _Advanced Tutorials_ sections in the sidebar.
-
-## 💫 Deploy
-
-[Build, Deploy, and Host On The Only Cloud Built For Gatsby](https://www.gatsbyjs.com/products/cloud/)
-
-Gatsby Cloud is an end-to-end cloud platform specifically built for the Gatsby framework that combines a modern developer experience with an optimized, global edge network.
-
-<!-- AUTO-GENERATED-CONTENT:END -->
+*Note: This README assumes the repository is a personal data blog leveraging Gatsby and Markdown content, with Python automation for build tasks.*
