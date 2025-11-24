@@ -1,12 +1,29 @@
 ---
-slug: "github-data-blog"
-title: "data-blog"
-repo: "justin-napolitano/data-blog"
-githubUrl: "https://github.com/justin-napolitano/data-blog"
-generatedAt: "2025-11-23T08:49:49.177545Z"
-source: "github-auto"
+slug: github-data-blog
+title: Technical Overview of data-blog Static Site for Data Science Content
+repo: justin-napolitano/data-blog
+githubUrl: https://github.com/justin-napolitano/data-blog
+generatedAt: '2025-11-23T08:49:49.177545Z'
+source: github-auto
+summary: >-
+  Overview of data-blog, a Gatsby-based static site optimized for data-driven posts with Markdown,
+  HTML, geospatial visuals, and automated Python build scripts.
+tags:
+  - gatsby
+  - react
+  - static-site
+  - data-science
+  - geospatial
+  - build-automation
+seoPrimaryKeyword: data-blog
+seoSecondaryKeywords:
+  - gatsby
+  - static site
+  - data visualization
+  - build automation
+  - geospatial data
+seoOptimized: true
 ---
-
 
 # Technical Overview of data-blog
 
