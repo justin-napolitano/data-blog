@@ -23,6 +23,13 @@ seoSecondaryKeywords:
   - build automation
   - geospatial data
 seoOptimized: true
+topicFamily: static
+topicFamilyConfidence: 0.95
+topicFamilyNotes: >-
+  The post focuses heavily on a Gatsby-based static site project with discussions of static site
+  generation, Markdown content, plugins, architecture, and build automation. Though automation and
+  data science are present, the main theme is about building and maintaining a static data-focused
+  blog, matching the 'static' family references and example slugs.
 ---
 
 # Technical Overview of data-blog
@@ -87,3 +94,4 @@ This project is designed for an audience familiar with React, Gatsby, and data s
 ## Summary
 
 The data-blog project combines static site generation with data science and legal research content, leveraging Gatsby and Python automation to create a reproducible, performant, and extensible platform for publishing technical blog posts.
+
