@@ -1,18 +1,30 @@
 ---
 slug: github-data-blog
 id: github-data-blog
-title: data-blog
+title: 'Gatsby Data Blog: Build and Deploy with Python Automation'
 repo: justin-napolitano/data-blog
 githubUrl: https://github.com/justin-napolitano/data-blog
 generatedAt: '2025-11-24T21:34:28.453Z'
 source: github-auto
 summary: >-
-  A data-focused blog platform built with Gatsby, designed to integrate Markdown
-  and HTML content for publishing detailed data analyses and research posts.
-tags: []
-seoPrimaryKeyword: ''
-seoSecondaryKeywords: []
-seoOptimized: false
+  A guide to setting up a data-focused blog using Gatsby, Markdown, and Python
+  for automated builds and deployment.
+tags:
+  - gatsby
+  - react
+  - graphql
+  - python
+  - markdown
+  - static site generation
+  - data visualization
+seoPrimaryKeyword: gatsby data blog setup
+seoSecondaryKeywords:
+  - build automation with python
+  - static site with gatsby
+  - markdown blog platform
+  - graphql data querying
+  - react blog template
+seoOptimized: true
 topicFamily: null
 topicFamilyConfidence: null
 kind: project
