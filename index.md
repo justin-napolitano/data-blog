@@ -1,13 +1,13 @@
 ---
 slug: github-data-blog
-title: Technical Overview of data-blog Static Site for Data Science Content
+title: Building a Data-Driven Blog with Gatsby and Python Automation
 repo: justin-napolitano/data-blog
 githubUrl: https://github.com/justin-napolitano/data-blog
 generatedAt: '2025-11-23T08:49:49.177545Z'
 source: github-auto
 summary: >-
-  Overview of data-blog, a Gatsby-based static site optimized for data-driven posts with Markdown,
-  HTML, geospatial visuals, and automated Python build scripts.
+  Explore the architecture and implementation of a static site for data-driven
+  blogging using Gatsby, Markdown, and Python for automation.
 tags:
   - gatsby
   - react
@@ -15,21 +15,28 @@ tags:
   - data-science
   - geospatial
   - build-automation
-seoPrimaryKeyword: data-blog
+  - markdown
+  - python
+  - graphql
+seoPrimaryKeyword: data-driven blog with Gatsby
 seoSecondaryKeywords:
-  - gatsby
-  - static site
-  - data visualization
-  - build automation
-  - geospatial data
+  - static site generation
+  - Markdown content integration
+  - Python build automation
+  - geospatial data analysis
+  - Gatsby plugins
+  - data science blog
 seoOptimized: true
 topicFamily: static
 topicFamilyConfidence: 0.95
 topicFamilyNotes: >-
-  The post focuses heavily on a Gatsby-based static site project with discussions of static site
-  generation, Markdown content, plugins, architecture, and build automation. Though automation and
-  data science are present, the main theme is about building and maintaining a static data-focused
-  blog, matching the 'static' family references and example slugs.
+  The post focuses heavily on a Gatsby-based static site project with
+  discussions of static site generation, Markdown content, plugins,
+  architecture, and build automation. Though automation and data science are
+  present, the main theme is about building and maintaining a static
+  data-focused blog, matching the 'static' family references and example slugs.
+kind: project
+id: github-data-blog
 ---
 
 # Technical Overview of data-blog
