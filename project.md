@@ -7,8 +7,8 @@ githubUrl: https://github.com/justin-napolitano/data-blog
 generatedAt: '2025-11-24T21:34:28.453Z'
 source: github-auto
 summary: >-
-  Explore a Gatsby-based data blog platform that integrates Markdown and HTML
-  for detailed analyses, featuring a Python build automation script.
+  Explore a Gatsby-based data blog platform that integrates Markdown and HTML for detailed analyses,
+  featuring a Python build automation script.
 tags:
   - gatsby
   - react
@@ -25,8 +25,8 @@ seoSecondaryKeywords:
   - geospatial data analysis
   - react development
 seoOptimized: true
-topicFamily: null
-topicFamilyConfidence: null
+topicFamily: static
+topicFamilyConfidence: 0.9
 kind: project
 entryLayout: project
 showInProjects: true
@@ -149,3 +149,4 @@ python python-build.py
 ---
 
 *Note: This README assumes the repository is a personal data blog leveraging Gatsby and Markdown content, with Python automation for build tasks.*
+
